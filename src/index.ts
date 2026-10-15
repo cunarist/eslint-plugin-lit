@@ -26,7 +26,21 @@ const CORE: string[] = [];
  * The `strict` preset — demanding but correct. Strongly recommended, not
  * required.
  */
-const STRICT: string[] = [];
+const STRICT: string[] = [
+  "directive-allowlist",
+  "no-boolean-property-default-true",
+  "no-event-target-subclass",
+  "no-light-dom",
+  "no-manual-update",
+  "no-property-assignment-in-constructor",
+  "no-string-context-key",
+  "no-update-complete",
+  "prefer-context-decorators",
+  "prefer-decorators",
+  "require-custom-element-registration",
+  "require-event-in-event-map",
+  "require-tag-name-map",
+];
 
 /**
  * The `dom-ref` preset — reach the DOM through a `createRef` ref, nothing else.
