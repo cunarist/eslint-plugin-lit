@@ -39,7 +39,7 @@ Short and honest, derived from the edges above. No invented claims.
 
 `README.md` links to each of these and never repeats them; per preset it carries
 one paragraph of philosophy and one representative BAD/GOOD; the rule table is
-the single generated list under `## Rules`. No contributor-facing content — library users only.
+the single generated list in `docs/rules/README.md`, which the README links to. No contributor-facing content — library users only.
 
 `vp fmt` reformats Markdown, tables included. Keep ` ```ts ` examples valid at
 top level; wrap a bare `readonly` or `private` modifier in a `class … { }` body.

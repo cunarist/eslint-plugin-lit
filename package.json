@@ -47,6 +47,7 @@
     "ignoreConfig": [
       "all"
     ],
+    "pathRuleList": "docs/rules/README.md",
     "ruleListColumns": [
       "name",
       "description",

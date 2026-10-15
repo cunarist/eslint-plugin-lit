@@ -34,6 +34,5 @@ Open questions, flagged and not decided:
 - The barrel name, see [[registration-index]].
 - Rule options for the hard-coded lists, see [[one-plugin-presets-as-configs]].
 - Version: 0.8.0 is assumed, following explicit-types (Deno 0.5.1, npm 0.6.0).
-- The README's generated list of 82 rules cannot fit the 60-line budget.
 - `LICENSE` keeps the Deno repo's notice that parts derive from
   `eslint-plugin-lit` (MIT requires it), below the standard MIT text.
