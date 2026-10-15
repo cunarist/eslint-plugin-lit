@@ -199,3 +199,17 @@ export function walkElements(root: ParsedFragment, visit: (element: ParsedElemen
     visitNode(child);
   }
 }
+
+/**
+ * Where each quasi of a template starts within its placeholder-substituted
+ * text, for rules that scan the raw quasis and report through `templateSource`.
+ */
+export function quasiOffsets(node: TSESTree.TaggedTemplateExpression): number[] {
+  const offsets: number[] = [];
+  let offset = 0;
+  for (const [index, quasi] of node.quasi.quasis.entries()) {
+    offsets.push(offset);
+    offset += quasi.value.raw.length + bindingPlaceholder(index).length;
+  }
+  return offsets;
+}

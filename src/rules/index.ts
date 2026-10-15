@@ -17,11 +17,29 @@ import { noComponentDisposablesRule } from "./no-component-disposables.ts";
 import { noDomQueryRule } from "./no-dom-query.ts";
 import { noEventTargetSubclassRule } from "./no-event-target-subclass.ts";
 import { noFetchInComponentRule } from "./no-fetch-in-component.ts";
+import { noInnerHtmlAssignmentRule } from "./no-inner-html-assignment.ts";
+import { noInvalidEscapeSequencesRule } from "./no-invalid-escape-sequences.ts";
+import { noInvalidHtmlRule } from "./no-invalid-html.ts";
+import { noJsxAttributeNamesRule } from "./no-jsx-attribute-names.ts";
+import { noLegacyImportsRule } from "./no-legacy-imports.ts";
+import { noLegacyTemplateSyntaxRule } from "./no-legacy-template-syntax.ts";
 import { noLightDomRule } from "./no-light-dom.ts";
 import { noManualUpdateRule } from "./no-manual-update.ts";
+import { noMultipleDefaultSlotsRule } from "./no-multiple-default-slots.ts";
+import { noNativeAttributesRule } from "./no-native-attributes.ts";
+import { noPartialPropertyBindingRule } from "./no-partial-property-binding.ts";
+import { noPrivatePropertiesRule } from "./no-private-properties.ts";
 import { noPropertyAssignmentInConstructorRule } from "./no-property-assignment-in-constructor.ts";
+import { noPropertyChangeInUpdatedRule } from "./no-property-change-in-updated.ts";
+import { noPropertyChangeUpdateRule } from "./no-property-change-update.ts";
+import { noPropertyNamedLikeLifecycleRule } from "./no-property-named-like-lifecycle.ts";
 import { noQueryDecoratorsRule } from "./no-query-decorators.ts";
+import { noRequestUpdateInUpdatedRule } from "./no-request-update-in-updated.ts";
+import { noScriptInTemplateRule } from "./no-script-in-template.ts";
+import { noSelfClosingNonVoidRule } from "./no-self-closing-non-void.ts";
 import { noStringContextKeyRule } from "./no-string-context-key.ts";
+import { noThisAssignInRenderRule } from "./no-this-assign-in-render.ts";
+import { noThisInStaticStylesRule } from "./no-this-in-static-styles.ts";
 import { noTimersRule } from "./no-timers.ts";
 import { noUnsafeCssRule } from "./no-unsafe-css.ts";
 import { noUnsafeHtmlRule } from "./no-unsafe-html.ts";
@@ -71,11 +89,29 @@ export const rules: Map<string, LitRule> = new Map([
   ["no-dom-query", noDomQueryRule],
   ["no-event-target-subclass", noEventTargetSubclassRule],
   ["no-fetch-in-component", noFetchInComponentRule],
+  ["no-inner-html-assignment", noInnerHtmlAssignmentRule],
+  ["no-invalid-escape-sequences", noInvalidEscapeSequencesRule],
+  ["no-invalid-html", noInvalidHtmlRule],
+  ["no-jsx-attribute-names", noJsxAttributeNamesRule],
+  ["no-legacy-imports", noLegacyImportsRule],
+  ["no-legacy-template-syntax", noLegacyTemplateSyntaxRule],
   ["no-light-dom", noLightDomRule],
   ["no-manual-update", noManualUpdateRule],
+  ["no-multiple-default-slots", noMultipleDefaultSlotsRule],
+  ["no-native-attributes", noNativeAttributesRule],
+  ["no-partial-property-binding", noPartialPropertyBindingRule],
+  ["no-private-properties", noPrivatePropertiesRule],
   ["no-property-assignment-in-constructor", noPropertyAssignmentInConstructorRule],
+  ["no-property-change-in-updated", noPropertyChangeInUpdatedRule],
+  ["no-property-change-update", noPropertyChangeUpdateRule],
+  ["no-property-named-like-lifecycle", noPropertyNamedLikeLifecycleRule],
   ["no-query-decorators", noQueryDecoratorsRule],
+  ["no-request-update-in-updated", noRequestUpdateInUpdatedRule],
+  ["no-script-in-template", noScriptInTemplateRule],
+  ["no-self-closing-non-void", noSelfClosingNonVoidRule],
   ["no-string-context-key", noStringContextKeyRule],
+  ["no-this-assign-in-render", noThisAssignInRenderRule],
+  ["no-this-in-static-styles", noThisInStaticStylesRule],
   ["no-timers", noTimersRule],
   ["no-unsafe-css", noUnsafeCssRule],
   ["no-unsafe-html", noUnsafeHtmlRule],
