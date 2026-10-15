@@ -24,7 +24,7 @@ function shortPath(cwd: string, file: string): string {
 /**
  * `require-direct-registration-import` — rejects a custom element used in a
  * template whose registering module this file does not import, directly or
- * through that module's own `mod.ts` barrel.
+ * through that module's own `index.ts` barrel.
  *
  * The element renders as long as some other module ran its
  * `customElements.define`, borrowing another file's import until that import

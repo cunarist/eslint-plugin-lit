@@ -31,7 +31,6 @@ Open questions, flagged and not decided:
   `require-controller-suffix`. That would change behavior for a class that is
   both a component and `implements ReactiveController`; the helper exists, so
   keep the guard unless the user says otherwise.
-- The barrel name, see [[registration-index]].
 - Rule options for the hard-coded lists, see [[one-plugin-presets-as-configs]].
 - Version: 0.8.0 is assumed, following explicit-types (Deno 0.5.1, npm 0.6.0).
 - `LICENSE` keeps the Deno repo's notice that parts derive from

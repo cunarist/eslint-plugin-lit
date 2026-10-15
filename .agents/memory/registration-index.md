@@ -30,7 +30,7 @@ a fully transitive graph was tried in Deno and reverted, because it let any
 barrel anywhere satisfy the rule, the borrowed import the rule rejects.
 Visited files are tracked so cycles end.
 
-**Open question for the user:** the barrel is `mod.ts`, as in Deno (the
-`BARREL` constant). Node projects and this org's convention use `index.ts`.
-Switching or accepting both changes the rule's behavior, so it waits for a
-decision.
+**Barrel name:** `index.ts` (the `BARREL` constant), the org's entry-file
+convention, decided on 2026-10-16. Deno's `mod.ts` is not a barrel here: a
+`mod.ts` is an ordinary re-exporting file and is not followed. Both
+`src/helpers/lit.test.ts` and the rule's own test cover the two cases.

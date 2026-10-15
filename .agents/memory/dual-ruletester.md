@@ -35,6 +35,12 @@ from `writeProject(files)` in `#testing` (a temp directory with the repo's
 `node_modules` linked in, deleted after the test file), and its cases name a
 file there as `filename`; valid cases take `{ code, filename }` for that.
 Fixtures live in the test, never on disk in the repo, so nothing lints or
-type-checks them and the cycles and `mod.ts` barrels they need are allowed.
+type-checks them and the cycles and `index.ts` barrels they need are allowed.
 `src/helpers/lit.test.ts` drives the detection helpers through a probe rule
 the same way.
+
+The two files that write a project (`src/helpers/lit.test.ts` and
+`require-direct-registration-import.test.ts`) build the registration index
+cold on their first case per host, up to about 3 s against Vitest's 5 s
+default. Each raises its own timeout with `vi.setConfig({ testTimeout:
+20_000 })` at the top; every other test file keeps the default.

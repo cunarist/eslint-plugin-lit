@@ -24,10 +24,10 @@ the usage carry its own reason to work.
   both app elements and compiled dependencies are covered.
 - A type-only import (`import type …`) never runs its module, so it does not
   count as importing the registration.
-- A `mod.ts` stands for the folder it sits in, so importing `./widgets/mod.ts`
-  also counts for anything under `./widgets/` that it runs. Any other barrel
-  does not: it can pull a module in from anywhere, which is the borrowed import
-  this rule rejects.
+- An `index.ts` stands for the folder it sits in, so importing
+  `./widgets/index.ts` also counts for anything under `./widgets/` that it runs.
+  Any other barrel, a Deno-style `mod.ts` included, does not: it can pull a
+  module in from anywhere, which is the borrowed import this rule rejects.
 - An element registered in the same file needs no import and is not reported.
 
 Examples of **incorrect** code for this rule:

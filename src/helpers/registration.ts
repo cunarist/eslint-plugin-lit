@@ -48,7 +48,7 @@ const REGISTRY = "customElements";
 const DEFINE = "define";
 
 /** The file name of a folder's barrel, which stands for the whole folder. */
-const BARREL = "mod.ts";
+const BARREL = "index.ts";
 
 /** The extensions of the files a project's program is made of. */
 const SOURCE_EXTENSION: RegExp = /\.[cm]?ts$/u;

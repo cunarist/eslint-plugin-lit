@@ -1,6 +1,7 @@
 import { dirname, join, relative } from "node:path";
 
 import type { TSESTree } from "@typescript-eslint/types";
+import { vi } from "vite-plus/test";
 
 import type { ClassNode, LitRule, LitTemplateKind } from "#helpers";
 import {
@@ -17,6 +18,11 @@ import {
 } from "#helpers";
 import type { ExpectedError } from "#testing";
 import { spanOf, testRule, writeProject } from "#testing";
+
+// Cases here follow imports across a written project and build its
+// registration index, so the first case of each host runs cold; give this
+// file's tests headroom.
+vi.setConfig({ testTimeout: 20_000 });
 
 /** Every tag kind the probe asks about, in the order it reports them. */
 const KINDS: LitTemplateKind[] = ["html", "svg", "css"];
@@ -144,13 +150,13 @@ const PROJECT: Map<string, string> = new Map([
       `import { customElement as register } from "lit/decorators.js";\n` +
       `@register("cl-h")\nexport class ElementH extends LitElement {}\n`,
   ],
-  // A file importing a barrel that is not `mod.ts`, which is not followed.
+  // A file importing a barrel that is not `index.ts`, which is not followed.
   ["register-elements.ts", `import "./registration-entry.ts";\n`],
   ["registration-entry.ts", `import "./register-elements.ts";\nexport * from "./element-b.ts";\n`],
-  // A `mod.ts` barrel, followed only inside its own folder.
+  // An `index.ts` barrel, followed only inside its own folder.
   [
-    "widgets/mod.ts",
-    `import "#outside";\nimport "./nested/mod.ts";\n` +
+    "widgets/index.ts",
+    `import "#outside";\nimport "./nested/index.ts";\n` +
       `export * from "./element-e.ts";\nexport type { ElementG } from "./element-g.ts";\n`,
   ],
   [
@@ -163,7 +169,14 @@ const PROJECT: Map<string, string> = new Map([
     `export class ElementG extends HTMLElement {}\n` +
       `declare global { interface HTMLElementTagNameMap { "cl-g": ElementG; } }\n`,
   ],
-  ["widgets/nested/mod.ts", `export * from "./element-f.ts";\n`],
+  ["widgets/nested/index.ts", `export * from "./element-f.ts";\n`],
+  // A Deno-style `mod.ts` barrel, which is not followed.
+  ["legacy/mod.ts", `export * from "./element-i.ts";\n`],
+  [
+    "legacy/element-i.ts",
+    `export class ElementI extends HTMLElement {}\n` +
+      `declare global { interface HTMLElementTagNameMap { "cl-i": ElementI; } }\n`,
+  ],
   [
     "widgets/nested/element-f.ts",
     `export class ElementF extends HTMLElement {}\n` +
@@ -296,12 +309,12 @@ export class FromMixed extends Mixed {}
         element("cl-b", "element-b.ts", "yes"),
       ],
     },
-    // An imported `mod.ts` counts for its own folder, nested `mod.ts`
+    // An imported `index.ts` counts for its own folder, nested `index.ts`
     // included, but not for what it imports from outside it or re-exports
     // type-only.
     {
-      code: `${LIT_HTML}import "./widgets/mod.ts";\nhtml\`<cl-e></cl-e><cl-f></cl-f><cl-a></cl-a><cl-g></cl-g>\`;\n`,
-      filename: inProject("uses-mod.ts"),
+      code: `${LIT_HTML}import "./widgets/index.ts";\nhtml\`<cl-e></cl-e><cl-f></cl-f><cl-a></cl-a><cl-g></cl-g>\`;\n`,
+      filename: inProject("uses-barrel.ts"),
       errors: [
         template("html"),
         element("cl-e", "widgets/element-e.ts", "yes"),
@@ -310,7 +323,13 @@ export class FromMixed extends Mixed {}
         element("cl-g", "widgets/element-g.ts", "no"),
       ],
     },
-    // A barrel that is not `mod.ts` is not followed.
+    // A Deno-style `mod.ts` is not a barrel: what it re-exports is not followed.
+    {
+      code: `${LIT_HTML}import "./legacy/mod.ts";\nhtml\`<cl-i></cl-i>\`;\n`,
+      filename: inProject("uses-mod.ts"),
+      errors: [template("html"), element("cl-i", "legacy/element-i.ts", "no")],
+    },
+    // A barrel that is not `index.ts` is not followed.
     {
       code: `${LIT_HTML}import "./register-elements.ts";\nhtml\`<cl-b></cl-b>\`;\n`,
       filename: inProject("indirect.ts"),
