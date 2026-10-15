@@ -82,7 +82,15 @@ const REACTIVE_CONTROLLER: string[] = [
  * The `naming` preset — what elements, controllers, attributes, and events are
  * called.
  */
-const NAMING: string[] = [];
+const NAMING: string[] = [
+  "attribute-names",
+  "event-name-case",
+  "no-camelcase-attribute",
+  "require-controller-suffix",
+  "require-element-suffix",
+  "require-tag-prefix",
+  "tag-matches-class-name",
+];
 
 /** The flat configs at `plugin.configs`, one per preset plus `all`. */
 interface LitConfigs {

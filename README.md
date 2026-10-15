@@ -38,15 +38,19 @@ from look-alikes, so `lit` must be installed where the linted code is.
 💼 [Configurations](https://github.com/cunarist/eslint-plugin-lit#configs-and-rules) enabled in.\
 🧩 Set in the `core` [configuration](https://github.com/cunarist/eslint-plugin-lit#configs-and-rules).\
 🔗 Set in the `dom-ref` [configuration](https://github.com/cunarist/eslint-plugin-lit#configs-and-rules).\
+🔤 Set in the `naming` [configuration](https://github.com/cunarist/eslint-plugin-lit#configs-and-rules).\
 🔄 Set in the `reactive-controller` [configuration](https://github.com/cunarist/eslint-plugin-lit#configs-and-rules).\
 🔒 Set in the `strict` [configuration](https://github.com/cunarist/eslint-plugin-lit#configs-and-rules).
 
 | Name                                                                                         | Description                                                                                                | 💼 |
 | :------------------------------------------------------------------------------------------- | :--------------------------------------------------------------------------------------------------------- | :- |
+| [attribute-names](docs/rules/attribute-names.md)                                             | Require an explicit `attribute` option on camelCase reactive properties                                    | 🔤 |
 | [directive-allowlist](docs/rules/directive-allowlist.md)                                     | Disallow Lit directive imports other than `ref` and `repeat`                                               | 🔒 |
+| [event-name-case](docs/rules/event-name-case.md)                                             | Require kebab-case names for events created with `new CustomEvent()` or `new Event()`                      | 🔤 |
 | [host-constructor](docs/rules/host-constructor.md)                                           | Require a reactive controller constructor to be exactly `constructor(host: ReactiveControllerHost)`        | 🔄 |
 | [lifecycle-allowlist](docs/rules/lifecycle-allowlist.md)                                     | Disallow Lit component lifecycle overrides other than `styles` and `render`                                | 🔄 |
 | [no-boolean-property-default-true](docs/rules/no-boolean-property-default-true.md)           | Disallow a `type: Boolean` reactive property whose default is not literal `false`                          | 🔒 |
+| [no-camelcase-attribute](docs/rules/no-camelcase-attribute.md)                               | Disallow uppercase letters and underscores in `html` template attribute names                              | 🔤 |
 | [no-component-disposables](docs/rules/no-component-disposables.md)                           | Disallow creating disposable resources and listeners inside a Lit component                                | 🔄 |
 | [no-dom-query](docs/rules/no-dom-query.md)                                                   | Disallow `querySelector` and `querySelectorAll` inside a Lit component                                     | 🔗 |
 | [no-event-target-subclass](docs/rules/no-event-target-subclass.md)                           | Disallow classes that extend `EventTarget`                                                                 | 🔒 |
@@ -69,18 +73,22 @@ from look-alikes, so `lit` must be installed where the linted code is.
 | [prefer-static-styles](docs/rules/prefer-static-styles.md)                                   | Enforce `static styles` over `<style>` elements in templates                                               | 🧩 |
 | [require-accessor-with-decorators](docs/rules/require-accessor-with-decorators.md)           | Require `accessor` on fields decorated with `@property` or `@state`                                        | 🧩 |
 | [require-context-type](docs/rules/require-context-type.md)                                   | Require an explicit type argument on `createContext()`                                                     | 🧩 |
+| [require-controller-suffix](docs/rules/require-controller-suffix.md)                         | Require reactive controller class names to end in `Controller`                                             | 🔤 |
 | [require-custom-element-registration](docs/rules/require-custom-element-registration.md)     | Require every Lit component in a file to be registered as a custom element                                 | 🔒 |
 | [require-dashed-tag](docs/rules/require-dashed-tag.md)                                       | Require custom element names that the registry accepts                                                     | 🧩 |
 | [require-direct-registration-import](docs/rules/require-direct-registration-import.md)       | Require importing the module that registers each custom element a template uses                            | 🧩 |
 | [require-dispatch-on-this](docs/rules/require-dispatch-on-this.md)                           | Require a component's events to be dispatched on the component itself                                      | 🧩 |
+| [require-element-suffix](docs/rules/require-element-suffix.md)                               | Require registered component class names to end in `Element`                                               | 🔤 |
 | [require-event-in-event-map](docs/rules/require-event-in-event-map.md)                       | Require an `HTMLElementEventMap` entry for every event a Lit component constructs                          | 🔒 |
 | [require-property-type](docs/rules/require-property-type.md)                                 | Require a `type` on every `@property` that has an attribute                                                | 🧩 |
 | [require-repeat-key](docs/rules/require-repeat-key.md)                                       | Require a key function in `repeat()`                                                                       | 🧩 |
 | [require-scalar-reflect](docs/rules/require-scalar-reflect.md)                               | Require reflected properties to declare a scalar type                                                      | 🧩 |
 | [require-tag-name-map](docs/rules/require-tag-name-map.md)                                   | Require an `HTMLElementTagNameMap` entry for every `@customElement` registration                           | 🔒 |
+| [require-tag-prefix](docs/rules/require-tag-prefix.md)                                       | Require a namespace prefix in custom element names                                                         | 🔤 |
 | [self-registration](docs/rules/self-registration.md)                                         | Require a reactive controller to call `host.addController(this)` in its constructor                        | 🔄 |
 | [simple-template-expressions](docs/rules/simple-template-expressions.md)                     | Enforce plain names and member chains as template bindings                                                 | 🧩 |
 | [svg-template-for-svg-content](docs/rules/svg-template-for-svg-content.md)                   | Require SVG-only elements to sit in an `svg` template or an `<svg>` element                                | 🧩 |
+| [tag-matches-class-name](docs/rules/tag-matches-class-name.md)                               | Require a `@customElement` tag to name its class                                                           | 🔤 |
 | [value-after-constraints](docs/rules/value-after-constraints.md)                             | Enforce setting `value` after every validity constraint attribute                                          | 🧩 |
 
 <!-- end auto-generated rules list -->
