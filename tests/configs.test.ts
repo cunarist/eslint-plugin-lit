@@ -132,11 +132,9 @@ function configRuleIds(name: string): string[] {
 }
 
 describe("plugin.rules", () => {
-  it("holds only rules of the Deno package", () => {
+  it("holds exactly the 82 rules of the Deno package", () => {
     expect(DENO_RULES).toHaveLength(82);
-    for (const id of Object.keys(plugin.rules ?? {})) {
-      expect(DENO_RULES).toContain(id);
-    }
+    expect(Object.keys(plugin.rules ?? {}).toSorted()).toEqual(DENO_RULES.toSorted());
   });
 });
 
@@ -147,18 +145,16 @@ describe("plugin.configs", () => {
     );
   });
 
-  it("turns on exactly the ported rules of each Deno plugin", () => {
-    const ported = Object.keys(plugin.rules ?? {});
+  it("turns on exactly the rules of each Deno plugin", () => {
     for (const [group, ids] of DENO_GROUPS) {
-      expect(configRuleIds(group).toSorted()).toEqual(
-        ids.filter((id) => ported.includes(id)).toSorted(),
-      );
+      expect(configRuleIds(group).toSorted()).toEqual(ids.toSorted());
     }
   });
 });
 
 describe("plugin.configs.all", () => {
   it("turns on every rule in the plugin", () => {
+    expect(Object.keys(plugin.configs.all.rules ?? {})).toHaveLength(82);
     const ruleIds = Object.keys(plugin.rules ?? {}).map((id) => `${NAMESPACE}/${id}`);
     expect(Object.keys(plugin.configs.all.rules ?? {}).toSorted()).toEqual(ruleIds.toSorted());
   });
