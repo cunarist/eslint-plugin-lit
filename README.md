@@ -36,13 +36,21 @@ from look-alikes, so `lit` must be installed where the linted code is.
 <!-- begin auto-generated rules list -->
 
 💼 [Configurations](https://github.com/cunarist/eslint-plugin-lit#configs-and-rules) enabled in.\
-🔗 Set in the `dom-ref` [configuration](https://github.com/cunarist/eslint-plugin-lit#configs-and-rules).
+🔗 Set in the `dom-ref` [configuration](https://github.com/cunarist/eslint-plugin-lit#configs-and-rules).\
+🔄 Set in the `reactive-controller` [configuration](https://github.com/cunarist/eslint-plugin-lit#configs-and-rules).
 
-| Name                                                     | Description                                                             | 💼 |
-| :------------------------------------------------------- | :---------------------------------------------------------------------- | :- |
-| [no-dom-query](docs/rules/no-dom-query.md)               | Disallow `querySelector` and `querySelectorAll` inside a Lit component  | 🔗 |
-| [no-query-decorators](docs/rules/no-query-decorators.md) | Disallow the Lit `@query` decorators and their imports                  | 🔗 |
-| [prefer-create-ref](docs/rules/prefer-create-ref.md)     | Enforce `createRef` over a `ref` callback that only stashes the element | 🔗 |
+| Name                                                               | Description                                                                                                | 💼 |
+| :----------------------------------------------------------------- | :--------------------------------------------------------------------------------------------------------- | :- |
+| [host-constructor](docs/rules/host-constructor.md)                 | Require a reactive controller constructor to be exactly `constructor(host: ReactiveControllerHost)`        | 🔄 |
+| [lifecycle-allowlist](docs/rules/lifecycle-allowlist.md)           | Disallow Lit component lifecycle overrides other than `styles` and `render`                                | 🔄 |
+| [no-component-disposables](docs/rules/no-component-disposables.md) | Disallow creating disposable resources and listeners inside a Lit component                                | 🔄 |
+| [no-dom-query](docs/rules/no-dom-query.md)                         | Disallow `querySelector` and `querySelectorAll` inside a Lit component                                     | 🔗 |
+| [no-fetch-in-component](docs/rules/no-fetch-in-component.md)       | Disallow calling `fetch` inside a Lit component                                                            | 🔄 |
+| [no-query-decorators](docs/rules/no-query-decorators.md)           | Disallow the Lit `@query` decorators and their imports                                                     | 🔗 |
+| [no-timers](docs/rules/no-timers.md)                               | Disallow `setTimeout`, `setInterval`, `requestAnimationFrame`, and `queueMicrotask` inside a Lit component | 🔄 |
+| [paired-lifecycle](docs/rules/paired-lifecycle.md)                 | Require a reactive controller to define both `hostConnected` and `hostDisconnected`, or neither            | 🔄 |
+| [prefer-create-ref](docs/rules/prefer-create-ref.md)               | Enforce `createRef` over a `ref` callback that only stashes the element                                    | 🔗 |
+| [self-registration](docs/rules/self-registration.md)               | Require a reactive controller to call `host.addController(this)` in its constructor                        | 🔄 |
 
 <!-- end auto-generated rules list -->
 <!-- prettier-ignore-end -->

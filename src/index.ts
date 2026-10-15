@@ -37,7 +37,15 @@ const DOM_REF: string[] = ["no-dom-query", "no-query-decorators", "prefer-create
  * The `reactive-controller` preset — the ReactiveController contract, and the
  * component lifecycle work that belongs in one.
  */
-const REACTIVE_CONTROLLER: string[] = [];
+const REACTIVE_CONTROLLER: string[] = [
+  "host-constructor",
+  "lifecycle-allowlist",
+  "no-component-disposables",
+  "no-fetch-in-component",
+  "no-timers",
+  "paired-lifecycle",
+  "self-registration",
+];
 
 /**
  * The `naming` preset — what elements, controllers, attributes, and events are
