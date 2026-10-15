@@ -6,10 +6,18 @@
 
 import type { LitRule } from "#helpers";
 
+import { noDomQueryRule } from "./no-dom-query.ts";
+import { noQueryDecoratorsRule } from "./no-query-decorators.ts";
+import { preferCreateRefRule } from "./prefer-create-ref.ts";
+
 /**
  * Every rule, keyed by rule id, in alphabetical order.
  *
  * A `Map` rather than an object literal: a rule record is a lookup keyed by
  * rule id, so the ids belong in value position.
  */
-export const rules: Map<string, LitRule> = new Map();
+export const rules: Map<string, LitRule> = new Map([
+  ["no-dom-query", noDomQueryRule],
+  ["no-query-decorators", noQueryDecoratorsRule],
+  ["prefer-create-ref", preferCreateRefRule],
+]);

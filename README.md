@@ -35,8 +35,14 @@ from look-alikes, so `lit` must be installed where the linted code is.
 <!-- prettier-ignore-start -->
 <!-- begin auto-generated rules list -->
 
-| Name |
-| :--- |
+💼 [Configurations](https://github.com/cunarist/eslint-plugin-lit#configs-and-rules) enabled in.\
+🔗 Set in the `dom-ref` [configuration](https://github.com/cunarist/eslint-plugin-lit#configs-and-rules).
+
+| Name                                                     | Description                                                             | 💼 |
+| :------------------------------------------------------- | :---------------------------------------------------------------------- | :- |
+| [no-dom-query](docs/rules/no-dom-query.md)               | Disallow `querySelector` and `querySelectorAll` inside a Lit component  | 🔗 |
+| [no-query-decorators](docs/rules/no-query-decorators.md) | Disallow the Lit `@query` decorators and their imports                  | 🔗 |
+| [prefer-create-ref](docs/rules/prefer-create-ref.md)     | Enforce `createRef` over a `ref` callback that only stashes the element | 🔗 |
 
 <!-- end auto-generated rules list -->
 <!-- prettier-ignore-end -->
