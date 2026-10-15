@@ -47,6 +47,16 @@ export const requireDirectRegistrationImportRule: LitRule = {
     },
   },
   create(context) {
+    // Project-wide facts, computed at most once per linted file and only once
+    // a template uses a custom element.
+    let registrations: ReadonlyMap<string, string> | null = null;
+    let imports: ReadonlySet<string> | null = null;
+    let self: string | null = null;
+    const isDirect = (module: string): boolean => {
+      self ??= lintedRealPath(context);
+      imports ??= runtimeImports(context);
+      return module === self || imports.has(module);
+    };
     return {
       TaggedTemplateExpression(node: TSESTree.TaggedTemplateExpression): void {
         if (!isHtmlTemplate(node, context)) {
@@ -58,12 +68,9 @@ export const requireDirectRegistrationImportRule: LitRule = {
           if (!tag.includes("-")) {
             return;
           }
-          const module = tagRegistrations(context).get(tag);
-          if (
-            module === undefined ||
-            module === lintedRealPath(context) ||
-            runtimeImports(context).has(module)
-          ) {
+          registrations ??= tagRegistrations(context);
+          const module = registrations.get(tag);
+          if (module === undefined || isDirect(module)) {
             return;
           }
           const location = element.sourceCodeLocation;
