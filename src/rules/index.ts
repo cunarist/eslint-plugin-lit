@@ -20,15 +20,31 @@ import { noPropertyAssignmentInConstructorRule } from "./no-property-assignment-
 import { noQueryDecoratorsRule } from "./no-query-decorators.ts";
 import { noStringContextKeyRule } from "./no-string-context-key.ts";
 import { noTimersRule } from "./no-timers.ts";
+import { noUnsafeCssRule } from "./no-unsafe-css.ts";
+import { noUnsafeHtmlRule } from "./no-unsafe-html.ts";
 import { noUpdateCompleteRule } from "./no-update-complete.ts";
+import { noUselessTemplateLiteralsRule } from "./no-useless-template-literals.ts";
+import { noValueAttributeRule } from "./no-value-attribute.ts";
 import { pairedLifecycleRule } from "./paired-lifecycle.ts";
 import { preferContextDecoratorsRule } from "./prefer-context-decorators.ts";
 import { preferCreateRefRule } from "./prefer-create-ref.ts";
 import { preferDecoratorsRule } from "./prefer-decorators.ts";
+import { preferStaticStylesRule } from "./prefer-static-styles.ts";
+import { requireAccessorWithDecoratorsRule } from "./require-accessor-with-decorators.ts";
+import { requireContextTypeRule } from "./require-context-type.ts";
 import { requireCustomElementRegistrationRule } from "./require-custom-element-registration.ts";
+import { requireDashedTagRule } from "./require-dashed-tag.ts";
+import { requireDirectRegistrationImportRule } from "./require-direct-registration-import.ts";
+import { requireDispatchOnThisRule } from "./require-dispatch-on-this.ts";
 import { requireEventInEventMapRule } from "./require-event-in-event-map.ts";
+import { requirePropertyTypeRule } from "./require-property-type.ts";
+import { requireRepeatKeyRule } from "./require-repeat-key.ts";
+import { requireScalarReflectRule } from "./require-scalar-reflect.ts";
 import { requireTagNameMapRule } from "./require-tag-name-map.ts";
 import { selfRegistrationRule } from "./self-registration.ts";
+import { simpleTemplateExpressionsRule } from "./simple-template-expressions.ts";
+import { svgTemplateForSvgContentRule } from "./svg-template-for-svg-content.ts";
+import { valueAfterConstraintsRule } from "./value-after-constraints.ts";
 
 /**
  * Every rule, keyed by rule id, in alphabetical order.
@@ -51,13 +67,29 @@ export const rules: Map<string, LitRule> = new Map([
   ["no-query-decorators", noQueryDecoratorsRule],
   ["no-string-context-key", noStringContextKeyRule],
   ["no-timers", noTimersRule],
+  ["no-unsafe-css", noUnsafeCssRule],
+  ["no-unsafe-html", noUnsafeHtmlRule],
   ["no-update-complete", noUpdateCompleteRule],
+  ["no-useless-template-literals", noUselessTemplateLiteralsRule],
+  ["no-value-attribute", noValueAttributeRule],
   ["paired-lifecycle", pairedLifecycleRule],
   ["prefer-context-decorators", preferContextDecoratorsRule],
   ["prefer-create-ref", preferCreateRefRule],
   ["prefer-decorators", preferDecoratorsRule],
+  ["prefer-static-styles", preferStaticStylesRule],
+  ["require-accessor-with-decorators", requireAccessorWithDecoratorsRule],
+  ["require-context-type", requireContextTypeRule],
   ["require-custom-element-registration", requireCustomElementRegistrationRule],
+  ["require-dashed-tag", requireDashedTagRule],
+  ["require-direct-registration-import", requireDirectRegistrationImportRule],
+  ["require-dispatch-on-this", requireDispatchOnThisRule],
   ["require-event-in-event-map", requireEventInEventMapRule],
+  ["require-property-type", requirePropertyTypeRule],
+  ["require-repeat-key", requireRepeatKeyRule],
+  ["require-scalar-reflect", requireScalarReflectRule],
   ["require-tag-name-map", requireTagNameMapRule],
   ["self-registration", selfRegistrationRule],
+  ["simple-template-expressions", simpleTemplateExpressionsRule],
+  ["svg-template-for-svg-content", svgTemplateForSvgContentRule],
+  ["value-after-constraints", valueAfterConstraintsRule],
 ]);

@@ -20,7 +20,24 @@ const NAMESPACE = "@cunarist/lit";
 /**
  * The `core` preset — Lit code that does not do what it looks like it does.
  */
-const CORE: string[] = [];
+const CORE: string[] = [
+  "no-unsafe-css",
+  "no-unsafe-html",
+  "no-useless-template-literals",
+  "no-value-attribute",
+  "prefer-static-styles",
+  "require-accessor-with-decorators",
+  "require-context-type",
+  "require-dashed-tag",
+  "require-direct-registration-import",
+  "require-dispatch-on-this",
+  "require-property-type",
+  "require-repeat-key",
+  "require-scalar-reflect",
+  "simple-template-expressions",
+  "svg-template-for-svg-content",
+  "value-after-constraints",
+];
 
 /**
  * The `strict` preset — demanding but correct. Strongly recommended, not
