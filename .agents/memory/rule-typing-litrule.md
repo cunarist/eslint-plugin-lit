@@ -24,7 +24,7 @@ Messages are one string, Deno's old `message` and `hint` joined, because ESLint
 and Oxlint diagnostics have no hint field. Report with `messageId` and `data`
 so tests can assert which message fired. A template rule reports a range
 inside the template through `rangeLoc(context.sourceCode, range)`, since
-ESLint's `report` takes a `loc`, not Deno's `range`. See [[dual-ruletester]].
+ESLint's `report` takes a `loc`, not Deno's `range`. See [[plugin-dual-ruletester]].
 
 Runtime dependencies, all in `dependencies` and never bundled: `@eslint/core`
 (types the public `.d.ts` names), `parse5` (template markup), and `oxc-parser`

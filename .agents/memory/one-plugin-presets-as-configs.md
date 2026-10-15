@@ -2,6 +2,9 @@
 description: One plugin, namespace @cunarist/lit, default export only; Deno's five plugins survive as plugin.configs, plus all
 ---
 
+The shared shape (default export only, `all`, no `recommended`) is in
+[[plugin-exports-and-configs]]; this note is lit's mapping.
+
 ESLint's convention is one plugin per package, named from the package:
 `@cunarist/eslint-plugin-lit` becomes the namespace `@cunarist/lit`. Oxlint
 normalizes `meta.name` the same way, so a rule id is
