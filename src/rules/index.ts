@@ -7,16 +7,34 @@
 import type { LitRule } from "#helpers";
 
 import { attributeNamesRule } from "./attribute-names.ts";
+import { attributeValueEntitiesRule } from "./attribute-value-entities.ts";
+import { bindingPositionsRule } from "./binding-positions.ts";
+import { composedRequiresBubblesRule } from "./composed-requires-bubbles.ts";
 import { directiveAllowlistRule } from "./directive-allowlist.ts";
 import { eventNameCaseRule } from "./event-name-case.ts";
 import { hostConstructorRule } from "./host-constructor.ts";
 import { lifecycleAllowlistRule } from "./lifecycle-allowlist.ts";
+import { lifecycleSuperRule } from "./lifecycle-super.ts";
+import { noArrayMutationWithoutReassignRule } from "./no-array-mutation-without-reassign.ts";
+import { noAsyncLifecycleRule } from "./no-async-lifecycle.ts";
+import { noAsyncRenderRule } from "./no-async-render.ts";
+import { noAttributePropertyBindingConflictRule } from "./no-attribute-property-binding-conflict.ts";
 import { noBooleanPropertyDefaultTrueRule } from "./no-boolean-property-default-true.ts";
 import { noCamelcaseAttributeRule } from "./no-camelcase-attribute.ts";
+import { noClassfieldShadowingRule } from "./no-classfield-shadowing.ts";
 import { noComponentDisposablesRule } from "./no-component-disposables.ts";
+import { noContextMutationByConsumerRule } from "./no-context-mutation-by-consumer.ts";
+import { noDispatchInRenderRule } from "./no-dispatch-in-render.ts";
 import { noDomQueryRule } from "./no-dom-query.ts";
+import { noDuplicateContextProviderRule } from "./no-duplicate-context-provider.ts";
+import { noDuplicatePropertyDeclarationRule } from "./no-duplicate-property-declaration.ts";
+import { noDuplicateSlotNamesRule } from "./no-duplicate-slot-names.ts";
+import { noDuplicateTagRegistrationRule } from "./no-duplicate-tag-registration.ts";
+import { noDuplicateTemplateBindingsRule } from "./no-duplicate-template-bindings.ts";
 import { noEventTargetSubclassRule } from "./no-event-target-subclass.ts";
 import { noFetchInComponentRule } from "./no-fetch-in-component.ts";
+import { noIndexAsRepeatKeyRule } from "./no-index-as-repeat-key.ts";
+import { noInlineEventAttributeRule } from "./no-inline-event-attribute.ts";
 import { noInnerHtmlAssignmentRule } from "./no-inner-html-assignment.ts";
 import { noInvalidEscapeSequencesRule } from "./no-invalid-escape-sequences.ts";
 import { noInvalidHtmlRule } from "./no-invalid-html.ts";
@@ -79,16 +97,34 @@ import { valueAfterConstraintsRule } from "./value-after-constraints.ts";
  */
 export const rules: Map<string, LitRule> = new Map([
   ["attribute-names", attributeNamesRule],
+  ["attribute-value-entities", attributeValueEntitiesRule],
+  ["binding-positions", bindingPositionsRule],
+  ["composed-requires-bubbles", composedRequiresBubblesRule],
   ["directive-allowlist", directiveAllowlistRule],
   ["event-name-case", eventNameCaseRule],
   ["host-constructor", hostConstructorRule],
   ["lifecycle-allowlist", lifecycleAllowlistRule],
+  ["lifecycle-super", lifecycleSuperRule],
+  ["no-array-mutation-without-reassign", noArrayMutationWithoutReassignRule],
+  ["no-async-lifecycle", noAsyncLifecycleRule],
+  ["no-async-render", noAsyncRenderRule],
+  ["no-attribute-property-binding-conflict", noAttributePropertyBindingConflictRule],
   ["no-boolean-property-default-true", noBooleanPropertyDefaultTrueRule],
   ["no-camelcase-attribute", noCamelcaseAttributeRule],
+  ["no-classfield-shadowing", noClassfieldShadowingRule],
   ["no-component-disposables", noComponentDisposablesRule],
+  ["no-context-mutation-by-consumer", noContextMutationByConsumerRule],
+  ["no-dispatch-in-render", noDispatchInRenderRule],
   ["no-dom-query", noDomQueryRule],
+  ["no-duplicate-context-provider", noDuplicateContextProviderRule],
+  ["no-duplicate-property-declaration", noDuplicatePropertyDeclarationRule],
+  ["no-duplicate-slot-names", noDuplicateSlotNamesRule],
+  ["no-duplicate-tag-registration", noDuplicateTagRegistrationRule],
+  ["no-duplicate-template-bindings", noDuplicateTemplateBindingsRule],
   ["no-event-target-subclass", noEventTargetSubclassRule],
   ["no-fetch-in-component", noFetchInComponentRule],
+  ["no-index-as-repeat-key", noIndexAsRepeatKeyRule],
+  ["no-inline-event-attribute", noInlineEventAttributeRule],
   ["no-inner-html-assignment", noInnerHtmlAssignmentRule],
   ["no-invalid-escape-sequences", noInvalidEscapeSequencesRule],
   ["no-invalid-html", noInvalidHtmlRule],
