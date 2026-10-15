@@ -1,0 +1,50 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  # The publish workflow runs these same checks before it publishes.
+  workflow_call:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: voidzero-dev/setup-vp@v1.21.2
+        with:
+          node-version: "22"
+          cache: true
+      - run: vp check
+      - run: vp pack
+      # The rules list in README.md and each rule doc's header are generated
+      # from the built plugin; fail if they no longer match it.
+      - name: Generated docs are current
+        run: npm run docs -- --check
+      # The tarball the publish workflow would upload, without uploading it.
+      - run: npm pack --dry-run
+
+  test:
+    name: test (node@${{ matrix.node }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node: ["22", latest]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: voidzero-dev/setup-vp@v1.21.2
+        with:
+          node-version: ${{ matrix.node }}
+          cache: true
+      - name: Runtime
+        run: node --version
+      # Every rule test runs under both hosts; each step proves one of them.
+      - name: Rule tests under ESLint's RuleTester
+        run: vp test -t " eslint "
+      - name: Rule tests under Oxlint's RuleTester
+        run: vp test -t " oxlint "
+      # Regression tests in tests/, against the public entry only.
+      - name: Regression tests
+        run: vp test tests

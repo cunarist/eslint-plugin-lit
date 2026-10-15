@@ -1,0 +1,109 @@
+/**
+ * `@cunarist/eslint-plugin-lit` — lint rules for Lit web components.
+ *
+ * One plugin, namespace `@cunarist/lit`, so a rule id reads
+ * `@cunarist/lit/no-unsafe-html`. The rules come in five presets, one per
+ * plugin of the Deno package this ports — `core`, `strict`, `dom-ref`,
+ * `reactive-controller`, and `naming` — plus `all`, which turns on every rule.
+ * The plugin is the only export; its configs are at `plugin.configs`.
+ *
+ * @module
+ */
+
+import type { ConfigObject, Plugin } from "@eslint/core";
+
+import { rules } from "./rules/index.ts";
+
+/** The prefix of every rule id, as ESLint derives it from the package name. */
+const NAMESPACE = "@cunarist/lit";
+
+/**
+ * The `core` preset — Lit code that does not do what it looks like it does.
+ */
+const CORE: string[] = [];
+
+/**
+ * The `strict` preset — demanding but correct. Strongly recommended, not
+ * required.
+ */
+const STRICT: string[] = [];
+
+/**
+ * The `dom-ref` preset — reach the DOM through a `createRef` ref, nothing else.
+ */
+const DOM_REF: string[] = [];
+
+/**
+ * The `reactive-controller` preset — the ReactiveController contract, and the
+ * component lifecycle work that belongs in one.
+ */
+const REACTIVE_CONTROLLER: string[] = [];
+
+/**
+ * The `naming` preset — what elements, controllers, attributes, and events are
+ * called.
+ */
+const NAMING: string[] = [];
+
+/** The flat configs at `plugin.configs`, one per preset plus `all`. */
+interface LitConfigs {
+  core: ConfigObject;
+  strict: ConfigObject;
+  "dom-ref": ConfigObject;
+  "reactive-controller": ConfigObject;
+  naming: ConfigObject;
+  all: ConfigObject;
+}
+
+/** The plugin, with its configs known by name. */
+interface LitPlugin {
+  meta?: Plugin["meta"];
+  rules?: Plugin["rules"];
+  configs: LitConfigs;
+}
+
+/** The plugin before its configs exist, which each config refers back to. */
+const basePlugin: Plugin = {
+  meta: {
+    // Written out rather than imported from `package.json`, so the source has
+    // only `.ts` imports. A release bumps both; `tests/package-meta.test.ts`
+    // fails if they drift apart.
+    name: "@cunarist/eslint-plugin-lit",
+    version: "0.8.0",
+    namespace: NAMESPACE,
+  },
+  rules: Object.fromEntries(rules),
+};
+
+/**
+ * A flat config that loads the plugin and turns every given rule on. A config
+ * is only a list of rule ids, so one rule can sit in several configs.
+ */
+function presetConfig(preset: string, ruleIds: string[]): ConfigObject {
+  return {
+    name: `${NAMESPACE}/${preset}`,
+    plugins: Object.fromEntries([[NAMESPACE, basePlugin]]),
+    rules: Object.fromEntries(ruleIds.map((id) => [`${NAMESPACE}/${id}`, "error"])),
+  };
+}
+
+/**
+ * The plugin, for ESLint `plugins` or Oxlint `jsPlugins`, and the package's
+ * only export. Configs: `core` catches Lit code that does not do what it looks
+ * like it does, `strict` is demanding but correct, `dom-ref` reaches the DOM
+ * only through refs, `reactive-controller` keeps lifetimes in controllers,
+ * `naming` governs what things are called, and `all` turns on every rule, so a
+ * new rule joins it by itself.
+ */
+const plugin: LitPlugin = Object.assign(basePlugin, {
+  configs: {
+    core: presetConfig("core", CORE),
+    strict: presetConfig("strict", STRICT),
+    "dom-ref": presetConfig("dom-ref", DOM_REF),
+    "reactive-controller": presetConfig("reactive-controller", REACTIVE_CONTROLLER),
+    naming: presetConfig("naming", NAMING),
+    all: presetConfig("all", [...rules.keys()]),
+  },
+});
+
+export default plugin;

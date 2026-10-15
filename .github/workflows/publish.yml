@@ -1,0 +1,50 @@
+name: Publish
+
+# Publishing a GitHub release `vX.Y.Z` publishes that version to npm. Nothing
+# else publishes: not a bare tag push, and never a person.
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: read
+  id-token: write # npm trusted publishing (OIDC) and provenance
+
+jobs:
+  # The full CI run, every Node.js version included, against the release commit.
+  ci:
+    uses: ./.github/workflows/ci.yml
+    permissions:
+      contents: read
+
+  publish:
+    needs: ci
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: voidzero-dev/setup-vp@v1.21.2
+        with:
+          node-version: "24" # npm 11, which trusted publishing needs
+          cache: false # never reuse a cache for a release build
+      - name: Check the tag matches the package version
+        env:
+          TAG: ${{ github.event.release.tag_name }}
+        run: |
+          version="$(npm pkg get version | tr -d '"')"
+          if [ "$TAG" != "v$version" ]; then
+            echo "::error::Release tag $TAG does not match package.json version $version"
+            exit 1
+          fi
+      # The build that gets published; the checks already passed in `ci`.
+      - run: vp pack
+      # Only for the first release, before npm allows a trusted publisher on
+      # the package. Delete the secret once trusted publishing is set up.
+      - name: Use the bootstrap token, if one is set
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        if: env.NPM_TOKEN != ''
+        run: npm config set "//registry.npmjs.org/:_authToken" "$NPM_TOKEN"
+      - name: Publish
+        env:
+          DIST_TAG: ${{ github.event.release.prerelease && 'next' || 'latest' }}
+        run: npm publish --access public --provenance --tag "$DIST_TAG"
