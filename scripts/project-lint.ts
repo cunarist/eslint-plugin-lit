@@ -7,7 +7,7 @@
  * Deno's `camelcase` is Oxlint's built-in `id-match`.
  *
  * Loaded by `vite.config.ts` as an Oxlint `jsPlugins` entry, never packed:
- * `vp pack` builds `src/index.ts` alone and the tarball holds only `dist/`.
+ * `vp pack` builds `src/plugin/index.ts` alone and the tarball holds only `dist/`.
  *
  * @module
  */

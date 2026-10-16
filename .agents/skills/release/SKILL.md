@@ -1,6 +1,6 @@
 ---
 name: release
-description: Cut an npm release when the user asks; bump package.json and src/index.ts meta in a PR, then publish a GitHub release page so CI publishes. Never npm publish locally
+description: Cut an npm release when the user asks; bump package.json and src/plugin/index.ts meta in a PR, then publish a GitHub release page so CI publishes. Never npm publish locally
 ---
 
 Only when the user asked for a release. Never run `npm publish` yourself,
@@ -10,7 +10,7 @@ memory.
 
 1. **Bump on a branch.** Set the same `X.Y.Z` in both places:
    - `version` in `package.json`;
-   - `meta.version` in `src/index.ts` (written out, not imported).
+   - `meta.version` in `src/plugin/index.ts` (written out, not imported).
 
    Then:
 
@@ -21,7 +21,7 @@ memory.
    git commit -am "Version X.Y.Z"
    ```
 
-   `src/index.test.ts` fails if the two versions differ. Before 1.0,
+   `tests/package-meta.test.ts` fails if the two versions differ. Before 1.0,
    a change that breaks users (a renamed rule id, a rule that fires on more
    code, a removed config) is a minor bump.
 

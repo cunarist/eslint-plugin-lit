@@ -27,8 +27,8 @@ Use a new branch and PR. For a rule id `my-rule` (kebab-case):
    with `output`/`suggestions` asserted for every fix. Cover what it must not
    fire on as well as what it catches. Snippets must be valid TypeScript.
 3. **Register** it in `src/rules/index.ts` (the `Map`) and add its id to the
-   config list(s) in `src/index.ts`. `all` picks it up by itself.
-4. **Update `src/index.test.ts`**, which pins the rule list.
+   config list(s) in `src/plugin/index.ts`. `all` picks it up by itself.
+4. **Update `tests/configs.test.ts`**, which pins the rule list.
 5. **`docs/rules/my-rule.md`**: Rule Details, one incorrect and one correct
    `ts` block, Options only if any, When Not To Use It.
 6. **Regenerate docs:**

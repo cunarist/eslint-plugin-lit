@@ -32,10 +32,10 @@ and follow it before reasoning or responding.
   registered in `src/rules/index.ts`. There are no per-preset folders.
 - Each rule file has one named export with a `Rule` suffix, e.g.
   `export const noUnsafeHtmlRule`. The package's only default export is the plugin
-  in `src/index.ts`; `scripts/project-lint.ts` default-exports its own.
-- Configs are lists of rule ids in `src/index.ts`, since a rule can belong to
+  in `src/plugin/index.ts`; `scripts/project-lint.ts` default-exports its own.
+- Configs are lists of rule ids in `src/plugin/index.ts`, since a rule can belong to
   several. `all` is built from the registry.
-- Shared code comes through `#helpers` and `#testing`, never a relative path
+- Shared code comes through `#helpers`, `#rules`, and `#testing`, never a relative path
   out of a directory. A `package.json` `imports` alias may point only at a
   direct subfolder of `src/` (`#helpers` → `./src/helpers/index.ts`): never
   at `src/` itself, a deeper folder, or anything outside `src/` (`scripts/`,
@@ -44,8 +44,8 @@ and follow it before reasoning or responding.
   `project/no-non-ts-imports` fails any other extension in the last path
   segment, a query suffix like `?raw`, or import attributes. Bare package
   names, `#` aliases, and `node:` builtins pass.
-- `meta.name` and `meta.version` are written out in `src/index.ts`; a release
-  bumps them with `package.json`, and `src/index.test.ts` checks both.
+- `meta.name` and `meta.version` are written out in `src/plugin/index.ts`; a release
+  bumps them with `package.json`, and `tests/package-meta.test.ts` checks both.
 - Rules use ESLint's standard `create` API, typed `LitRule`, with every
   visitor's node parameter annotated. Runtime dependencies are only
   `@eslint/core` (types), `parse5`, `oxc-parser`, and `oxc-resolver`, in
@@ -54,11 +54,10 @@ and follow it before reasoning or responding.
   `isTaggedWith`, `tagRegistrations`, `runtimeImports` in `#helpers`) follows
   imports into other files and packages; it is accurate or silent. See
   `cross-file-detection` and `registration-index`.
-- Unit tests sit next to the code as `*.test.ts`. The plugin entry's rule
-  list, configs, and meta are pinned by `src/index.test.ts`, which imports
-  `./index.ts`; there is no `#plugin` alias, and a `tests/` file could reach
-  the entry only by a `../` import, which `import/no-relative-parent-imports`
-  fails. Multi-file
+- Unit tests sit next to the code as `*.test.ts`. Regression and integration
+  tests go in the top-level `tests/` and import the code only through `#`
+  aliases (`import plugin from "#plugin"`), never `../`; `tests/` has no lint
+  override. `tests/configs.test.ts` pins the rule list and configs. Multi-file
   fixtures are written at test time with `writeProject` from `#testing`,
   never committed.
 - Every rule test runs under both ESLint's and Oxlint's `RuleTester` through
@@ -78,7 +77,7 @@ and follow it before reasoning or responding.
   `reportUnusedDisableDirectives` (a directive naming
   `project/no-disable-comments`, which that rule skips). Keep all three.
 - `vite.config.ts` lists no rule by name: its `rules` spreads
-  `configs.all.rules` from `src/index.ts` and `configs.project.rules` from
+  `configs.all.rules` from `src/plugin/index.ts` and `configs.project.rules` from
   `scripts/project-lint.ts`, which holds the repo's own rule list (Deno parity,
   extras, opt-outs, built-in ids included). Only `overrides`, being file globs,
   stays in `vite.config.ts`.

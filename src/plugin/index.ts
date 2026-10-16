@@ -12,7 +12,7 @@
 
 import type { ConfigObject, Plugin } from "@eslint/core";
 
-import { rules } from "./rules/index.ts";
+import { rules } from "#rules";
 
 /** The prefix of every rule id, as ESLint derives it from the package name. */
 const NAMESPACE = "@cunarist/lit";
@@ -149,7 +149,7 @@ interface LitPlugin {
 const basePlugin: Plugin = {
   meta: {
     // Written out rather than imported from `package.json`, so the source has
-    // only `.ts` imports. A release bumps both; `src/index.test.ts`
+    // only `.ts` imports. A release bumps both; `tests/package-meta.test.ts`
     // fails if they drift apart.
     name: "@cunarist/eslint-plugin-lit",
     version: "0.8.0",

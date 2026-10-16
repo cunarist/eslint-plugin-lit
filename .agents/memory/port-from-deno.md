@@ -12,7 +12,7 @@ tests and `docs/rules/<id>.md` ported from the Deno `.md` and `tests/*_test.ts`.
 Mapping:
 
 - `src/<group>/<rule>.ts` becomes `src/rules/<rule>.ts`; `src/<group>/mod.ts`
-  becomes a list in `src/index.ts`; `src/scanner/` and `src/helpers/` become
+  becomes a list in `src/plugin/index.ts`; `src/scanner/` and `src/helpers/` become
   `src/helpers/` (see [[cross-file-detection]]).
 - `Deno.lint.Rule` becomes `LitRule`; `ctx.report({ range, message, hint })`
   becomes `context.report({ loc: rangeLoc(...), messageId, data })` with one

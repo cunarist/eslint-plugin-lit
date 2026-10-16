@@ -67,6 +67,8 @@
   },
   "imports": {
     "#helpers": "./src/helpers/index.ts",
+    "#plugin": "./src/plugin/index.ts",
+    "#rules": "./src/rules/index.ts",
     "#testing": "./src/testing/index.ts"
   },
   "devDependencies": {

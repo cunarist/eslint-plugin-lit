@@ -1,6 +1,6 @@
 /**
  * Every rule in the plugin, one file each, registered here by rule id. Which
- * configs turn a rule on is decided in `src/index.ts`, not here, because a rule
+ * configs turn a rule on is decided in `src/plugin/index.ts`, not here, because a rule
  * can belong to more than one config.
  */
 
