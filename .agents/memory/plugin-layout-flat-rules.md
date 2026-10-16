@@ -6,14 +6,13 @@ Layout decided 2026-10-14, the template for every cunarist plugin repo:
 
 ```
 src/index.ts                         the plugin, its meta, and its configs
+src/index.test.ts                    rule list, configs, meta vs package.json
 src/rules/index.ts                   the registry: a Map of every rule by id
 src/rules/no-keyof.ts                export const noKeyofRule
 src/rules/no-keyof.test.ts           one testRule call
 src/helpers/index.ts                 #helpers: shared AST and rule code
 src/testing/index.ts                 #testing: testRule, spanOf
 docs/rules/no-keyof.md               the rule's docs page
-tests/configs.test.ts                regression tests via #plugin
-tests/package-meta.test.ts           meta vs package.json
 scripts/project-lint.ts              repo-local lint plugin, never published
 ```
 

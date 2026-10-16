@@ -11,8 +11,11 @@ Decided 2026-10-14 for all repos.
   config needed. Packages publish only `dist/`, so colocated tests cost nothing
   in the tarball.
 - **Regression and integration tests** live in the top-level `tests/` folder
-  and use only the public entry point (an alias like `#plugin`), never
-  internals. `vp test tests` runs just these.
+  and use only the public entry point, never internals. `vp test tests` runs
+  just these. There is no `#plugin` alias (aliases cover only direct
+  subfolders of `src/`), so a check that needs the plugin entry itself, like
+  this repo's rule list, configs, and meta, lives in `src/index.test.ts` and
+  imports `./index.ts`. This repo has no `tests/` folder.
 - **No in-source tests** (`import.meta.vitest`).
 - **`scripts/` gets no tests** (2026-10-15): it is repo tooling, not
   production code (`project-lint.ts`, `decorators.ts`, `lit-check.ts`,

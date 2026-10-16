@@ -12,14 +12,14 @@ description: The plugin is the package's only (default) export; one config per f
   `meta.name` the same way (verified).
 - `meta.name` and `meta.version` are **written out** in `src/index.ts`, never
   imported from `package.json` (no non-`.ts` imports). A release bumps both;
-  `tests/package-meta.test.ts` reads `package.json` with `node:fs` and fails
+  `src/index.test.ts` reads `package.json` with `node:fs` and fails
   on drift.
 
 ## Configs (2026-10-14)
 
 - **Exactly one config per former Deno plugin**, named after it, plus
   **`all`**, which turns on every rule and is built from the registry so a new
-  rule joins it by itself. `tests/configs.test.ts` checks `all` equals the
+  rule joins it by itself. `src/index.test.ts` checks `all` equals the
   union of the others.
 - **No `recommended`** config and no `meta.docs.recommended` flag.
 - A config is just a list of rule ids in `src/index.ts`, so one rule may sit

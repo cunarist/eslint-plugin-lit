@@ -45,6 +45,6 @@ jobs:
         run: vp test -t " eslint "
       - name: Rule tests under Oxlint's RuleTester
         run: vp test -t " oxlint "
-      # Regression tests in tests/, against the public entry only.
-      - name: Regression tests
-        run: vp test tests
+      # The plugin's rules, configs, and meta, checked through its entry.
+      - name: Plugin entry tests
+        run: vp test src/index.test.ts

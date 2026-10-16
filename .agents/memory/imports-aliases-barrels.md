@@ -28,6 +28,13 @@ so they never reach package consumers.
   become patterns, `"#components/*": "./src/components/*"`.
 - Aliases point at `.ts` files only. There is no `#package` alias
   ([[ts-only-files-and-imports]]).
+- **Only direct subfolders of `src/`** (user rule, 2026-10-16): `"#helpers":
+  "./src/helpers/index.ts"`, or a `"#x/*"` pattern inside one such folder.
+  Never `src/` itself (so no `#plugin` → `./src/index.ts`), never a deeper
+  folder (`./src/helpers/ast/index.ts`), never anything outside `src/` (no
+  `#project-lint` → `./scripts/project-lint.ts`, no root files). Code outside
+  `src/` (`vite.config.ts`, `scripts/`) imports relatively; `scripts/` may
+  still use `#helpers`. The entry's own tests sit in `src/index.test.ts`.
 - In repos linted by import-check, the key order of `imports` is the layer
   order `enforce-layer-order` checks; add a new alias at the right layer.
 - Keep test-only helpers in their own alias (e.g. `#testing`) so they never

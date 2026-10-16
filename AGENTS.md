@@ -36,12 +36,16 @@ and follow it before reasoning or responding.
 - Configs are lists of rule ids in `src/index.ts`, since a rule can belong to
   several. `all` is built from the registry.
 - Shared code comes through `#helpers` and `#testing`, never a relative path
-  out of a directory. Source imports only `.ts` files, never JSON;
+  out of a directory. A `package.json` `imports` alias may point only at a
+  direct subfolder of `src/` (`#helpers` → `./src/helpers/index.ts`): never
+  at `src/` itself, a deeper folder, or anything outside `src/` (`scripts/`,
+  root files). Code outside `src/` (`vite.config.ts`, `scripts/`) imports
+  relatively. Source imports only `.ts` files, never JSON;
   `project/no-non-ts-imports` fails any other extension in the last path
   segment, a query suffix like `?raw`, or import attributes. Bare package
   names, `#` aliases, and `node:` builtins pass.
 - `meta.name` and `meta.version` are written out in `src/index.ts`; a release
-  bumps them with `package.json`, and `tests/package-meta.test.ts` checks both.
+  bumps them with `package.json`, and `src/index.test.ts` checks both.
 - Rules use ESLint's standard `create` API, typed `LitRule`, with every
   visitor's node parameter annotated. Runtime dependencies are only
   `@eslint/core` (types), `parse5`, `oxc-parser`, and `oxc-resolver`, in
@@ -50,8 +54,11 @@ and follow it before reasoning or responding.
   `isTaggedWith`, `tagRegistrations`, `runtimeImports` in `#helpers`) follows
   imports into other files and packages; it is accurate or silent. See
   `cross-file-detection` and `registration-index`.
-- Unit tests sit next to the code as `*.test.ts`. Regression and integration
-  tests go in `tests/` and use only the public entry, `#plugin`. Multi-file
+- Unit tests sit next to the code as `*.test.ts`. The plugin entry's rule
+  list, configs, and meta are pinned by `src/index.test.ts`, which imports
+  `./index.ts`; there is no `#plugin` alias, and a `tests/` file could reach
+  the entry only by a `../` import, which `import/no-relative-parent-imports`
+  fails. Multi-file
   fixtures are written at test time with `writeProject` from `#testing`,
   never committed.
 - Every rule test runs under both ESLint's and Oxlint's `RuleTester` through

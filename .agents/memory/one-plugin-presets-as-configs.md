@@ -17,7 +17,7 @@ Deno's plugin API had no presets. Those survive as flat configs at
 `plugin.configs.core`, `.strict`, `["dom-ref"]`, `["reactive-controller"]`, and
 `.naming`, plus `.all` with every rule. Each config is a list of rule ids in
 `src/index.ts`; `all` is built from the rule registry in `src/rules/index.ts`,
-so a new rule joins it without an edit. `tests/configs.test.ts` pins the Deno
+so a new rule joins it without an edit. `src/index.test.ts` pins the Deno
 groups (52, 13, 3, 7, 7 rules) and checks that each config holds exactly its
 group's ported rules and that `all` is their union. There is no
 `recommended` and no `meta.docs.recommended`.

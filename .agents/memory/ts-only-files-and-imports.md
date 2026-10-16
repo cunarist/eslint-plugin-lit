@@ -40,8 +40,9 @@ import { scenes } from "#data/scenes"; // yes: scenes.ts
 - **SVG:** a `.ts` module exporting a Lit template; see [[icons-memona-style]].
 - **`package.json` fields at runtime:** never `import pkg from
   "./package.json"` and there is no `#package` alias. Write the value out in
-  `.ts` and add a test in `tests/` that reads `package.json` with `node:fs`
-  and fails on drift (the plugin repos do this for `meta.name`/`meta.version`).
+  `.ts` and add a test that reads `package.json` with `node:fs`
+  and fails on drift (the plugin repos do this for `meta.name`/`meta.version` in
+  `src/index.test.ts`).
 - **Reading a file is not importing it.** `readFileSync` + `JSON.parse` is
   fine in tooling and tests.
 - **A tool's `.js` entry:** don't `import("pkg/cli.js")`; use the package

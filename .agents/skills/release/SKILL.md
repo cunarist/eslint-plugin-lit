@@ -21,7 +21,7 @@ memory.
    git commit -am "Version X.Y.Z"
    ```
 
-   `tests/package-meta.test.ts` fails if the two versions differ. Before 1.0,
+   `src/index.test.ts` fails if the two versions differ. Before 1.0,
    a change that breaks users (a renamed rule id, a rule that fires on more
    code, a removed config) is a minor bump.
 

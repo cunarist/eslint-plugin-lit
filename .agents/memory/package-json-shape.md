@@ -30,6 +30,8 @@ Metadata first, then `scripts`, `exports`, `imports`, `devDependencies`,
 
 The `imports` key order can carry meaning: import-check's
 `enforce-layer-order` reads it as the layer order. Never reorder it casually.
+Every alias targets a direct subfolder of `src/` only; see
+[[imports-aliases-barrels]].
 
 ## Fields
 

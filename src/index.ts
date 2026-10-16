@@ -149,7 +149,7 @@ interface LitPlugin {
 const basePlugin: Plugin = {
   meta: {
     // Written out rather than imported from `package.json`, so the source has
-    // only `.ts` imports. A release bumps both; `tests/package-meta.test.ts`
+    // only `.ts` imports. A release bumps both; `src/index.test.ts`
     // fails if they drift apart.
     name: "@cunarist/eslint-plugin-lit",
     version: "0.8.0",

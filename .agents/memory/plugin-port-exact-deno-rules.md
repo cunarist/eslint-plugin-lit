@@ -4,7 +4,7 @@ description: A published @cunarist/eslint-plugin-* holds exactly the rules of th
 
 User decision (2026-10-15): each npm plugin contains **exactly** the rules of
 the original Deno plugin: same rule names, same behavior, none added, none
-removed. `tests/configs.test.ts` pins the rule list.
+removed. `src/index.test.ts` pins the rule list.
 
 | npm package                              | Deno source                              | Rules | Configs                                                             |
 | ---------------------------------------- | ---------------------------------------- | ----- | ------------------------------------------------------------------- |
