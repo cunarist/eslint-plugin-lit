@@ -2,7 +2,7 @@
  * `project` — lint rules this repository holds its own source to that are not
  * part of the published plugin. A rule kept only for this repo's own lint
  * lives in this file. Its rules of its own are `no-disable-comments` and
- * `no-non-ts-imports`.
+ * `no-asset-imports`.
  *
  * Loaded by `vite.config.ts` as an Oxlint `jsPlugins` entry, never packed:
  * `vp pack` builds `src/plugin/index.ts` alone and the tarball holds only `dist/`.
@@ -69,12 +69,16 @@ const noDisableCommentsRule: ProjectRule = {
 /** A module specifier read as a path: relative, absolute, or a `#` alias. */
 const PATH_SPECIFIER_PATTERN: RegExp = /^[./#]/u;
 
+/** The extensions a module may be imported by: our own `.ts` files and package `.js` subpaths. */
+const MODULE_EXTENSIONS: readonly string[] = [".ts", ".js"];
+
 /**
- * Whether `source` names something other than a `.ts` module: a query string
- * such as `?raw`, or a final path segment with any other extension. Bare
- * package names are left alone, dots and all, as are extensionless paths.
+ * Whether `source` names an asset rather than a module: a query string such
+ * as `?raw`, or a final path segment with an extension other than `.ts` or
+ * `.js`. Bare package names are left alone, dots and all, as are
+ * extensionless paths.
  */
-function isNonTsSource(source: string): boolean {
+function isAssetSource(source: string): boolean {
   if (source.includes("?")) {
     return true;
   }
@@ -89,30 +93,31 @@ function isNonTsSource(source: string): boolean {
   if (lastSegment === "." || lastSegment === ".." || !lastSegment.includes(".")) {
     return false;
   }
-  return !lastSegment.endsWith(".ts");
+  return !MODULE_EXTENSIONS.some((extension) => lastSegment.endsWith(extension));
 }
 
 /**
- * `no-non-ts-imports` — rejects importing anything but a `.ts` module: a
- * source path, static or a dynamic `import()` with a string literal, ending in
- * another extension (`.css`, `.json`, `.svg`, `.js`, `.tsx`) or carrying a
+ * `no-asset-imports` — rejects importing anything but a `.ts` or `.js`
+ * module: a source path, static or a dynamic `import()` with a string literal,
+ * ending in another extension (`.css`, `.json`, `.svg`, `.tsx`) or carrying a
  * query string (`?raw`, `?url`), and any import or export with import
- * attributes. Bare package names, `#` aliases, and `node:` builtins without an
- * extension pass; package subpaths are checked like paths.
+ * attributes. `.js` covers package subpaths such as `lit/decorators.js`; this
+ * repo's own files are all `.ts`. Bare package names, `#` aliases, and `node:`
+ * builtins without an extension pass; package subpaths are checked like paths.
  */
-const noNonTsImportsRule: ProjectRule = {
+const noAssetImportsRule: ProjectRule = {
   meta: {
     type: "problem",
-    docs: { description: "Disallow importing modules other than .ts files" },
+    docs: { description: "Disallow importing CSS, JSON, SVG, and other non-module assets" },
     schema: [],
     messages: {
-      extension: "Only .ts modules may be imported.",
+      extension: "Only .ts and .js modules may be imported.",
       attributes: "Import attributes are not allowed.",
     },
   },
   create(context) {
     function checkSource(source: TSESTree.StringLiteral): void {
-      if (isNonTsSource(source.value)) {
+      if (isAssetSource(source.value)) {
         context.report({ node: source, messageId: "extension" });
       }
     }
@@ -185,7 +190,7 @@ const rules: DummyRuleMap = {
   "typescript/no-namespace": "error",
   "typescript/no-non-null-assertion": "error",
   "project/no-disable-comments": "error",
-  "project/no-non-ts-imports": "error",
+  "project/no-asset-imports": "error",
   "unicorn/no-abusive-eslint-disable": "error",
   // Pedantic rules that fight the AST types: nodes are mutable, `type` is
   // an enum imported only as a type, and visitors are long by nature.
@@ -203,7 +208,7 @@ const plugin = {
   meta: { name: "project" },
   rules: {
     "no-disable-comments": noDisableCommentsRule,
-    "no-non-ts-imports": noNonTsImportsRule,
+    "no-asset-imports": noAssetImportsRule,
   },
   configs: { project: { rules } },
 };
