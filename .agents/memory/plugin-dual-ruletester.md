@@ -1,5 +1,5 @@
 ---
-description: Every rule test runs under both ESLint's and Oxlint's RuleTester via testRule, once per rule file, cases in ESLint shape; CI runs each host as its own step on node 22 and latest
+description: Every rule test runs under both ESLint's and Oxlint's RuleTester via testRule, once per rule file, cases in ESLint shape; CI runs one plain vp test step on node 22 and latest
 ---
 
 `testRule` from `#testing` is called **exactly once per rule file**, with all
@@ -12,13 +12,10 @@ It runs every case twice in Vitest:
   filename (ESLint parses TypeScript only with both);
 - under Oxlint's `RuleTester` from `vite-plus/lint/plugins-dev`.
 
-Suites nest as `<rule> > eslint|oxlint`, so CI can run each host separately:
-
-```yaml
-- run: vp test -t " eslint " # leading space matters: a name starting
-- run: vp test -t " oxlint " # with the host would match neither step
-- run: vp test tests # regression tests
-```
+Suites nest as `<rule> > eslint|oxlint`. CI runs one plain `vp test` step,
+which covers both hosts and the regression tests in `tests/`. To debug one
+host locally, `vp test -t " eslint "` or `vp test -t " oxlint "` (the leading
+space matters: a name starting with the host would match neither).
 
 CI matrix: node `22` (the minimum) and `latest`; no LTS entry, no Bun (Oxlint's
 tester refuses Bun, and Bun support was dropped).

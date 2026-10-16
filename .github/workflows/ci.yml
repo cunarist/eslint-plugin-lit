@@ -40,11 +40,6 @@ jobs:
           cache: true
       - name: Runtime
         run: node --version
-      # Every rule test runs under both hosts; each step proves one of them.
-      - name: Rule tests under ESLint's RuleTester
-        run: vp test -t " eslint "
-      - name: Rule tests under Oxlint's RuleTester
-        run: vp test -t " oxlint "
-      # Regression tests in tests/, against the public entry only.
-      - name: Regression tests
-        run: vp test tests
+      # Every test: each rule under ESLint's and Oxlint's RuleTester, and the
+      # regression tests in tests/.
+      - run: vp test

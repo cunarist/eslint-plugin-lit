@@ -44,7 +44,7 @@ Use a new branch and PR. For a rule id `my-rule` (kebab-case):
 
    ```sh
    vp check
-   vp test -t " eslint " && vp test -t " oxlint " && vp test tests
+   vp test
    vp pack && npm run docs -- --check
    ```
 
