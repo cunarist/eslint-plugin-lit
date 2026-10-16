@@ -13,21 +13,18 @@ import { resolve } from "node:path";
 import type { TSESTree } from "@typescript-eslint/types";
 
 import type { ClassNode } from "./ast.ts";
-import { classDecorators, findConstructor, memberPath, typeReferenceName } from "./ast.ts";
+import { classDecorators, memberPath } from "./ast.ts";
 import type { LitTemplateKind, Seen } from "./identity.ts";
 import { extendsLitBase, isCustomElementDecorator, templateKindOf } from "./identity.ts";
-import type { Binding } from "./modules.ts";
-import { moduleFromText, realPath, resolveExport, resolveImport } from "./modules.ts";
-import { registrationIndex, runtimeImportedFiles } from "./registration.ts";
+import type { Binding } from "./bindings.ts";
+import { resolveExport, resolveImport } from "./bindings.ts";
+import { moduleFromText, realPath } from "./modules.ts";
+import { registrationIndex } from "./registration.ts";
+import { runtimeImportedFiles } from "./runtime-imports.ts";
+import { importedName } from "./specifiers.ts";
 import type { LitRuleContext, ScopeDefinition, ScopeVariable } from "./rule.ts";
 
 export type { LitTemplateKind } from "./identity.ts";
-
-/** Module specifiers that count as "the Lit core" for import checks. */
-export const LIT_CORE_SOURCES: readonly string[] = ["lit", "lit-html", "lit-element"];
-
-/** Legacy v1 specifiers that should be replaced by `lit`. */
-export const LEGACY_LIT_SOURCES: readonly string[] = ["lit-html", "lit-element"];
 
 /** Lifecycle members Lit defines on `ReactiveElement`/`LitElement`. */
 export const LIT_LIFECYCLE_MEMBERS: readonly string[] = [
@@ -93,20 +90,6 @@ export function variableOf(
     scope = scope.upper;
   }
   return null;
-}
-
-/** The name an import specifier imports: `default`, `*`, or the export name. */
-function importedName(node: TSESTree.Node): string | null {
-  switch (node.type) {
-    case "ImportSpecifier":
-      return node.imported.type === "Identifier" ? node.imported.name : node.imported.value;
-    case "ImportDefaultSpecifier":
-      return "default";
-    case "ImportNamespaceSpecifier":
-      return "*";
-    default:
-      return null;
-  }
 }
 
 /** Where an import definition points, followed across files. */
@@ -209,107 +192,6 @@ export function isLitComponent(node: ClassNode, context: LitRuleContext): boolea
   return node.superClass !== null && extendsLit(context, node.superClass, new Set());
 }
 
-/** Whether a class declares `implements ReactiveController`. */
-export function hasReactiveControllerInterface(node: ClassNode): boolean {
-  return (node.implements ?? []).some(
-    (clause) => memberPath(clause.expression) === "ReactiveController",
-  );
-}
-
-/**
- * Whether a class is a reactive controller.
- *
- * The only signal is the `implements ReactiveController` clause. Earlier this
- * also accepted a class name ending in `Controller`, which reported plain
- * classes called `GameController` and stayed silent on a controller called
- * anything else. A declaration the author wrote is a fact; a name is a guess.
- *
- * The cost is that a controller which omits the clause is never checked. That
- * is the honest trade: these rules apply to classes that declare themselves.
- */
-export function isReactiveController(node: ClassNode): boolean {
-  return hasReactiveControllerInterface(node);
-}
-
-/** The `ReactiveControllerHost` parameter in a constructor, by type not name. */
-function hostParamOf(constructor: TSESTree.MethodDefinition): TSESTree.Identifier | null {
-  for (const param of constructor.value.params) {
-    if (
-      param.type === "Identifier" &&
-      typeReferenceName(param.typeAnnotation ?? null) === "ReactiveControllerHost"
-    ) {
-      return param;
-    }
-  }
-  return null;
-}
-
-/**
- * The constructor parameter a controller receives its host through.
- *
- * Found by its `ReactiveControllerHost` type, not by the name `host`, so this
- * does not depend on `host-constructor` having enforced that name: a controller
- * may call the parameter anything.
- */
-export function controllerHostParam(node: ClassNode): TSESTree.Identifier | null {
-  const constructor = findConstructor(node);
-  return constructor === null ? null : hostParamOf(constructor);
-}
-
-/**
- * The field a controller stores its host in, by name (`#host`, `host`, `_host`,
- * …), or null.
- *
- * The host parameter is found by type, then followed to a top-level
- * `this.<field> = host` assignment in the constructor. Anything more elaborate,
- * an intermediate alias (`const h = host; this.#host = h`), destructuring, or a
- * nested target (`this.state.host`), is unanalyzable and returns null; callers
- * skip the controller rather than guess. Returns null too when the host is not
- * stored at all, which is legitimate: a controller that only registers itself
- * needs no field.
- */
-export function controllerHostField(node: ClassNode): string | null {
-  const constructor = findConstructor(node);
-  if (constructor === null) {
-    return null;
-  }
-  const param = hostParamOf(constructor);
-  const body = constructor.value.body;
-  if (param === null || body === null) {
-    return null;
-  }
-  for (const statement of body.body) {
-    if (statement.type !== "ExpressionStatement") {
-      continue;
-    }
-    const expression = statement.expression;
-    if (
-      expression.type !== "AssignmentExpression" ||
-      expression.operator !== "=" ||
-      expression.right.type !== "Identifier" ||
-      expression.right.name !== param.name
-    ) {
-      continue;
-    }
-    const target = expression.left;
-    if (
-      target.type !== "MemberExpression" ||
-      target.computed ||
-      target.object.type !== "ThisExpression"
-    ) {
-      continue;
-    }
-    const property = target.property;
-    if (property.type === "Identifier") {
-      return property.name;
-    }
-    if (property.type === "PrivateIdentifier") {
-      return `#${property.name}`;
-    }
-  }
-  return null;
-}
-
 /**
  * Whether a tagged template uses the given Lit tag (`html`, `svg`, or `css`).
  *
@@ -370,44 +252,4 @@ export function isReactiveProperty(
       expression.type === "CallExpression" ? memberPath(expression.callee) : memberPath(expression);
     return source !== null && REACTIVE_PROPERTY_DECORATORS.includes(source);
   });
-}
-
-/**
- * The local name bound to a named import, when the module specifier matches.
- *
- * Rules that key on a bare call, `repeat(...)` or `createContext(...)`, must
- * confirm the name came from the module they mean. Without it the rule fires on
- * any unrelated function that happens to share the name.
- */
-export function importedLocalName(
-  node: TSESTree.ImportDeclaration,
-  matchesSource: (source: string) => boolean,
-  imported: string,
-): string | null {
-  if (!matchesSource(node.source.value)) {
-    return null;
-  }
-  for (const specifier of node.specifiers) {
-    // `import * as ns from "…"` binds every export under `ns.`.
-    if (specifier.type === "ImportNamespaceSpecifier") {
-      return `${specifier.local.name}.${imported}`;
-    }
-    if (specifier.type === "ImportSpecifier" && importedName(specifier) === imported) {
-      return specifier.local.name;
-    }
-  }
-  return null;
-}
-
-/** Matches Lit's `repeat` directive module in any of the three packages. */
-const REPEAT_MODULE: RegExp = /^(?:lit|lit-html|lit-element)\/directives\/repeat\.js$/u;
-
-/** Whether a specifier is Lit's `repeat` directive module. */
-export function isRepeatModule(source: string): boolean {
-  return REPEAT_MODULE.test(source);
-}
-
-/** Whether a specifier is the `@lit/context` package. */
-export function isContextModule(source: string): boolean {
-  return source === "@lit/context";
 }

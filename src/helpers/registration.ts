@@ -1,6 +1,7 @@
 /**
- * Facts no single file can answer: which module registers a custom element
- * tag, and which modules the linted file runs.
+ * A fact no single file can answer: which module registers a custom element
+ * tag. The files the linted file runs are in `runtime-imports.ts`, and the
+ * project's own files in `project.ts`.
  *
  * A custom element is usable wherever its defining module has run, so a
  * template can reach a tag through any transitive import, and a rule seeing one
@@ -16,12 +17,11 @@
  * class's declaration. Compiled dependencies keep only the augmentation in
  * their `.d.ts`, so all three are needed to cover source and package elements.
  *
- * Both answers are memoized per worker and recomputed when a file they were
+ * The answer is memoized per worker and recomputed when a file they were
  * built from changes, or when the project gains or loses a file.
  */
 
-import { existsSync, globSync, readFileSync, statSync } from "node:fs";
-import { dirname, join } from "node:path";
+import { statSync } from "node:fs";
 
 import type {
   Argument,
@@ -34,9 +34,11 @@ import type {
 } from "oxc-parser";
 import { Visitor } from "oxc-parser";
 
+import { resolveLocal } from "./bindings.ts";
 import { isCustomElementDecorator } from "./identity.ts";
 import type { ModuleFile } from "./modules.ts";
-import { importedModule, loadModule, realPath, resolveLocal, resolveSpecifier } from "./modules.ts";
+import { loadModule, resolveSpecifier } from "./modules.ts";
+import { projectFiles, projectRoot, SOURCE_EXTENSION } from "./project.ts";
 
 /** The interface an element module augments to type its tag. */
 const TAG_NAME_MAP = "HTMLElementTagNameMap";
@@ -47,100 +49,9 @@ const REGISTRY = "customElements";
 /** The registry's registering method. */
 const DEFINE = "define";
 
-/** The file name of a folder's barrel, which stands for the whole folder. */
-const BARREL = "index.ts";
-
-/** The extensions of the files a project's program is made of. */
-const SOURCE_EXTENSION: RegExp = /\.[cm]?ts$/u;
-
-/** What TypeScript leaves out of a program when `exclude` is not set. */
-const DEFAULT_EXCLUDE: readonly string[] = ["node_modules", "bower_components", "jspm_packages"];
-
 /** A custom element name always contains a hyphen; built-in tags never do. */
 function isCustomTag(tag: string | null): tag is string {
   return tag?.includes("-") === true;
-}
-
-/** The directory holding the nearest `tsconfig.json`, else `package.json`. */
-export function projectRoot(fromPath: string): string | null {
-  for (const marker of ["tsconfig.json", "package.json"]) {
-    let directory = dirname(fromPath);
-    while (true) {
-      if (existsSync(join(directory, marker))) {
-        return realPath(directory);
-      }
-      const parent = dirname(directory);
-      if (parent === directory) {
-        break;
-      }
-      directory = parent;
-    }
-  }
-  return null;
-}
-
-/** The `include` and `exclude` lists of a `tsconfig.json`, if it has them. */
-interface ProgramGlobs {
-  include: string[];
-  exclude: string[];
-}
-
-/** Strips comments and trailing commas, which `tsconfig.json` allows. */
-function parseJsonc(text: string): unknown {
-  const stripped = text
-    .replaceAll(
-      /("(?:[^"\\]|\\.)*")|\/\/[^\n]*|\/\*[\s\S]*?\*\//gu,
-      (_match, string?: string) => string ?? "",
-    )
-    .replaceAll(/,(\s*[}\]])/gu, "$1");
-  return JSON.parse(stripped);
-}
-
-/** A string list read from a parsed JSON object, or `null`. */
-function stringList(object: unknown, key: string): string[] | null {
-  if (typeof object !== "object" || object === null) {
-    return null;
-  }
-  const value: unknown = Reflect.get(object, key);
-  if (!Array.isArray(value)) {
-    return null;
-  }
-  return value.filter((item): item is string => typeof item === "string");
-}
-
-/** The globs selecting a project's files, read from its `tsconfig.json`. */
-function programGlobs(root: string): ProgramGlobs {
-  let config: unknown = null;
-  try {
-    config = parseJsonc(readFileSync(join(root, "tsconfig.json"), "utf8"));
-  } catch {
-    config = null;
-  }
-  return {
-    include: stringList(config, "include") ?? ["**/*"],
-    exclude: stringList(config, "exclude") ?? [...DEFAULT_EXCLUDE],
-  };
-}
-
-/** A glob for everything under a directory, when a pattern names one. */
-function expandDirectory(pattern: string): string {
-  return /[*?[{]/u.test(pattern) || SOURCE_EXTENSION.test(pattern) ? pattern : `${pattern}/**/*`;
-}
-
-/** The project's own source files, as TypeScript would select them. */
-function projectFiles(root: string): string[] {
-  const globs = programGlobs(root);
-  const excluded = globs.exclude.map(expandDirectory);
-  const files = globSync(globs.include.map(expandDirectory), {
-    cwd: root,
-    exclude: (path: string): boolean =>
-      path.split(/[\\/]/u).some((segment) => DEFAULT_EXCLUDE.includes(segment)),
-  });
-  const skip = new Set(globSync(excluded, { cwd: root }));
-  return files
-    .filter((file) => SOURCE_EXTENSION.test(file) && !skip.has(file))
-    .map((file) => realPath(join(root, file)))
-    .toSorted();
 }
 
 /** The registering file of every tag, and what that answer was built from. */
@@ -377,93 +288,4 @@ function collectFromModule(module: ModuleFile, registrations: Map<string, string
       }
     },
   }).visit(module.program);
-}
-
-/** The directory a barrel covers, or null for any other file. */
-function barrelScope(path: string): string | null {
-  const cut = path.lastIndexOf("/");
-  return path.slice(cut + 1) === BARREL ? path.slice(0, cut + 1) : null;
-}
-
-/** Whether an import executes its module rather than being fully erased. */
-function runsImport(statement: Program["body"][number]): boolean {
-  if (statement.type === "ImportDeclaration") {
-    if (statement.importKind === "type") {
-      return false;
-    }
-    const specifiers = statement.specifiers;
-    return (
-      specifiers.length === 0 ||
-      specifiers.some(
-        (specifier) => specifier.type !== "ImportSpecifier" || specifier.importKind !== "type",
-      )
-    );
-  }
-  if (statement.type === "ExportAllDeclaration") {
-    return statement.exportKind !== "type";
-  }
-  if (statement.type === "ExportNamedDeclaration" && statement.source !== null) {
-    return (
-      statement.exportKind !== "type" &&
-      (statement.specifiers.length === 0 ||
-        statement.specifiers.some((specifier) => specifier.exportKind !== "type"))
-    );
-  }
-  return false;
-}
-
-/** The module specifier of a statement that runs its module, else null. */
-function runtimeSpecifier(statement: Program["body"][number]): string | null {
-  if (!runsImport(statement)) {
-    return null;
-  }
-  switch (statement.type) {
-    case "ImportDeclaration":
-    case "ExportAllDeclaration":
-      return statement.source.value;
-    case "ExportNamedDeclaration":
-      return statement.source?.value ?? null;
-    default:
-      return null;
-  }
-}
-
-/**
- * The files a module runs through its own runtime imports and re-exports, plus
- * the ones an imported barrel runs from inside its own directory tree.
- *
- * A barrel stands for the folder it sits in, so importing it is a real reason
- * for anything under that folder to have run. An arbitrary re-exporting file
- * is not: it can pull in a module from anywhere, which is the borrowed import
- * `require-direct-registration-import` exists to reject. Type-only imports and
- * re-exports are erased and never run their module, so they do not count.
- */
-export function runtimeImportedFiles(module: ModuleFile): ReadonlySet<string> {
-  const files = new Set<string>();
-  const visited = new Set([module.path]);
-  const pending: { module: ModuleFile; scope: string | null }[] = [{ module, scope: null }];
-  for (let at = 0; at < pending.length; at += 1) {
-    const current = pending[at];
-    if (current === undefined) {
-      continue;
-    }
-    for (const statement of current.module.program.body) {
-      const specifier = runtimeSpecifier(statement);
-      const imported = specifier === null ? null : importedModule(current.module.path, specifier);
-      if (
-        imported === null ||
-        visited.has(imported.path) ||
-        (current.scope !== null && !imported.path.startsWith(current.scope))
-      ) {
-        continue;
-      }
-      visited.add(imported.path);
-      files.add(imported.path);
-      const scope = barrelScope(imported.path);
-      if (scope !== null) {
-        pending.push({ module: imported, scope });
-      }
-    }
-  }
-  return files;
 }

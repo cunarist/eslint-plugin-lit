@@ -192,7 +192,6 @@ const rules: DummyRuleMap = {
   "typescript/prefer-readonly-parameter-types": "off",
   "typescript/no-unsafe-enum-comparison": "off",
   "typescript/switch-exhaustiveness-check": ["error", { considerDefaultExhaustiveForUnions: true }],
-  "max-lines": "off",
   "max-lines-per-function": "off",
 };
 

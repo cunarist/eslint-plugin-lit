@@ -6,8 +6,10 @@
  */
 
 export * from "./ast.ts";
+export * from "./controllers.ts";
 export * from "./docs.ts";
 export * from "./lit.ts";
 export * from "./properties.ts";
 export * from "./rule.ts";
+export * from "./specifiers.ts";
 export * from "./template.ts";
