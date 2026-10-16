@@ -14,10 +14,37 @@
     "type": "git",
     "url": "git+https://github.com/cunarist/eslint-plugin-lit.git"
   },
-  "type": "module",
   "files": [
     "dist"
   ],
+  "type": "module",
+  "imports": {
+    "#helpers": "./src/helpers/index.ts",
+    "#plugin": "./src/plugin/index.ts",
+    "#rules": "./src/rules/index.ts",
+    "#testing": "./src/testing/index.ts"
+  },
+  "exports": {
+    ".": "./dist/index.js"
+  },
+  "scripts": {
+    "docs": "eslint-doc-generator"
+  },
+  "dependencies": {
+    "@eslint/core": "^0.17.0",
+    "oxc-parser": "^0.154.0",
+    "oxc-resolver": "^11.24.2",
+    "parse5": "^8.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.20.5",
+    "@typescript-eslint/parser": "^8.71.1",
+    "@typescript-eslint/types": "^8.71.1",
+    "eslint": "^9.39.5",
+    "eslint-doc-generator": "^3.7.1",
+    "lit": "^3.3.3",
+    "vite-plus": "^1.1.0"
+  },
   "engines": {
     "node": ">=22"
   },
@@ -58,32 +85,5 @@
       "When Not To Use It"
     ],
     "urlConfigs": "https://github.com/cunarist/eslint-plugin-lit#configs-and-rules"
-  },
-  "scripts": {
-    "docs": "eslint-doc-generator"
-  },
-  "exports": {
-    ".": "./dist/index.js"
-  },
-  "imports": {
-    "#helpers": "./src/helpers/index.ts",
-    "#plugin": "./src/plugin/index.ts",
-    "#rules": "./src/rules/index.ts",
-    "#testing": "./src/testing/index.ts"
-  },
-  "devDependencies": {
-    "@types/node": "^22.20.5",
-    "@typescript-eslint/parser": "^8.71.1",
-    "@typescript-eslint/types": "^8.71.1",
-    "eslint": "^9.39.5",
-    "eslint-doc-generator": "^3.7.1",
-    "lit": "^3.3.3",
-    "vite-plus": "^1.1.0"
-  },
-  "dependencies": {
-    "@eslint/core": "^0.17.0",
-    "oxc-parser": "^0.154.0",
-    "oxc-resolver": "^11.24.2",
-    "parse5": "^8.0.1"
   }
 }

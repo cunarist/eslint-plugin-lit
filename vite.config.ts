@@ -4,8 +4,6 @@ import projectLint from "./scripts/project-lint.ts";
 import lit from "./src/plugin/index.ts";
 
 export default defineConfig({
-  // Keep package.json in its hand-written order.
-  fmt: { sortPackageJson: false },
   lint: {
     plugins: ["typescript", "unicorn", "oxc", "import"],
     // Lints itself from source; `scripts/project-lint.ts` holds the repo's own
