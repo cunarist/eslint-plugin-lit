@@ -12,7 +12,7 @@ removed. `tests/configs.test.ts` pins the rule list.
 | `@cunarist/eslint-plugin-import-check`   | `deno-import-check` 0.9.0, `./lint` only | 11    | `import-check`, `all`                                               |
 | `@cunarist/eslint-plugin-lit`            | `deno-lint-plugin-lit` 0.7.1             | 82    | `core`, `strict`, `dom-ref`, `reactive-controller`, `naming`, `all` |
 
-- **A rule this repo needs only for itself** (Deno parity, self-lint) goes in
+- **A rule this repo needs only for itself** (lint parity, self-lint) goes in
   `scripts/project-lint.ts`, never in the published plugin
   ([[project-lint-plugin]]).
 - **New rules after the port** are separate, later PRs the user asks for

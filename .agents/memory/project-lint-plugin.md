@@ -8,7 +8,7 @@ Oxlint plugin with `meta.name` `"project"`, loaded through `jsPlugins` in
 `vite.config.ts`. It holds:
 
 - **`configs.project.rules`**: the repo's whole rule list beyond the published
-  plugin configs: Deno parity rules, extras, per-rule options, and opt-outs,
+  plugin configs: parity rules, extras, per-rule options, and opt-outs,
   built-in Oxlint ids included (`curly`, `id-match`, `import/no-cycle`, ...).
 - **Custom rules**, enabled as `project/<rule>`. Every repo has
   `no-disable-comments` and `no-non-ts-imports`. Apps also port the rules of

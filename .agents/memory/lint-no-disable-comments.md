@@ -5,9 +5,7 @@ description: Every eslint-/oxlint-disable or -enable comment is banned in every 
 Banned (2026-10-16): `eslint-disable`, `eslint-disable-line`,
 `eslint-disable-next-line`, `eslint-enable`, and the same with `oxlint-`, as
 line or block comments, anywhere in the repo. Fix the code; if the code truly
-can't be fixed, ask the user, don't silence the rule. Old
-`deno-lint-ignore` lines are removed during the migration and their cause
-fixed.
+can't be fixed, ask the user, don't silence the rule.
 
 Oxlint (1.87) has no `noInlineConfig` and no `eslint-comments` rules, and
 `respectEslintDisableDirectives: false` only ignores `eslint-*` directives. So

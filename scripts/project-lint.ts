@@ -1,10 +1,8 @@
 /**
  * `project` — lint rules this repository holds its own source to that are not
- * part of the published plugin. The published plugin mirrors the rules of the
- * Deno plugin `jsr:@cunarist/deno-lint-plugin-lit` and nothing
- * else; a rule kept here only for this repo's lint parity lives in this file.
- * Its rules of its own are `no-disable-comments` and `no-non-ts-imports`;
- * Deno's `camelcase` is Oxlint's built-in `id-match`.
+ * part of the published plugin. A rule kept only for this repo's own lint
+ * lives in this file. Its rules of its own are `no-disable-comments` and
+ * `no-non-ts-imports`.
  *
  * Loaded by `vite.config.ts` as an Oxlint `jsPlugins` entry, never packed:
  * `vp pack` builds `src/plugin/index.ts` alone and the tarball holds only `dist/`.
@@ -150,16 +148,16 @@ const noNonTsImportsRule: ProjectRule = {
 
 /**
  * This repository's own rule list, spread by `vite.config.ts` after the
- * published `all` config: Deno lint parity beyond the Oxlint categories, plus a
- * few extras and opt-outs. Built-in Oxlint rule ids sit here too, so
+ * published `all` config: rules beyond the Oxlint categories, plus a few
+ * extras and opt-outs. Built-in Oxlint rule ids sit here too, so
  * `vite.config.ts` lists no rule by name.
  */
 const rules: DummyRuleMap = {
-  // Deno lint parity beyond the categories in `vite.config.ts`. First,
-  // Deno's `camelcase`: no `_` inside the name once leading and trailing
-  // ones are trimmed, unless it has no lowercase ASCII letter
-  // (UPPER_SNAKE). Shorthand destructuring binds a key the code does
-  // not own, and property names are not declarations, as in Deno.
+  // Rules beyond the categories in `vite.config.ts`. First, naming: no `_`
+  // inside the name once leading and trailing ones are trimmed, unless it
+  // has no lowercase ASCII letter (UPPER_SNAKE). Shorthand destructuring
+  // binds a key the code does not own, and property names are not
+  // declarations.
   "id-match": [
     "error",
     "^_*[^_]*_*$|^[^a-z]*$",

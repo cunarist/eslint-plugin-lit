@@ -66,8 +66,8 @@ and follow it before reasoning or responding.
 - Rules this repo enforces on itself but does not publish live in
   `scripts/project-lint.ts`, a repo-local plugin named `project` loaded by
   `vite.config.ts`. Its custom rules are `no-disable-comments` and
-  `no-non-ts-imports`. Deno's `camelcase` is Oxlint's built-in `id-match`, set
-  in its `configs.project`.
+  `no-non-ts-imports`. Naming is Oxlint's built-in `id-match`, set in its
+  `configs.project`.
   `scripts/` is never packed or published.
 - `scripts/` is repo tooling, not production code: no tests.
 - The repo lints itself with its own rules. Lint disable and enable comments
@@ -78,10 +78,10 @@ and follow it before reasoning or responding.
   `project/no-disable-comments`, which that rule skips). Keep all three.
 - `vite.config.ts` lists no rule by name: its `rules` spreads
   `configs.all.rules` from `src/plugin/index.ts` and `configs.project.rules` from
-  `scripts/project-lint.ts`, which holds the repo's own rule list (Deno parity,
+  `scripts/project-lint.ts`, which holds the repo's own rule list (parity rules,
   extras, opt-outs, built-in ids included). Only `overrides`, being file globs,
   stays in `vite.config.ts`.
-- Lint coverage never drops below what Deno enforced. Check
+- Lint coverage never shrinks. Check
   `lint-parity-with-deno` before removing anything from `configs.project`.
 - Every rule has a `docs/rules/<rule>.md` in the ESLint core layout: Rule
   Details, incorrect/correct examples, and When Not To Use It.

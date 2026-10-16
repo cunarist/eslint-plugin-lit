@@ -4,8 +4,8 @@ import { noIndexAsRepeatKeyRule } from "./no-index-as-repeat-key.ts";
 
 const IMPORT = 'import { repeat } from "lit/directives/repeat.js";\n';
 
-// Deno's snippets passed `this.#renderRow`; Oxlint rejects a private name
-// outside a class, so these use public members.
+// Oxlint rejects a private name outside a class, so these use public
+// members.
 const INDEX = { messageId: "index" };
 
 const highlightCode = `${IMPORT}const rows = repeat(this.items, (item, i) => i, this.renderRow);`;
