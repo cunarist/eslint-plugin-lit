@@ -1,0 +1,176 @@
+import type { RuleTextEdit, RuleTextEditor, SuggestedEdit } from "@eslint/core";
+import type { TSESTree } from "@typescript-eslint/types";
+
+import {
+  type ClassNode,
+  classDecorators,
+  customElementTag,
+  docsUrl,
+  isLitComponent,
+  type LitRule,
+  memberPath,
+} from "#helpers";
+
+/** A component awaiting its tag-name-map entry. */
+interface Registration {
+  tag: string;
+  className: string | null;
+  node: TSESTree.Node;
+}
+
+/** What a tag-name-map entry maps its tag to. */
+interface Entry {
+  /** The mapped type name, e.g. `PathBar`, when it is a plain name. */
+  typeName: string | null;
+  /** The node naming that type, for a suggestion to rename it. */
+  node: TSESTree.Identifier | null;
+}
+
+/** The `"x-y"` literal node passed to `@customElement`, for reporting. */
+function customElementTagNode(node: ClassNode): TSESTree.StringLiteral | null {
+  for (const decorator of classDecorators(node)) {
+    const expression = decorator.expression;
+    if (expression.type !== "CallExpression" || memberPath(expression.callee) !== "customElement") {
+      continue;
+    }
+    const first = expression.arguments[0];
+    if (first?.type === "Literal" && typeof first.value === "string") {
+      return first;
+    }
+  }
+  return null;
+}
+
+/** What a tag-name-map entry maps to, e.g. `PathBar`. */
+function entryOf(member: TSESTree.TSPropertySignature): Entry {
+  const annotation = member.typeAnnotation?.typeAnnotation;
+  if (annotation?.type !== "TSTypeReference" || annotation.typeName.type !== "Identifier") {
+    return { typeName: null, node: null };
+  }
+  return { typeName: annotation.typeName.name, node: annotation.typeName };
+}
+
+/**
+ * `require-tag-name-map` — a class registered with `@customElement("x-y")`
+ * must also augment `HTMLElementTagNameMap` in the same file, so
+ * `document.querySelector("x-y")` and template type checking know the element
+ * type.
+ */
+export const requireTagNameMapRule: LitRule = {
+  meta: {
+    type: "suggestion",
+    docs: {
+      description:
+        "Require an `HTMLElementTagNameMap` entry for every `@customElement` registration",
+      url: docsUrl("require-tag-name-map"),
+    },
+    hasSuggestions: true,
+    schema: [],
+    messages: {
+      missingEntry: 'No HTMLElementTagNameMap entry for "{{tag}}".',
+      wrongClass: 'HTMLElementTagNameMap maps "{{tag}}" to `{{mapped}}`, not `{{className}}`.',
+      addEntry: "Declare the tag on `HTMLElementTagNameMap` at the end of the file.",
+      mapToClass: "Map the tag to `{{className}}`.",
+    },
+  },
+  create(context) {
+    /** Tag to mapped type, for every `HTMLElementTagNameMap` entry. */
+    const entries = new Map<string, Entry>();
+    const registrations: Registration[] = [];
+
+    function collect(node: ClassNode): void {
+      if (!isLitComponent(node, context)) {
+        return;
+      }
+      const tag = customElementTag(node);
+      if (tag === null) {
+        return;
+      }
+      registrations.push({
+        tag,
+        className: node.id?.name ?? null,
+        node: customElementTagNode(node) ?? node,
+      });
+    }
+
+    /**
+     * The edit that appends a tag-name-map entry. A file with a Lit component
+     * imports Lit, so it is a module, where `declare global` is allowed.
+     */
+    function addEntry(tag: string, className: string): SuggestedEdit {
+      const text = context.sourceCode.text;
+      const end = text.length;
+      const lead = text.endsWith("\n") ? "\n" : "\n\n";
+      const augmentation = [
+        "declare global {",
+        "  interface HTMLElementTagNameMap {",
+        `    ${JSON.stringify(tag)}: ${className};`,
+        "  }",
+        "}",
+        "",
+      ].join("\n");
+      return {
+        messageId: "addEntry",
+        fix: (fixer: RuleTextEditor): RuleTextEdit =>
+          fixer.insertTextAfterRange([end, end], `${lead}${augmentation}`),
+      };
+    }
+
+    function check({ tag, className, node }: Registration): void {
+      const entry = entries.get(tag);
+      if (entry === undefined) {
+        context.report({
+          node,
+          messageId: "missingEntry",
+          data: { tag },
+          suggest: className === null ? [] : [addEntry(tag, className)],
+        });
+        return;
+      }
+      const { typeName: mapped, node: typeNode } = entry;
+      if (className === null || mapped === null || typeNode === null || mapped === className) {
+        return;
+      }
+      context.report({
+        node,
+        messageId: "wrongClass",
+        data: { tag, mapped, className },
+        suggest: [
+          {
+            messageId: "mapToClass",
+            data: { className },
+            fix: (fixer: RuleTextEditor): RuleTextEdit => fixer.replaceText(typeNode, className),
+          },
+        ],
+      });
+    }
+
+    return {
+      TSInterfaceDeclaration(node: TSESTree.TSInterfaceDeclaration): void {
+        if (node.id.name !== "HTMLElementTagNameMap") {
+          return;
+        }
+        for (const member of node.body.body) {
+          if (
+            member.type === "TSPropertySignature" &&
+            member.key.type === "Literal" &&
+            typeof member.key.value === "string"
+          ) {
+            entries.set(member.key.value, entryOf(member));
+          }
+        }
+      },
+      ClassDeclaration(node: TSESTree.ClassDeclaration): void {
+        collect(node);
+      },
+      ClassExpression(node: TSESTree.ClassExpression): void {
+        collect(node);
+      },
+      "Program:exit"(): void {
+        for (const registration of registrations) {
+          check(registration);
+        }
+      },
+    };
+  },
+};
