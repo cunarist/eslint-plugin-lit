@@ -1,6 +1,6 @@
 import type { TSESTree } from "@typescript-eslint/types";
 
-import { docsUrl, enclosingClass, isLitComponent, keyName } from "#helpers";
+import { docsUrl, enclosingClass, isLitComponent, keyName, parentOf } from "#helpers";
 import type { LitRule } from "#helpers";
 
 /**
@@ -10,9 +10,9 @@ import type { LitRule } from "#helpers";
  * it no longer refers to the static context.
  */
 function inStaticStylesInitializer(node: TSESTree.Node): boolean {
-  let current: TSESTree.Node | undefined = node;
+  let current: TSESTree.Node | null = node;
   let child: TSESTree.Node | undefined;
-  while (current !== undefined) {
+  while (current !== null) {
     if (current.type === "FunctionExpression" || current.type === "FunctionDeclaration") {
       return false;
     }
@@ -26,7 +26,7 @@ function inStaticStylesInitializer(node: TSESTree.Node): boolean {
       );
     }
     child = current;
-    current = current.parent;
+    current = parentOf(current);
   }
   return false;
 }

@@ -30,6 +30,31 @@ testRule("no-this-in-static-styles", noThisInStaticStylesRule, {
   render() { return html\`\`; }
 }${IMPORTS}`,
 
+    // Accessor initializers, minimized from memona files that crashed once the
+    // walk passed the root: `Program.parent` is null at runtime, not undefined.
+    // document-save-provider.ts: initialized from a private field
+    `class DocumentSaveProvider extends LitElement {
+  #native = { closeContext: {} };
+  accessor nativeClose = this.#native.closeContext;
+}${IMPORTS}`,
+
+    // dialog-provider.ts: a private accessor initialized by a private method
+    `class DialogProvider extends LitElement {
+  accessor #context = this.#createContext();
+  #createContext() { return {}; }
+}${IMPORTS}`,
+
+    // folder-agent-settings-dialog.ts: an arrow in an accessor's object value
+    `class FolderAgentSettingsDialog extends LitElement {
+  saving = false;
+  accessor dialogCloseController = {
+    requestClose: () => {
+      if (!this.saving) this.onClose();
+    },
+  };
+  onClose() {}
+}${IMPORTS}`,
+
     // ignores non-Lit classes, where this is the class object, not a host
     `class Plain {
   static styles = this.color;

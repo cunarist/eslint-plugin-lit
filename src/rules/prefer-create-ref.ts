@@ -8,6 +8,7 @@ import {
   isSimpleReference,
   keyName,
   type LitRule,
+  parentOf,
 } from "#helpers";
 
 /** A callback the `ref` directive could receive. */
@@ -132,8 +133,8 @@ function scanScope(statements: TSESTree.Node[], name: string): Callback | null |
 
 /** Trace a bare identifier to the function it names, in the same file only. */
 function resolveIdentifier(start: TSESTree.Node, name: string): Callback | null {
-  let current: TSESTree.Node | undefined = start;
-  while (current !== undefined) {
+  let current: TSESTree.Node | null = start;
+  while (current !== null) {
     if (
       (current.type === "ArrowFunctionExpression" ||
         current.type === "FunctionExpression" ||
@@ -148,7 +149,7 @@ function resolveIdentifier(start: TSESTree.Node, name: string): Callback | null 
         return found;
       }
     }
-    current = current.parent ?? undefined;
+    current = parentOf(current);
   }
   return null;
 }

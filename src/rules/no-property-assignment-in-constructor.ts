@@ -9,6 +9,7 @@ import {
   isReactiveProperty,
   keyName,
   type LitRule,
+  parentOf,
 } from "#helpers";
 
 /** Names declared by a `static properties = { ... }` object literal. */
@@ -56,9 +57,9 @@ function reactivePropertyNames(node: ClassNode): Set<string> {
  * runs later, and is not this rule's business.
  */
 function directlyInConstructor(node: TSESTree.Node): boolean {
-  let current: TSESTree.Node | undefined = node;
+  let current: TSESTree.Node | null = node;
   let previous: TSESTree.Node | undefined = undefined;
-  while (current !== undefined) {
+  while (current !== null) {
     switch (current.type) {
       case "MethodDefinition":
         return current.kind === "constructor" && previous?.type === "FunctionExpression";
@@ -69,7 +70,7 @@ function directlyInConstructor(node: TSESTree.Node): boolean {
         return false;
       default:
         previous = current;
-        current = current.parent;
+        current = parentOf(current);
     }
   }
   return false;

@@ -1,7 +1,14 @@
 import type { TSESTree } from "@typescript-eslint/types";
 
 import type { LitRule } from "#helpers";
-import { docsUrl, isHtmlTemplate, isSimpleReference, keyName, memberPath } from "#helpers";
+import {
+  docsUrl,
+  isHtmlTemplate,
+  isSimpleReference,
+  keyName,
+  memberPath,
+  parentOf,
+} from "#helpers";
 
 /**
  * Names that are Lit directives. They get no exemption; the message only names
@@ -109,8 +116,8 @@ type FunctionNode =
 
 /** Nearest enclosing function-like node, or null. */
 function enclosingFunction(node: TSESTree.Node): FunctionNode | null {
-  let current: TSESTree.Node | undefined = node;
-  while (current !== undefined) {
+  let current: TSESTree.Node | null = node;
+  while (current !== null) {
     if (
       current.type === "ArrowFunctionExpression" ||
       current.type === "FunctionExpression" ||
@@ -118,7 +125,7 @@ function enclosingFunction(node: TSESTree.Node): FunctionNode | null {
     ) {
       return current;
     }
-    current = current.parent;
+    current = parentOf(current);
   }
   return null;
 }

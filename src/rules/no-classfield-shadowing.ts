@@ -1,7 +1,14 @@
 import type { TSESTree } from "@typescript-eslint/types";
 
 import type { ClassMember, ClassNode, LitRule } from "#helpers";
-import { classMembers, docsUrl, isLitComponent, isReactiveProperty, keyName } from "#helpers";
+import {
+  classMembers,
+  docsUrl,
+  isLitComponent,
+  isReactiveProperty,
+  keyName,
+  parentOf,
+} from "#helpers";
 
 /** Depth limit for walking a superclass chain, as a cycle guard. */
 const MAX_DEPTH = 16;
@@ -55,12 +62,12 @@ function reactivePropertyNames(node: ClassNode): Set<string> {
 
 /** The enclosing `Program`, reached through parent links. */
 function programOf(node: TSESTree.Node): TSESTree.Program | null {
-  let current: TSESTree.Node | undefined = node;
-  while (current !== undefined) {
+  let current: TSESTree.Node | null = node;
+  while (current !== null) {
     if (current.type === "Program") {
       return current;
     }
-    current = current.parent;
+    current = parentOf(current);
   }
   return null;
 }

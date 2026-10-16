@@ -103,6 +103,15 @@ export function classDecorators(node: ClassNode): TSESTree.Decorator[] {
   return node.decorators;
 }
 
+/**
+ * A node's parent, or null at the root. The typescript-eslint types say
+ * `Program.parent` is undefined, but ESLint and Oxlint both set it to null at
+ * runtime, so every upward walk goes through here and stops on null alone.
+ */
+export function parentOf(node: TSESTree.Node): TSESTree.Node | null {
+  return node.parent ?? null;
+}
+
 /** Nearest enclosing class, or null if the node is not inside a class. */
 export function enclosingClass(node: TSESTree.Node): ClassNode | null {
   let current: TSESTree.Node | null = node;
@@ -110,7 +119,7 @@ export function enclosingClass(node: TSESTree.Node): ClassNode | null {
     if (current.type === "ClassDeclaration" || current.type === "ClassExpression") {
       return current;
     }
-    current = current.parent ?? null;
+    current = parentOf(current);
   }
   return null;
 }
@@ -128,7 +137,7 @@ export function enclosingMethod(node: TSESTree.Node): TSESTree.MethodDefinition 
     if (current.type === "ClassDeclaration" || current.type === "ClassExpression") {
       return null;
     }
-    current = current.parent ?? null;
+    current = parentOf(current);
   }
   return null;
 }

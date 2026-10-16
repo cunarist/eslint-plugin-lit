@@ -19,6 +19,9 @@ const highlightCode = `${IMPORT}class El extends LitElement {
 
 testRule("no-property-assignment-in-constructor", noPropertyAssignmentInConstructorRule, {
   valid: [
+    // walks up to the root without crashing: `Program.parent` is null at runtime
+    `${IMPORT}this.value = 1;`,
+
     // allows field initializers
     `${IMPORT}class El extends LitElement {
       @property() label = "";
