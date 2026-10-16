@@ -8,7 +8,7 @@ The published plugin contains exactly the 82 rules of
 
 Everything this repo enforces only on itself lives in
 `scripts/project-lint.ts` ([[project-lint-plugin]]): its custom rules are
-`no-disable-comments` ([[lint-no-disable-comments]]) and `no-non-ts-imports`
+`no-disable-comments` ([[lint-no-disable-comments]]) and `no-asset-imports`
 ([[ts-only-files-and-imports]]), and Deno's `camelcase` is the built-in
 `id-match` ([[naming-id-match]], [[lint-parity-with-deno]]).
 

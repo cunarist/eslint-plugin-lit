@@ -40,7 +40,7 @@ Checked empirically against Oxlint 1.87 (Vite+ 1.1.0), ESLint 9.39, and
   `node_modules/` are not linted.
 
 Checked for this repo (Oxlint 1.88 through Vite+ 1.2.0, ESLint 9.39, oxc-parser
-0.154, oxc-resolver 11.24), each proven by `src/helpers/lit.test.ts` under both
+0.154, oxc-resolver 11.24), each proven by `src/helpers/lit.test.ts` and `registration.test.ts` under both
 hosts:
 
 - `context.sourceCode.getScope(node)` returns a scope with `upper` and a `set`

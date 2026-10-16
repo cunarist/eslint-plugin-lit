@@ -21,14 +21,14 @@ practice.
 Oxlint's defaults stay; violations are refactored without behavior change,
 covered by the tests, inside the same migration PR.
 
-| Rule                      | Usual fix                                               |
-| ------------------------- | ------------------------------------------------------- |
-| `import/max-dependencies` | import a barrel (`#ui`) instead of many direct modules  |
-| `max-lines`               | split the file by responsibility                        |
-| `max-lines-per-function`  | extract helpers; split a long Lit template into parts   |
-| `max-classes-per-file`    | one class per file                                      |
-| `max-params`              | pass one options object                                 |
-| `prefer-set-has`          | `const K: ReadonlySet<string> = new Set([...])`, `.has` |
+| Rule                      | Usual fix                                                |
+| ------------------------- | -------------------------------------------------------- |
+| `import/max-dependencies` | import a barrel (`#ui`) instead of many direct modules   |
+| `max-lines`               | split into flat themed files (`project-lint-<theme>.ts`) |
+| `max-lines-per-function`  | extract helpers; split a long Lit template into parts    |
+| `max-classes-per-file`    | one class per file                                       |
+| `max-params`              | pass one options object                                  |
+| `prefer-set-has`          | `const K: ReadonlySet<string> = new Set([...])`, `.has`  |
 
 ```ts
 // before: 14 imports, over the limit of 10
@@ -38,8 +38,4 @@ import { b } from "#ui/dialog";
 import { a, b } from "#ui";
 ```
 
-Measured on memona before the move (Oxlint 1.87, default limits): 921
-pedantic hits in 274 files, of which `max-lines-per-function` 206,
-`max-lines` 145, `max-classes-per-file` 59, `max-dependencies` 45 (median 14
-imports, worst 29). The user chose refactoring over raising limits or
-matching memona's old hugoalh limits (2048 lines per file, no function limit).
+Any override that remains carries a one-line comment saying why.

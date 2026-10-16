@@ -27,7 +27,9 @@ and follow it before reasoning or responding.
 - The only config files are `package.json`, `tsconfig.json`, and
   `vite.config.ts`, plus `package-lock.json`. Only `.ts` source files, configs
   included; there are no `.js`, `.mjs`, `.cjs`, `.jsx`, or `.tsx` files.
-- Every directory's entry file is `index.ts`. Every rule lives flat in
+- Every `src/` subfolder's entry file is `index.ts`, its barrel. `scripts/` is
+  flat, with no subfolders and no `index.ts`; its files are imported directly.
+  Every rule lives flat in
   `src/rules/<rule-id>.ts`, tested in `src/rules/<rule-id>.test.ts` and
   registered in `src/rules/index.ts`. There are no per-preset folders.
 - Each rule file has one named export with a `Rule` suffix, e.g.
@@ -40,10 +42,11 @@ and follow it before reasoning or responding.
   direct subfolder of `src/` (`#helpers` → `./src/helpers/index.ts`): never
   at `src/` itself, a deeper folder, or anything outside `src/` (`scripts/`,
   root files). Code outside `src/` (`vite.config.ts`, `scripts/`) imports
-  relatively. Source imports only `.ts` files, never JSON;
-  `project/no-non-ts-imports` fails any other extension in the last path
-  segment, a query suffix like `?raw`, or import attributes. Bare package
-  names, `#` aliases, and `node:` builtins pass.
+  relatively. Our own files are `.ts` only, and `.js` imports are package
+  subpaths (`lit/decorators.js`); `project/no-asset-imports` fails any other
+  extension in the last path segment (CSS, JSON, SVG, ...), a query suffix
+  like `?raw`, or import attributes. Bare package names, `#` aliases, and
+  `node:` builtins pass.
 - `meta.name` and `meta.version` are written out in `src/plugin/index.ts`; a release
   bumps them with `package.json`, and `tests/package-meta.test.ts` checks both.
 - Rules use ESLint's standard `create` API, typed `LitRule`, with every
@@ -66,7 +69,7 @@ and follow it before reasoning or responding.
 - Rules this repo enforces on itself but does not publish live in
   `scripts/project-lint.ts`, a repo-local plugin named `project` loaded by
   `vite.config.ts`. Its custom rules are `no-disable-comments` and
-  `no-non-ts-imports`. Naming is Oxlint's built-in `id-match`, set in its
+  `no-asset-imports`. Naming is Oxlint's built-in `id-match`, set in its
   `configs.project`.
   `scripts/` is never packed or published.
 - `scripts/` is repo tooling, not production code: no tests.
@@ -80,16 +83,22 @@ and follow it before reasoning or responding.
   `configs.all.rules` from `src/plugin/index.ts` and `configs.project.rules` from
   `scripts/project-lint.ts`, which holds the repo's own rule list (parity rules,
   extras, opt-outs, built-in ids included). Only `overrides`, being file globs,
-  stays in `vite.config.ts`.
+  stays in `vite.config.ts`, and its one entry (`import/max-dependencies` off
+  for the `src/rules/index.ts` registry) is the only override allowed: none
+  for other source files, and `scripts/**` only when a script truly needs one,
+  each with a one-line reason.
+- Every file stays under Oxlint's default `max-lines` of 300, `scripts/`
+  included; there is no `max-lines` override. Split a growing file into flat
+  themed files (`src/helpers/bindings.ts` beside `modules.ts`; in `scripts/`,
+  `project-lint-<theme>.ts` beside `project-lint.ts`).
 - Lint coverage never shrinks. Check
   `lint-parity-with-deno` before removing anything from `configs.project`.
 - Every rule has a `docs/rules/<rule>.md` in the ESLint core layout: Rule
   Details, incorrect/correct examples, and When Not To Use It.
 - CI runs every rule test, ESLint and Oxlint halves alike, on node@22 and
   node@latest. Bun is not tested and not supported.
-- `package.json` keys stay in hand-written order (metadata, then `scripts`,
-  `exports`, `imports`, dependencies); `fmt.sortPackageJson` is off. There is
-  no `packageManager` field; npm is detected from `package-lock.json`.
+- `package.json` keys follow Oxfmt's standard sorting (`vp check --fix`).
+  There is no `packageManager` field; npm is detected from `package-lock.json`.
 - Only CI publishes, from a published GitHub release `vX.Y.Z` that matches
   `package.json`. Use the `release` skill and ask the user first.
 - Release notes live only on GitHub releases. There is no `CHANGELOG.md`; never

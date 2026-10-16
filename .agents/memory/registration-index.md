@@ -3,7 +3,9 @@ description: Tag registrations are indexed over the tsconfig program plus import
 ---
 
 `require-direct-registration-import` is the one rule that needs facts about
-the whole project. Both are in `src/helpers/registration.ts` and reached from
+the whole project. They are in `src/helpers/registration.ts` (the index),
+`src/helpers/project.ts` (the project's files), and
+`src/helpers/runtime-imports.ts`, and reached from
 rules through `tagRegistrations(context)` and `runtimeImports(context)`.
 
 **Registration index.** The project is the directory of the nearest
@@ -33,4 +35,4 @@ Visited files are tracked so cycles end.
 **Barrel name:** `index.ts` (the `BARREL` constant), the org's entry-file
 convention, decided on 2026-10-16. Deno's `mod.ts` is not a barrel here: a
 `mod.ts` is an ordinary re-exporting file and is not followed. Both
-`src/helpers/lit.test.ts` and the rule's own test cover the two cases.
+`src/helpers/registration.test.ts` and the rule's own test cover the two cases.

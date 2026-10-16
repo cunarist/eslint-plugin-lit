@@ -1,12 +1,13 @@
 ---
-description: package.json key order is metadata, scripts, exports, imports, devDependencies, dependencies; standard fields only; no peerDependencies or packageManager
+description: package.json keys follow Oxfmt's standard sorting; standard fields only; no peerDependencies or packageManager
 ---
 
-## Key order (2026-10-14)
+## Key order (2026-10-16)
 
-Metadata first, then `scripts`, `exports`, `imports`, `devDependencies`,
-`dependencies`. Oxfmt would re-sort the file, so `vite.config.ts` sets
-`fmt: { sortPackageJson: false }`; keep it, and keep the order by hand.
+Oxfmt's standard `package.json` sorting decides the key order; there is no
+`fmt.sortPackageJson: false`. Run `vp check --fix` after editing the file.
+This replaces the earlier hand-written order (metadata, `scripts`, `exports`,
+`imports`, dependencies). The fields themselves:
 
 ```jsonc
 {
@@ -28,8 +29,6 @@ Metadata first, then `scripts`, `exports`, `imports`, `devDependencies`,
 }
 ```
 
-The `imports` key order can carry meaning: import-check's
-`enforce-layer-order` reads it as the layer order. Never reorder it casually.
 Every alias targets a direct subfolder of `src/` only; see
 [[imports-aliases-barrels]].
 
@@ -45,8 +44,7 @@ Every alias targets a direct subfolder of `src/` only; see
   (the lit plugin ships `parse5`, `oxc-parser`, `oxc-resolver`, and
   `@eslint/core` for its public types; they stay external, never bundled).
 - **`devDependencies`** = everything else: `vite-plus`, `eslint`,
-  `@typescript-eslint/parser`, `eslint-doc-generator`, `esbuild`,
-  `typescript-6`, `@types/node`. ESLint is a devDependency only; plugins need
+  `@typescript-eslint/parser`, `eslint-doc-generator`, `@types/node`. ESLint is a devDependency only; plugins need
   nothing from it at runtime.
 
 Refresh the lockfile with `npm install` (or `npm install

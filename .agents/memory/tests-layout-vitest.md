@@ -19,8 +19,7 @@ Decided 2026-10-14 for all repos.
   `package.json`. `tests/` gets no lint override.
 - **No in-source tests** (`import.meta.vitest`).
 - **`scripts/` gets no tests** (2026-10-15): it is repo tooling, not
-  production code (`project-lint.ts`, `decorators.ts`, `lit-check.ts`,
-  release helpers).
+  production code (`project-lint.ts`, release helpers).
 - Test files follow every lint rule; no relaxed overrides for tests.
 
 ## Migrating Deno tests

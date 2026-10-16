@@ -11,11 +11,12 @@ Oxlint plugin with `meta.name` `"project"`, loaded through `jsPlugins` in
   plugin configs: parity rules, extras, per-rule options, and opt-outs,
   built-in Oxlint ids included (`curly`, `id-match`, `import/no-cycle`, ...).
 - **Custom rules**, enabled as `project/<rule>`. Every repo has
-  `no-disable-comments` and `no-non-ts-imports`. Apps also port the rules of
-  their old `scripts/deno-lint-plugin.ts` here under the same names and
-  behavior (`no-self-sync`, `app-module-conventions`, `restricted-types`, ...).
+  `no-disable-comments` and `no-asset-imports`.
 
-Rules and plugin stay in this one file; don't add `scripts/rules/`.
+Rules and plugin stay in this one file while it is under 300 lines. When it
+grows past `max-lines`, split it into flat themed files sharing the prefix
+(`project-lint-modules.ts`, `project-lint-types.ts`, ...) that
+`project-lint.ts` imports; never `scripts/rules/` or `scripts/index.ts`.
 
 ```ts
 import type { DummyRuleMap } from "vite-plus/lint";

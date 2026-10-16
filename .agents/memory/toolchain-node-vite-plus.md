@@ -44,8 +44,8 @@ before any push. CI installs the toolchain with `voidzero-dev/setup-vp`.
 
 - `vp check` does **not** report `isolatedDeclarations` errors (TS9010); only
   `vp pack` does, so packages run `vp pack` in CI on every PR.
-- Oxfmt sorts `package.json` keys by default, which destroys the required key
-  order. Set `fmt: { sortPackageJson: false }` ([[package-json-shape]]).
+- Oxfmt sorts `package.json` keys by default; that order is accepted
+  ([[package-json-shape]]).
 - Oxlint and Oxfmt skip what `.gitignore` lists; that is the only reason
   `dist/` and `node_modules/` are not linted. Keep build output gitignored.
 - Vite+ bundles `vite.config.ts` itself and resolves `#` imports in it.

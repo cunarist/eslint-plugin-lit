@@ -20,7 +20,7 @@ Mapping:
 - `tests/<rule>_test.ts` becomes one `testRule` call in
   `src/rules/<rule>.test.ts`; `tests/harness.ts` (which installed a TS program
   per snippet) is gone; `tests/scanner_fixture/` became the `writeProject`
-  fixture in `src/helpers/lit.test.ts`.
+  fixtures in `src/helpers/lit.test.ts` and `src/helpers/registration.test.ts`.
 - `no-legacy-imports` read removed names from the `lit` package at runtime;
   port it with a static list so `lit` stays a devDependency.
 
