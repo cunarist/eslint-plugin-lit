@@ -1,7 +1,7 @@
 import type { TSESTree } from "@typescript-eslint/types";
 
 import { docsUrl, LEGACY_LIT_SOURCES, LIT_CORE_SOURCES } from "#helpers";
-import type { LitRule } from "#helpers";
+import type { LitRule, LitRuleContext } from "#helpers";
 
 /**
  * Names Lit 2 removed, mapped to their replacement. A static list, so `lit`
@@ -15,6 +15,59 @@ const LEGACY_NAMES: ReadonlyMap<string, string> = new Map([
 /** The package part of a module specifier, ignoring any subpath. */
 function packageOf(source: string): string {
   return source.split("/")[0] ?? source;
+}
+
+/** Reports an import from a Lit 1 module path, suggesting `lit` for the bare package. */
+function reportLegacyPath(context: LitRuleContext, node: TSESTree.ImportDeclaration): void {
+  const source = node.source.value;
+  // Only the package itself maps onto `lit` one to one; a subpath may
+  // have moved, so it gets no suggestion.
+  const quote = node.source.raw.charAt(0);
+  context.report({
+    node: node.source,
+    messageId: "legacyPath",
+    data: { source },
+    ...(source === packageOf(source)
+      ? {
+          suggest: [
+            {
+              messageId: "useLit",
+              fix: (fixer) => fixer.replaceText(node.source, `${quote}lit${quote}`),
+            },
+          ],
+        }
+      : {}),
+  });
+}
+
+/** Reports one import specifier that names something Lit 2 removed. */
+function checkSpecifier(context: LitRuleContext, specifier: TSESTree.ImportClause): void {
+  if (specifier.type !== "ImportSpecifier") {
+    return;
+  }
+  const imported = specifier.imported;
+  if (imported.type !== "Identifier") {
+    return;
+  }
+  const replacement = LEGACY_NAMES.get(imported.name);
+  if (replacement === undefined) {
+    return;
+  }
+  // Keep the local name, so the code that uses it stays as it is.
+  const aliased = specifier.local.range[0] !== imported.range[0];
+  context.report({
+    node: imported,
+    messageId: "legacyName",
+    data: { name: imported.name, replacement },
+    suggest: [
+      {
+        messageId: "useReplacement",
+        data: { replacement },
+        fix: (fixer) =>
+          fixer.replaceText(imported, aliased ? replacement : `${replacement} as ${imported.name}`),
+      },
+    ],
+  });
 }
 
 /**
@@ -42,63 +95,15 @@ export const noLegacyImportsRule: LitRule = {
   create(context) {
     return {
       ImportDeclaration(node: TSESTree.ImportDeclaration): void {
-        const source = node.source.value;
-        const pkg = packageOf(source);
-
+        const pkg = packageOf(node.source.value);
         if (LEGACY_LIT_SOURCES.includes(pkg)) {
-          // Only the package itself maps onto `lit` one to one; a subpath may
-          // have moved, so it gets no suggestion.
-          const quote = node.source.raw.charAt(0);
-          context.report({
-            node: node.source,
-            messageId: "legacyPath",
-            data: { source },
-            ...(source === pkg
-              ? {
-                  suggest: [
-                    {
-                      messageId: "useLit",
-                      fix: (fixer) => fixer.replaceText(node.source, `${quote}lit${quote}`),
-                    },
-                  ],
-                }
-              : {}),
-          });
+          reportLegacyPath(context, node);
         }
-
         if (!LIT_CORE_SOURCES.includes(pkg)) {
           return;
         }
         for (const specifier of node.specifiers) {
-          if (specifier.type !== "ImportSpecifier") {
-            continue;
-          }
-          const imported = specifier.imported;
-          if (imported.type !== "Identifier") {
-            continue;
-          }
-          const replacement = LEGACY_NAMES.get(imported.name);
-          if (replacement === undefined) {
-            continue;
-          }
-          // Keep the local name, so the code that uses it stays as it is.
-          const aliased = specifier.local.range[0] !== imported.range[0];
-          context.report({
-            node: imported,
-            messageId: "legacyName",
-            data: { name: imported.name, replacement },
-            suggest: [
-              {
-                messageId: "useReplacement",
-                data: { replacement },
-                fix: (fixer) =>
-                  fixer.replaceText(
-                    imported,
-                    aliased ? replacement : `${replacement} as ${imported.name}`,
-                  ),
-              },
-            ],
-          });
+          checkSpecifier(context, specifier);
         }
       },
     };

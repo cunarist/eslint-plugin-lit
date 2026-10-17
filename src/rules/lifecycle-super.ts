@@ -1,6 +1,7 @@
+import type { SuggestedEdit } from "@eslint/core";
 import type { TSESTree } from "@typescript-eslint/types";
 
-import type { LitRule } from "#helpers";
+import type { LitRule, LitRuleContext } from "#helpers";
 import { docsUrl, enclosingMethod, isLitComponent, keyName } from "#helpers";
 
 /**
@@ -58,6 +59,55 @@ function superCall(name: string, params: TSESTree.Parameter[]): string | null {
 }
 
 /**
+ * The lifecycle name an override must chain to `super` for and does not, or
+ * null when the method is fine or not an override of a Lit component's hook.
+ */
+function unchainedName(
+  context: LitRuleContext,
+  chained: ReadonlySet<TSESTree.MethodDefinition>,
+  node: TSESTree.MethodDefinition,
+): string | null {
+  if (node.static || node.kind !== "method") {
+    return null;
+  }
+  const name = keyName(node.key);
+  if (name === null || !REQUIRES_SUPER.has(name)) {
+    return null;
+  }
+  const classNode = node.parent.parent;
+  if (classNode.type !== "ClassDeclaration" && classNode.type !== "ClassExpression") {
+    return null;
+  }
+  if (chained.has(node) || !isLitComponent(classNode, context)) {
+    return null;
+  }
+  return name;
+}
+
+/** The suggestion to call `super.name(…)` first, when the method can take it. */
+function callSuperSuggestions(node: TSESTree.MethodDefinition, name: string): SuggestedEdit[] {
+  const body = node.value.body;
+  const call = superCall(name, node.value.params);
+  if (body === null || body === undefined || call === null) {
+    return [];
+  }
+  return [
+    {
+      messageId: "callSuper",
+      data: { name },
+      fix: (fixer) => {
+        const first = body.body[0];
+        if (first === undefined) {
+          return fixer.replaceTextRange(body.range, `{ ${call} }`);
+        }
+        const indent = " ".repeat(first.loc.start.column);
+        return fixer.insertTextBeforeRange(first.range, `${call}\n${indent}`);
+      },
+    },
+  ];
+}
+
+/**
  * `lifecycle-super` — rejects an override of a Lit lifecycle callback that
  * never calls its own `super` implementation.
  *
@@ -96,43 +146,15 @@ export const lifecycleSuperRule: LitRule = {
       },
 
       "MethodDefinition:exit"(node: TSESTree.MethodDefinition): void {
-        if (node.static || node.kind !== "method") {
+        const name = unchainedName(context, chained, node);
+        if (name === null) {
           return;
         }
-        const name = keyName(node.key);
-        if (name === null || !REQUIRES_SUPER.has(name)) {
-          return;
-        }
-        const classNode = node.parent.parent;
-        if (classNode.type !== "ClassDeclaration" && classNode.type !== "ClassExpression") {
-          return;
-        }
-        if (chained.has(node) || !isLitComponent(classNode, context)) {
-          return;
-        }
-        const body = node.value.body;
-        const call = superCall(name, node.value.params);
         context.report({
           node: node.key,
           messageId: "missing",
           data: { name },
-          suggest:
-            body === null || body === undefined || call === null
-              ? []
-              : [
-                  {
-                    messageId: "callSuper",
-                    data: { name },
-                    fix: (fixer) => {
-                      const first = body.body[0];
-                      if (first === undefined) {
-                        return fixer.replaceTextRange(body.range, `{ ${call} }`);
-                      }
-                      const indent = " ".repeat(first.loc.start.column);
-                      return fixer.insertTextBeforeRange(first.range, `${call}\n${indent}`);
-                    },
-                  },
-                ],
+          suggest: callSuperSuggestions(node, name),
         });
       },
     };

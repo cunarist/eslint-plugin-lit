@@ -1,7 +1,14 @@
 import type { RuleTextEdit, RuleTextEditor, SuggestedEdit } from "@eslint/core";
 import type { TSESTree } from "@typescript-eslint/types";
 
-import { docsUrl, enclosingClass, isLitComponent, type LitRule, memberPath } from "#helpers";
+import {
+  docsUrl,
+  enclosingClass,
+  isLitComponent,
+  type LitRule,
+  type LitRuleContext,
+  memberPath,
+} from "#helpers";
 
 /** Event constructors whose first argument is the event name. */
 const EVENT_CONSTRUCTORS: ReadonlySet<string> = new Set(["Event", "CustomEvent"]);
@@ -16,6 +23,58 @@ interface Dispatch {
 /** Last segment of a dotted path, e.g. `globalThis.Event` -> `Event`. */
 function lastSegment(path: string | null): string | null {
   return path === null ? null : (path.split(".").pop() ?? path);
+}
+
+/**
+ * The edit that appends an event-map entry to `text`. A file with a Lit
+ * component imports Lit, so it is a module, where `declare global` is allowed.
+ */
+function suggestion(text: string, dispatch: Dispatch): SuggestedEdit {
+  const end = text.length;
+  const lead = text.endsWith("\n") ? "\n" : "\n\n";
+  const augmentation = [
+    "declare global {",
+    "  interface HTMLElementEventMap {",
+    `    ${JSON.stringify(dispatch.name)}: ${dispatch.constructor};`,
+    "  }",
+    "}",
+    "",
+  ].join("\n");
+  return {
+    messageId: "addEntry",
+    fix: (fixer: RuleTextEditor): RuleTextEdit =>
+      fixer.insertTextAfterRange([end, end], `${lead}${augmentation}`),
+  };
+}
+
+/** Records every string-keyed entry of an `HTMLElementEventMap` interface. */
+function collectDeclared(node: TSESTree.TSInterfaceDeclaration, declared: Set<string>): void {
+  for (const member of node.body.body) {
+    if (
+      member.type === "TSPropertySignature" &&
+      member.key.type === "Literal" &&
+      typeof member.key.value === "string"
+    ) {
+      declared.add(member.key.value);
+    }
+  }
+}
+
+/** The event a Lit component constructs with a literal name, or `null`. */
+function dispatchOf(context: LitRuleContext, node: TSESTree.NewExpression): Dispatch | null {
+  const constructor = lastSegment(memberPath(node.callee));
+  if (constructor === null || !EVENT_CONSTRUCTORS.has(constructor)) {
+    return null;
+  }
+  const owner = enclosingClass(node);
+  if (owner === null || !isLitComponent(owner, context)) {
+    return null;
+  }
+  const first = node.arguments[0];
+  if (first?.type !== "Literal" || typeof first.value !== "string") {
+    return null;
+  }
+  return { name: first.value, constructor, node: first };
 }
 
 /**
@@ -44,58 +103,17 @@ export const requireEventInEventMapRule: LitRule = {
     const declared = new Set<string>();
     const dispatches: Dispatch[] = [];
 
-    /**
-     * The edit that appends an event-map entry. A file with a Lit component
-     * imports Lit, so it is a module, where `declare global` is allowed.
-     */
-    function suggestion(dispatch: Dispatch): SuggestedEdit {
-      const text = context.sourceCode.text;
-      const end = text.length;
-      const lead = text.endsWith("\n") ? "\n" : "\n\n";
-      const augmentation = [
-        "declare global {",
-        "  interface HTMLElementEventMap {",
-        `    ${JSON.stringify(dispatch.name)}: ${dispatch.constructor};`,
-        "  }",
-        "}",
-        "",
-      ].join("\n");
-      return {
-        messageId: "addEntry",
-        fix: (fixer: RuleTextEditor): RuleTextEdit =>
-          fixer.insertTextAfterRange([end, end], `${lead}${augmentation}`),
-      };
-    }
-
     return {
       TSInterfaceDeclaration(node: TSESTree.TSInterfaceDeclaration): void {
-        if (node.id.name !== "HTMLElementEventMap") {
-          return;
-        }
-        for (const member of node.body.body) {
-          if (
-            member.type === "TSPropertySignature" &&
-            member.key.type === "Literal" &&
-            typeof member.key.value === "string"
-          ) {
-            declared.add(member.key.value);
-          }
+        if (node.id.name === "HTMLElementEventMap") {
+          collectDeclared(node, declared);
         }
       },
       NewExpression(node: TSESTree.NewExpression): void {
-        const constructor = lastSegment(memberPath(node.callee));
-        if (constructor === null || !EVENT_CONSTRUCTORS.has(constructor)) {
-          return;
+        const dispatch = dispatchOf(context, node);
+        if (dispatch !== null) {
+          dispatches.push(dispatch);
         }
-        const owner = enclosingClass(node);
-        if (owner === null || !isLitComponent(owner, context)) {
-          return;
-        }
-        const first = node.arguments[0];
-        if (first?.type !== "Literal" || typeof first.value !== "string") {
-          return;
-        }
-        dispatches.push({ name: first.value, constructor, node: first });
       },
       "Program:exit"(): void {
         for (const dispatch of dispatches) {
@@ -104,7 +122,7 @@ export const requireEventInEventMapRule: LitRule = {
               node: dispatch.node,
               messageId: "missingEntry",
               data: { name: dispatch.name },
-              suggest: [suggestion(dispatch)],
+              suggest: [suggestion(context.sourceCode.text, dispatch)],
             });
           }
         }

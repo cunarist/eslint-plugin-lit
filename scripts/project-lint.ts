@@ -192,12 +192,11 @@ const rules: DummyRuleMap = {
   "project/no-disable-comments": "error",
   "project/no-asset-imports": "error",
   "unicorn/no-abusive-eslint-disable": "error",
-  // Pedantic rules that fight the AST types: nodes are mutable, `type` is
-  // an enum imported only as a type, and visitors are long by nature.
+  // Pedantic rules that fight the AST types: nodes are mutable, and `type`
+  // is an enum imported only as a type.
   "typescript/prefer-readonly-parameter-types": "off",
   "typescript/no-unsafe-enum-comparison": "off",
   "typescript/switch-exhaustiveness-check": ["error", { considerDefaultExhaustiveForUnions: true }],
-  "max-lines-per-function": "off",
 };
 
 /**

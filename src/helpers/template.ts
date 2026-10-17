@@ -83,15 +83,21 @@ function rawStart(quasi: TSESTree.TemplateElement): number {
   return spanLength === quasi.value.raw.length ? quasi.range[0] : quasi.range[0] + 1;
 }
 
-/**
- * Build the placeholder-substituted text for a template plus a mapping back to
- * source offsets.
- *
- * Only the static quasis map back faithfully; an offset landing inside a
- * placeholder maps to the start of the corresponding `${…}` binding.
- */
-export function templateSource(node: TSESTree.TaggedTemplateExpression): TemplateSource {
-  const quasis = node.quasi.quasis;
+/** A template's substituted text and the segments that map it back. */
+interface Substitution {
+  text: string;
+  segments: Segment[];
+}
+
+/** The segments of a template, with the source offset to fall back on outside them. */
+interface SegmentMap {
+  segments: readonly Segment[];
+  /** Where the template literal starts, for an offset no segment covers. */
+  fallback: number;
+}
+
+/** Joins a template's quasis with binding placeholders, recording each segment. */
+function substitute(quasis: readonly TSESTree.TemplateElement[]): Substitution {
   const segments: Segment[] = [];
   let text = "";
 
@@ -121,42 +127,61 @@ export function templateSource(node: TSESTree.TaggedTemplateExpression): Templat
       text += placeholder;
     }
   }
+  return { text, segments };
+}
 
-  function segmentAt(offset: number): Segment | null {
-    return (
-      segments.find(
-        (segment) => offset >= segment.textStart && offset < segment.textStart + segment.length,
-      ) ?? null
-    );
+/** The segment covering an offset in the substituted text, or null. */
+function segmentAt(segments: readonly Segment[], offset: number): Segment | null {
+  return (
+    segments.find(
+      (segment) => offset >= segment.textStart && offset < segment.textStart + segment.length,
+    ) ?? null
+  );
+}
+
+/** Maps an offset in the substituted text to an absolute source offset. */
+function mapOffset({ segments, fallback }: SegmentMap, offset: number): number {
+  const segment = segmentAt(segments, offset);
+  if (segment === null) {
+    return fallback;
   }
-
-  function toSourceOffset(offset: number): number {
-    const segment = segmentAt(offset);
-    if (segment === null) {
-      return node.quasi.range[0];
-    }
-    if (segment.isPlaceholder) {
-      return segment.sourceStart;
-    }
-    return segment.sourceStart + (offset - segment.textStart);
+  if (segment.isPlaceholder) {
+    return segment.sourceStart;
   }
+  return segment.sourceStart + (offset - segment.textStart);
+}
 
-  function toSourceRange(start: number, end: number): SourceRange {
-    const from = toSourceOffset(start);
-    const last = Math.max(start, end - 1);
-    const lastSegment = segmentAt(last);
-    let to: number;
-    if (lastSegment === null) {
-      to = from + 1;
-    } else if (lastSegment.isPlaceholder) {
-      to = lastSegment.sourceEnd;
-    } else {
-      to = lastSegment.sourceStart + (last - lastSegment.textStart) + 1;
-    }
-    return [from, Math.max(from + 1, to)];
+/** Maps a parse5 offset pair to an absolute source range of at least one character. */
+function mapRange(map: SegmentMap, start: number, end: number): SourceRange {
+  const from = mapOffset(map, start);
+  const last = Math.max(start, end - 1);
+  const lastSegment = segmentAt(map.segments, last);
+  let to: number;
+  if (lastSegment === null) {
+    to = from + 1;
+  } else if (lastSegment.isPlaceholder) {
+    to = lastSegment.sourceEnd;
+  } else {
+    to = lastSegment.sourceStart + (last - lastSegment.textStart) + 1;
   }
+  return [from, Math.max(from + 1, to)];
+}
 
-  return { text, toSourceOffset, toSourceRange };
+/**
+ * Build the placeholder-substituted text for a template plus a mapping back to
+ * source offsets.
+ *
+ * Only the static quasis map back faithfully; an offset landing inside a
+ * placeholder maps to the start of the corresponding `${…}` binding.
+ */
+export function templateSource(node: TSESTree.TaggedTemplateExpression): TemplateSource {
+  const { text, segments } = substitute(node.quasi.quasis);
+  const map: SegmentMap = { segments, fallback: node.quasi.range[0] };
+  return {
+    text,
+    toSourceOffset: (offset: number): number => mapOffset(map, offset),
+    toSourceRange: (start: number, end: number): SourceRange => mapRange(map, start, end),
+  };
 }
 
 /** The line and column span of a source range, for `context.report({ loc })`. */

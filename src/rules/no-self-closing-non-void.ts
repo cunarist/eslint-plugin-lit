@@ -9,7 +9,7 @@ import {
   templateSource,
   walkElements,
 } from "#helpers";
-import type { LitRule, ParsedElement } from "#helpers";
+import type { LitRule, LitRuleContext, ParsedElement, TemplateSource } from "#helpers";
 
 /** The HTML namespace; anything else is foreign content. */
 const HTML_NAMESPACE = "http://www.w3.org/1999/xhtml";
@@ -59,6 +59,50 @@ function isSelfClosing(element: ParsedElement, text: string): boolean {
   );
 }
 
+/** Reports a non-void HTML element written with a self-closing slash. */
+function checkElement(
+  context: LitRuleContext,
+  source: TemplateSource,
+  element: ParsedElement,
+): void {
+  const startTag = element.sourceCodeLocation?.startTag;
+  const tag = element.tagName.toLowerCase();
+  if (
+    startTag === undefined ||
+    element.namespaceURI !== HTML_NAMESPACE ||
+    VOID_ELEMENTS.has(tag) ||
+    !isSelfClosing(element, source.text)
+  ) {
+    return;
+  }
+  const written =
+    WRITTEN_NAME.exec(source.text.slice(startTag.startOffset, startTag.endOffset))?.[1] ?? tag;
+  // Replace the `/>` and the spaces before it, which are static text.
+  let from = startTag.endOffset - 2;
+  while (/\s/u.test(source.text.charAt(from - 1))) {
+    from -= 1;
+  }
+  const fixRange: [number, number] = [
+    source.toSourceOffset(from),
+    source.toSourceOffset(startTag.endOffset - 1) + 1,
+  ];
+  context.report({
+    loc: rangeLoc(
+      context.sourceCode,
+      source.toSourceRange(startTag.startOffset, startTag.endOffset),
+    ),
+    messageId: "selfClosing",
+    data: { tag },
+    suggest: [
+      {
+        messageId: "addEndTag",
+        data: { tag: written },
+        fix: (fixer) => fixer.replaceTextRange(fixRange, `></${written}>`),
+      },
+    ],
+  });
+}
+
 /**
  * `no-self-closing-non-void` — rejects self-closing syntax on a non-void
  * element in a template.
@@ -91,43 +135,7 @@ export const noSelfClosingNonVoidRule: LitRule = {
         }
         const source = templateSource(node);
         walkElements(parseTemplate(source.text), (element) => {
-          const startTag = element.sourceCodeLocation?.startTag;
-          const tag = element.tagName.toLowerCase();
-          if (
-            startTag === undefined ||
-            element.namespaceURI !== HTML_NAMESPACE ||
-            VOID_ELEMENTS.has(tag) ||
-            !isSelfClosing(element, source.text)
-          ) {
-            return;
-          }
-          const written =
-            WRITTEN_NAME.exec(source.text.slice(startTag.startOffset, startTag.endOffset))?.[1] ??
-            tag;
-          // Replace the `/>` and the spaces before it, which are static text.
-          let from = startTag.endOffset - 2;
-          while (/\s/u.test(source.text.charAt(from - 1))) {
-            from -= 1;
-          }
-          const fixRange: [number, number] = [
-            source.toSourceOffset(from),
-            source.toSourceOffset(startTag.endOffset - 1) + 1,
-          ];
-          context.report({
-            loc: rangeLoc(
-              context.sourceCode,
-              source.toSourceRange(startTag.startOffset, startTag.endOffset),
-            ),
-            messageId: "selfClosing",
-            data: { tag },
-            suggest: [
-              {
-                messageId: "addEndTag",
-                data: { tag: written },
-                fix: (fixer) => fixer.replaceTextRange(fixRange, `></${written}>`),
-              },
-            ],
-          });
+          checkElement(context, source, element);
         });
       },
     };

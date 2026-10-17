@@ -3,7 +3,7 @@ import { parseFragment } from "parse5";
 import type { ParserError } from "parse5";
 
 import { docsUrl, isHtmlTemplate, rangeLoc, templateSource, walkElements } from "#helpers";
-import type { LitRule } from "#helpers";
+import type { LitRule, LitRuleContext, ParsedElement, TemplateSource } from "#helpers";
 
 /** Elements that never have an end tag. */
 const VOID_ELEMENTS: ReadonlySet<string> = new Set([
@@ -67,6 +67,70 @@ const CODE_MESSAGES: ReadonlyMap<string, string> = new Map([
   ["eof-in-comment", "unterminatedComment"],
 ]);
 
+/** Reports one parse error, on a range clamped to text the reader can see. */
+function reportParseError(
+  context: LitRuleContext,
+  source: TemplateSource,
+  error: ParserError,
+): void {
+  // Tokenizer errors point at the character after the offending `<`,
+  // and end-of-input errors point past the end of the text; clamp both
+  // so the diagnostic lands on something the reader can see.
+  const stray = error.code === "invalid-first-character-of-tag-name";
+  const unclamped = stray ? error.startOffset - 1 : error.startOffset;
+  const start = Math.max(0, Math.min(unclamped, source.text.length - 1));
+  const end = Math.max(error.endOffset, start + 1);
+  const range = source.toSourceRange(start, end);
+  const messageId = CODE_MESSAGES.get(error.code);
+  context.report({
+    loc: rangeLoc(context.sourceCode, range),
+    ...(messageId === undefined
+      ? { messageId: "parseError", data: { code: error.code } }
+      : { messageId }),
+    ...(stray && source.text[start] === "<"
+      ? {
+          suggest: [
+            {
+              messageId: "escapeLessThan",
+              fix: (fixer) => fixer.replaceTextRange([range[0], range[0] + 1], "&lt;"),
+            },
+          ],
+        }
+      : {}),
+  });
+}
+
+/** Reports an element with a start tag but no end tag, unless HTML allows that. */
+function checkClosed(
+  context: LitRuleContext,
+  source: TemplateSource,
+  element: ParsedElement,
+): void {
+  const location = element.sourceCodeLocation;
+  const startTag = location?.startTag;
+  if (location === undefined || location === null || startTag === undefined) {
+    return;
+  }
+  if (location.endTag !== undefined) {
+    return;
+  }
+  const tag = element.tagName.toLowerCase();
+  if (VOID_ELEMENTS.has(tag) || OPTIONAL_END_TAG.has(tag)) {
+    return;
+  }
+  if (source.text.slice(startTag.startOffset, startTag.endOffset).endsWith("/>")) {
+    return;
+  }
+  context.report({
+    loc: rangeLoc(
+      context.sourceCode,
+      source.toSourceRange(startTag.startOffset, startTag.endOffset),
+    ),
+    messageId: "unclosed",
+    data: { tag },
+  });
+}
+
 /**
  * `no-invalid-html` — rejects markup inside an `html` template that does not
  * parse as valid HTML.
@@ -116,60 +180,13 @@ export const noInvalidHtmlRule: LitRule = {
         });
 
         for (const error of errors) {
-          if (DELEGATED_CODES.has(error.code)) {
-            continue;
+          if (!DELEGATED_CODES.has(error.code)) {
+            reportParseError(context, source, error);
           }
-          // Tokenizer errors point at the character after the offending `<`,
-          // and end-of-input errors point past the end of the text; clamp both
-          // so the diagnostic lands on something the reader can see.
-          const stray = error.code === "invalid-first-character-of-tag-name";
-          const unclamped = stray ? error.startOffset - 1 : error.startOffset;
-          const start = Math.max(0, Math.min(unclamped, source.text.length - 1));
-          const end = Math.max(error.endOffset, start + 1);
-          const range = source.toSourceRange(start, end);
-          const messageId = CODE_MESSAGES.get(error.code);
-          context.report({
-            loc: rangeLoc(context.sourceCode, range),
-            ...(messageId === undefined
-              ? { messageId: "parseError", data: { code: error.code } }
-              : { messageId }),
-            ...(stray && source.text[start] === "<"
-              ? {
-                  suggest: [
-                    {
-                      messageId: "escapeLessThan",
-                      fix: (fixer) => fixer.replaceTextRange([range[0], range[0] + 1], "&lt;"),
-                    },
-                  ],
-                }
-              : {}),
-          });
         }
 
         walkElements(fragment, (element) => {
-          const location = element.sourceCodeLocation;
-          const startTag = location?.startTag;
-          if (location === undefined || location === null || startTag === undefined) {
-            return;
-          }
-          if (location.endTag !== undefined) {
-            return;
-          }
-          const tag = element.tagName.toLowerCase();
-          if (VOID_ELEMENTS.has(tag) || OPTIONAL_END_TAG.has(tag)) {
-            return;
-          }
-          if (source.text.slice(startTag.startOffset, startTag.endOffset).endsWith("/>")) {
-            return;
-          }
-          context.report({
-            loc: rangeLoc(
-              context.sourceCode,
-              source.toSourceRange(startTag.startOffset, startTag.endOffset),
-            ),
-            messageId: "unclosed",
-            data: { tag },
-          });
+          checkClosed(context, source, element);
         });
       },
     };

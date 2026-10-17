@@ -8,6 +8,7 @@ import {
   docsUrl,
   isLitComponent,
   type LitRule,
+  type LitRuleContext,
   memberPath,
 } from "#helpers";
 
@@ -50,6 +51,91 @@ function entryOf(member: TSESTree.TSPropertySignature): Entry {
   return { typeName: annotation.typeName.name, node: annotation.typeName };
 }
 
+/** The registration of a Lit component with `@customElement`, or `null`. */
+function registrationOf(context: LitRuleContext, node: ClassNode): Registration | null {
+  if (!isLitComponent(node, context)) {
+    return null;
+  }
+  const tag = customElementTag(node);
+  if (tag === null) {
+    return null;
+  }
+  return {
+    tag,
+    className: node.id?.name ?? null,
+    node: customElementTagNode(node) ?? node,
+  };
+}
+
+/**
+ * The edit that appends a tag-name-map entry to `text`. A file with a Lit
+ * component imports Lit, so it is a module, where `declare global` is allowed.
+ */
+function addEntry(text: string, tag: string, className: string): SuggestedEdit {
+  const end = text.length;
+  const lead = text.endsWith("\n") ? "\n" : "\n\n";
+  const augmentation = [
+    "declare global {",
+    "  interface HTMLElementTagNameMap {",
+    `    ${JSON.stringify(tag)}: ${className};`,
+    "  }",
+    "}",
+    "",
+  ].join("\n");
+  return {
+    messageId: "addEntry",
+    fix: (fixer: RuleTextEditor): RuleTextEdit =>
+      fixer.insertTextAfterRange([end, end], `${lead}${augmentation}`),
+  };
+}
+
+/** Reports a registration whose entry is missing or maps another class. */
+function check(
+  context: LitRuleContext,
+  entries: ReadonlyMap<string, Entry>,
+  { tag, className, node }: Registration,
+): void {
+  const entry = entries.get(tag);
+  if (entry === undefined) {
+    context.report({
+      node,
+      messageId: "missingEntry",
+      data: { tag },
+      suggest: className === null ? [] : [addEntry(context.sourceCode.text, tag, className)],
+    });
+    return;
+  }
+  const { typeName: mapped, node: typeNode } = entry;
+  if (className === null || mapped === null || typeNode === null || mapped === className) {
+    return;
+  }
+  context.report({
+    node,
+    messageId: "wrongClass",
+    data: { tag, mapped, className },
+    suggest: [
+      {
+        messageId: "mapToClass",
+        data: { className },
+        fix: (fixer: RuleTextEditor): RuleTextEdit => fixer.replaceText(typeNode, className),
+      },
+    ],
+  });
+}
+
+/** Records every string-keyed entry of an `HTMLElementTagNameMap` interface. */
+function collectEntries(node: TSESTree.TSInterfaceDeclaration, entries: Map<string, Entry>): void {
+  for (const member of node.body.body) {
+    if (
+      member.type === "TSPropertySignature" &&
+      member.key.type === "Literal" &&
+      typeof member.key.value === "string"
+    ) {
+      entries.set(member.key.value, entryOf(member));
+    }
+  }
+}
+
 /**
  * `require-tag-name-map` — a class registered with `@customElement("x-y")`
  * must also augment `HTMLElementTagNameMap` in the same file, so
@@ -79,85 +165,16 @@ export const requireTagNameMapRule: LitRule = {
     const registrations: Registration[] = [];
 
     function collect(node: ClassNode): void {
-      if (!isLitComponent(node, context)) {
-        return;
+      const registration = registrationOf(context, node);
+      if (registration !== null) {
+        registrations.push(registration);
       }
-      const tag = customElementTag(node);
-      if (tag === null) {
-        return;
-      }
-      registrations.push({
-        tag,
-        className: node.id?.name ?? null,
-        node: customElementTagNode(node) ?? node,
-      });
-    }
-
-    /**
-     * The edit that appends a tag-name-map entry. A file with a Lit component
-     * imports Lit, so it is a module, where `declare global` is allowed.
-     */
-    function addEntry(tag: string, className: string): SuggestedEdit {
-      const text = context.sourceCode.text;
-      const end = text.length;
-      const lead = text.endsWith("\n") ? "\n" : "\n\n";
-      const augmentation = [
-        "declare global {",
-        "  interface HTMLElementTagNameMap {",
-        `    ${JSON.stringify(tag)}: ${className};`,
-        "  }",
-        "}",
-        "",
-      ].join("\n");
-      return {
-        messageId: "addEntry",
-        fix: (fixer: RuleTextEditor): RuleTextEdit =>
-          fixer.insertTextAfterRange([end, end], `${lead}${augmentation}`),
-      };
-    }
-
-    function check({ tag, className, node }: Registration): void {
-      const entry = entries.get(tag);
-      if (entry === undefined) {
-        context.report({
-          node,
-          messageId: "missingEntry",
-          data: { tag },
-          suggest: className === null ? [] : [addEntry(tag, className)],
-        });
-        return;
-      }
-      const { typeName: mapped, node: typeNode } = entry;
-      if (className === null || mapped === null || typeNode === null || mapped === className) {
-        return;
-      }
-      context.report({
-        node,
-        messageId: "wrongClass",
-        data: { tag, mapped, className },
-        suggest: [
-          {
-            messageId: "mapToClass",
-            data: { className },
-            fix: (fixer: RuleTextEditor): RuleTextEdit => fixer.replaceText(typeNode, className),
-          },
-        ],
-      });
     }
 
     return {
       TSInterfaceDeclaration(node: TSESTree.TSInterfaceDeclaration): void {
-        if (node.id.name !== "HTMLElementTagNameMap") {
-          return;
-        }
-        for (const member of node.body.body) {
-          if (
-            member.type === "TSPropertySignature" &&
-            member.key.type === "Literal" &&
-            typeof member.key.value === "string"
-          ) {
-            entries.set(member.key.value, entryOf(member));
-          }
+        if (node.id.name === "HTMLElementTagNameMap") {
+          collectEntries(node, entries);
         }
       },
       ClassDeclaration(node: TSESTree.ClassDeclaration): void {
@@ -168,7 +185,7 @@ export const requireTagNameMapRule: LitRule = {
       },
       "Program:exit"(): void {
         for (const registration of registrations) {
-          check(registration);
+          check(context, entries, registration);
         }
       },
     };
