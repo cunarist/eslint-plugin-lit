@@ -1,7 +1,6 @@
 import type { TSESTree } from "@typescript-eslint/types";
 
-import type { LitRule } from "#helpers";
-import { docsUrl, keyName, LIT_CORE_SOURCES } from "#helpers";
+import { docsUrl, keyName, LIT_CORE_SOURCES, type LitRule } from "#helpers";
 
 /** The export this rule bans. */
 const BANNED = "unsafeCSS";

@@ -1,7 +1,6 @@
 import type { TSESTree } from "@typescript-eslint/types";
 
-import { docsUrl, enclosingClass, isLitComponent, keyName, parentOf } from "#helpers";
-import type { LitRule } from "#helpers";
+import { docsUrl, enclosingClass, isLitComponent, keyName, type LitRule, parentOf } from "#helpers";
 
 /**
  * Whether `node` sits inside a `static styles` initializer.

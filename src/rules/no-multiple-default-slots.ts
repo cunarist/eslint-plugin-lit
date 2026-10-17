@@ -4,12 +4,13 @@ import {
   docsUrl,
   hasPlaceholder,
   isHtmlTemplate,
+  type LitRule,
+  type ParsedElement,
   parseTemplate,
   rangeLoc,
   templateSource,
   walkElements,
 } from "#helpers";
-import type { LitRule, ParsedElement } from "#helpers";
 
 /** Whether a slot is unambiguously the default slot. */
 function isDefaultSlot(element: ParsedElement): boolean {

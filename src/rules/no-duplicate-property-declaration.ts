@@ -1,7 +1,14 @@
 import type { TSESTree } from "@typescript-eslint/types";
 
-import type { ClassNode, LitRule } from "#helpers";
-import { classMembers, docsUrl, isLitComponent, isReactiveProperty, keyName } from "#helpers";
+import {
+  classMembers,
+  type ClassNode,
+  docsUrl,
+  isLitComponent,
+  isReactiveProperty,
+  keyName,
+  type LitRule,
+} from "#helpers";
 
 /** Name of an object-literal key. */
 function objectKeyName(key: TSESTree.Node): string | null {

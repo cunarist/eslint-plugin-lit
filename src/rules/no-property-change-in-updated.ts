@@ -5,10 +5,10 @@ import {
   enclosingClass,
   isInsideMethod,
   isLitComponent,
+  type LitRule,
   reactivePropertyNames,
   thisPropertyName,
 } from "#helpers";
-import type { LitRule } from "#helpers";
 
 /** Hooks that run after the update has been committed. */
 const POST_UPDATE_HOOKS: readonly string[] = ["updated", "firstUpdated"];

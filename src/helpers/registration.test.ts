@@ -1,21 +1,12 @@
-import { dirname, join, relative } from "node:path";
-
 import type { TSESTree } from "@typescript-eslint/types";
+import { dirname, join, relative } from "node:path";
 import { vi } from "vite-plus/test";
 
-import type { LitRule } from "#helpers";
-import {
-  isHtmlTemplate,
-  lintedRealPath,
-  parseTemplate,
-  rangeLoc,
-  runtimeImports,
-  tagRegistrations,
-  templateSource,
-  walkElements,
-} from "#helpers";
-import type { ExpectedError } from "#testing";
-import { spanOf, testRule, writeProject } from "#testing";
+import { type ExpectedError, spanOf, testRule, writeProject } from "#testing";
+
+import { isHtmlTemplate, lintedRealPath, runtimeImports, tagRegistrations } from "./lit.ts";
+import type { LitRule } from "./rule.ts";
+import { parseTemplate, rangeLoc, templateSource, walkElements } from "./template.ts";
 
 // Cases here build a written project's registration index, so the first case
 // of each host runs cold; give this file's tests headroom.

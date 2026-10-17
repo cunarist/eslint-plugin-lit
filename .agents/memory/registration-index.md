@@ -21,6 +21,21 @@ checked through imports, aliases allowed), or by a global
 recorded against the file that declares the mapped class. Only tags with a
 hyphen; the first registration seen wins. Memoized per worker per project
 root; rebuilt when the file list or any indexed file's `mtime` changes.
+
+**Cost (decided 2026-10-17).** The file listing is cached per worker and
+project root too, invalidated by `mtime` (not per process run), so editor and
+watch sessions stay correct: it records `tsconfig.json` and every folder it
+read, since adding or removing an entry bumps its folder's `mtime`; a listing
+that saw an `mtime` under 2 s old is walked again (coarse fs clocks: FAT
+stamps every 2 s). The
+walk is our own `readdirSync` traversal from each `include` pattern's literal
+base, matched with `path.matchesGlob` (Node 22.5+, below the 22.18
+floor); it prunes `node_modules` (any default
+exclude segment), dot-folders when no `include` names one, and literal
+`exclude` folders (`dist`, `dist/**`). Re-globbing per lookup, which walked
+`node_modules` through the `exclude` glob, cost memona's user_app 129 s of a
+182 s lint. `src/helpers/project.test.ts` counts `readdirSync` calls; the
+glob helpers live in `src/helpers/globs.ts`, tested in `globs.test.ts`.
 The Deno version checked `customElements` and `HTMLElementTagNameMap`
 against `lib.dom.d.ts`; a binding nested below the top level of another file
 is not seen now.

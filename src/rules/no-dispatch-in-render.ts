@@ -1,7 +1,13 @@
 import type { TSESTree } from "@typescript-eslint/types";
 
-import type { LitRule } from "#helpers";
-import { docsUrl, enclosingClass, isInsideMethod, isLitComponent, memberPath } from "#helpers";
+import {
+  docsUrl,
+  enclosingClass,
+  isInsideMethod,
+  isLitComponent,
+  type LitRule,
+  memberPath,
+} from "#helpers";
 
 /** Whether a callee refers to `dispatchEvent`, at any depth. */
 function isDispatchCallee(callee: TSESTree.Expression): boolean {

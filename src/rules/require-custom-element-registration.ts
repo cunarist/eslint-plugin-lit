@@ -1,11 +1,12 @@
 import type { TSESTree } from "@typescript-eslint/types";
 
 import {
-  type ClassNode,
   classDecorators,
+  type ClassNode,
   docsUrl,
   isLitComponent,
   type LitRule,
+  type LitRuleContext,
   memberPath,
 } from "#helpers";
 
@@ -36,6 +37,29 @@ function isDefineCall(node: TSESTree.CallExpression): boolean {
   return (
     path !== null && (path === "customElements.define" || path.endsWith(".customElements.define"))
   );
+}
+
+/** The name of a class declaration a file must register, or `null`. */
+function candidateOf(context: LitRuleContext, node: TSESTree.ClassDeclaration): Candidate | null {
+  if (
+    !isLitComponent(node, context) ||
+    node.abstract ||
+    hasCustomElementDecorator(node) ||
+    node.id === null
+  ) {
+    return null;
+  }
+  return { name: node.id.name, node: node.id };
+}
+
+/** The class name a `customElements.define(…)` call registers, or `null`. */
+function definedName(node: TSESTree.CallExpression): string | null {
+  if (!isDefineCall(node)) {
+    return null;
+  }
+  const target = node.arguments[1];
+  const path = target === undefined ? null : memberPath(target);
+  return path === null ? null : lastSegment(path);
 }
 
 /**
@@ -86,24 +110,15 @@ export const requireCustomElementRegistrationRule: LitRule = {
       },
       ClassDeclaration(node: TSESTree.ClassDeclaration): void {
         noteSuperClass(node);
-        if (
-          !isLitComponent(node, context) ||
-          node.abstract ||
-          hasCustomElementDecorator(node) ||
-          node.id === null
-        ) {
-          return;
+        const candidate = candidateOf(context, node);
+        if (candidate !== null) {
+          candidates.push(candidate);
         }
-        candidates.push({ name: node.id.name, node: node.id });
       },
       CallExpression(node: TSESTree.CallExpression): void {
-        if (!isDefineCall(node)) {
-          return;
-        }
-        const target = node.arguments[1];
-        const path = target === undefined ? null : memberPath(target);
-        if (path !== null) {
-          definedNames.add(lastSegment(path));
+        const name = definedName(node);
+        if (name !== null) {
+          definedNames.add(name);
         }
       },
       "Program:exit"(): void {

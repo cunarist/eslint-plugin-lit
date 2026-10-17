@@ -1,7 +1,8 @@
 import { defineConfig } from "vite-plus";
 
+import lit from "#plugin";
+
 import projectLint from "./scripts/project-lint.ts";
-import lit from "./src/plugin/index.ts";
 
 export default defineConfig({
   lint: {

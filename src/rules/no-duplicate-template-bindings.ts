@@ -1,8 +1,7 @@
 import type { TSESTree } from "@typescript-eslint/types";
 import { parseFragment } from "parse5";
 
-import type { LitRule } from "#helpers";
-import { docsUrl, isHtmlTemplate, rangeLoc, templateSource } from "#helpers";
+import { docsUrl, isHtmlTemplate, type LitRule, rangeLoc, templateSource } from "#helpers";
 
 /** Characters that terminate an attribute name. */
 const NAME_END: RegExp = /[\s/>=]/u;

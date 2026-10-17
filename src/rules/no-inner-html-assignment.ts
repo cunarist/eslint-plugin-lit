@@ -1,7 +1,6 @@
 import type { TSESTree } from "@typescript-eslint/types";
 
-import { docsUrl, memberPath } from "#helpers";
-import type { LitRule } from "#helpers";
+import { docsUrl, type LitRule, memberPath } from "#helpers";
 
 /** Properties that parse their assigned string as markup. */
 const MARKUP_SINKS: ReadonlySet<string> = new Set(["innerHTML", "outerHTML"]);

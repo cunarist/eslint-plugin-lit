@@ -1,7 +1,14 @@
 import type { TSESTree } from "@typescript-eslint/types";
 
-import type { ClassNode, LitRule } from "#helpers";
-import { classMembers, docsUrl, findDecorator, isLitComponent, keyName } from "#helpers";
+import {
+  classMembers,
+  type ClassNode,
+  docsUrl,
+  findDecorator,
+  isLitComponent,
+  keyName,
+  type LitRule,
+} from "#helpers";
 
 /** The options object passed to `@property({…})`, if it is a literal. */
 function decoratorOptions(decorator: TSESTree.Decorator): TSESTree.ObjectExpression | null {

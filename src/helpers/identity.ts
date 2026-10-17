@@ -12,8 +12,7 @@
 
 import type { Expression, TSType } from "oxc-parser";
 
-import type { Binding } from "./bindings.ts";
-import { declarationName, resolveExport, resolveLocal } from "./bindings.ts";
+import { type Binding, declarationName, resolveExport, resolveLocal } from "./bindings.ts";
 import type { ModuleFile } from "./modules.ts";
 
 /** A tagged-template kind provided by Lit. */

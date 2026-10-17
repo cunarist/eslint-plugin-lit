@@ -8,21 +8,23 @@
  * checks. Anything that cannot be followed answers "not Lit", never a guess.
  */
 
+import type { TSESTree } from "@typescript-eslint/types";
 import { resolve } from "node:path";
 
-import type { TSESTree } from "@typescript-eslint/types";
-
-import type { ClassNode } from "./ast.ts";
-import { classDecorators, memberPath } from "./ast.ts";
-import type { LitTemplateKind, Seen } from "./identity.ts";
-import { extendsLitBase, isCustomElementDecorator, templateKindOf } from "./identity.ts";
-import type { Binding } from "./bindings.ts";
-import { resolveExport, resolveImport } from "./bindings.ts";
+import { classDecorators, type ClassNode, memberPath } from "./ast.ts";
+import { type Binding, resolveExport, resolveImport } from "./bindings.ts";
+import {
+  extendsLitBase,
+  isCustomElementDecorator,
+  type LitTemplateKind,
+  type Seen,
+  templateKindOf,
+} from "./identity.ts";
 import { moduleFromText, realPath } from "./modules.ts";
 import { registrationIndex } from "./registration.ts";
+import type { LitRuleContext, ScopeDefinition, ScopeVariable } from "./rule.ts";
 import { runtimeImportedFiles } from "./runtime-imports.ts";
 import { importedName } from "./specifiers.ts";
-import type { LitRuleContext, ScopeDefinition, ScopeVariable } from "./rule.ts";
 
 export type { LitTemplateKind } from "./identity.ts";
 

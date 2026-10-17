@@ -3,12 +3,12 @@ import type { TSESTree } from "@typescript-eslint/types";
 import {
   docsUrl,
   isHtmlTemplate,
+  type LitRule,
   parseTemplate,
   rangeLoc,
   templateSource,
   walkElements,
 } from "#helpers";
-import type { LitRule } from "#helpers";
 
 /** JSX attribute name, as parse5 lowercases it, to its HTML equivalent. */
 const JSX_NAMES: ReadonlyMap<string, string> = new Map([

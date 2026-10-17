@@ -19,9 +19,9 @@
   ],
   "type": "module",
   "imports": {
-    "#helpers": "./src/helpers/index.ts",
     "#plugin": "./src/plugin/index.ts",
     "#rules": "./src/rules/index.ts",
+    "#helpers": "./src/helpers/index.ts",
     "#testing": "./src/testing/index.ts"
   },
   "exports": {
@@ -46,7 +46,7 @@
     "vite-plus": "^1.1.0"
   },
   "engines": {
-    "node": ">=22"
+    "node": ">=22.18"
   },
   "eslint-doc-generator": {
     "configEmoji": [

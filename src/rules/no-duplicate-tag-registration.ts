@@ -1,7 +1,6 @@
 import type { TSESTree } from "@typescript-eslint/types";
 
-import type { ClassNode, LitRule } from "#helpers";
-import { classDecorators, docsUrl, memberPath } from "#helpers";
+import { classDecorators, type ClassNode, docsUrl, type LitRule, memberPath } from "#helpers";
 
 /** A tag registration found in the file. */
 interface Registration {

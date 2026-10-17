@@ -1,7 +1,14 @@
 import type { TSESTree } from "@typescript-eslint/types";
 
-import type { ClassMember, ClassNode, LitRule } from "#helpers";
-import { classMembers, docsUrl, keyName, memberPath } from "#helpers";
+import {
+  type ClassMember,
+  classMembers,
+  type ClassNode,
+  docsUrl,
+  keyName,
+  type LitRule,
+  memberPath,
+} from "#helpers";
 
 /** The `context:` expression of a `@provide({ context: x })` decorator. */
 function providedContext(decorator: TSESTree.Decorator): string | null {

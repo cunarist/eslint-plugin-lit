@@ -25,9 +25,14 @@ lint: {
   make code pass; refactor (see [[lint-overrides-policy]]). `max-lines` stays
   at 300 everywhere, `scripts/` included, with no override: split a large
   file into flat themed files (2026-10-16). `configs.project` turns off only
-  `max-lines-per-function`, `typescript/prefer-readonly-parameter-types`, and
+  `typescript/prefer-readonly-parameter-types` and
   `typescript/no-unsafe-enum-comparison`, because AST visitors fight them; do
   not add new opt-outs anywhere without asking the user.
+  `max-lines-per-function` is on at 50 (user decision 2026-10-17): split a
+  long `create()` or visitor into module-level helpers (`checkElement`,
+  `reportUppercase(context, attribute)`) that take `context`, the template
+  source, and plain data explicitly; bundle extra arguments into one object
+  to stay within `max-params`.
 - **`vite.config.ts` names no rule.** Every rule id, built-in ones included,
   lives in `configs.project` of `scripts/project-lint.ts`
   ([[project-lint-plugin]]). `vite.config.ts` only spreads configs.
@@ -40,7 +45,7 @@ lint: {
   Hand-written code is never ignored.
 - **No lint disable comments**: [[lint-no-disable-comments]].
 - **Parity:** [[lint-parity-never-shrinks]]. **Naming:** [[naming-id-match]].
-- Don't add a second import sorter; import-check's `enforce-import-order` is
+- Don't add a second import sorter; the modules plugin's `enforce-import-order` is
   the only one, and Oxfmt's `sortImports` stays off.
 
 `perf` came last: in the template it flagged nine `.includes` on constant

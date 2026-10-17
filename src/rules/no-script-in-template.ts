@@ -3,12 +3,12 @@ import type { TSESTree } from "@typescript-eslint/types";
 import {
   docsUrl,
   isHtmlTemplate,
+  type LitRule,
   parseTemplate,
   rangeLoc,
   templateSource,
   walkElements,
 } from "#helpers";
-import type { LitRule } from "#helpers";
 
 /**
  * `no-script-in-template` — rejects a `<script>` element inside a Lit

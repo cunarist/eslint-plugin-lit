@@ -1,7 +1,7 @@
 # eslint-plugin-lit
 
 [Lit](https://lit.dev) web component rules for both [ESLint](https://eslint.org) and [Oxlint](https://oxc.rs/docs/guide/usage/linter): they catch the Lit mistakes that still compile.\
-Install with `npm install --save-dev @cunarist/eslint-plugin-lit`. Requires Node.js 22+.
+Install with `npm install --save-dev @cunarist/eslint-plugin-lit`. Requires Node.js 22.18+.
 
 ```ts
 // Oxlint, through Vite+: vite.config.ts

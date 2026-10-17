@@ -1,7 +1,13 @@
 import type { TSESTree } from "@typescript-eslint/types";
 
-import { docsUrl, enclosingClass, isInsideMethod, isLitComponent, memberPath } from "#helpers";
-import type { LitRule } from "#helpers";
+import {
+  docsUrl,
+  enclosingClass,
+  isInsideMethod,
+  isLitComponent,
+  type LitRule,
+  memberPath,
+} from "#helpers";
 
 /** Whether an assignment target bottoms out at `this`. */
 function targetsThis(node: TSESTree.Node): boolean {

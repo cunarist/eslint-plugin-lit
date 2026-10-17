@@ -1,7 +1,14 @@
 import type { TSESTree } from "@typescript-eslint/types";
 
-import type { ClassNode, LitRule } from "#helpers";
-import { classMembers, docsUrl, findDecorator, isLitComponent, keyName } from "#helpers";
+import {
+  classMembers,
+  type ClassNode,
+  docsUrl,
+  findDecorator,
+  isLitComponent,
+  keyName,
+  type LitRule,
+} from "#helpers";
 
 /**
  * Converters that produce an attribute a browser can round-trip.

@@ -1,12 +1,13 @@
-import { join } from "node:path";
-
 import type { TSESTree } from "@typescript-eslint/types";
+import { join } from "node:path";
 import { vi } from "vite-plus/test";
 
-import type { ClassNode, LitRule, LitTemplateKind } from "#helpers";
-import { isLitComponent, isTaggedWith } from "#helpers";
-import type { ExpectedError } from "#testing";
-import { testRule, writeProject } from "#testing";
+import { type ExpectedError, testRule, writeProject } from "#testing";
+
+import type { ClassNode } from "./ast.ts";
+import type { LitTemplateKind } from "./identity.ts";
+import { isLitComponent, isTaggedWith } from "./lit.ts";
+import type { LitRule } from "./rule.ts";
 
 // Cases here follow imports across a written project, so the first case of
 // each host runs cold; give this file's tests headroom.

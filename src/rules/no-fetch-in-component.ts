@@ -1,7 +1,6 @@
 import type { TSESTree } from "@typescript-eslint/types";
 
-import type { LitRule } from "#helpers";
-import { docsUrl, enclosingClass, isLitComponent, memberPath } from "#helpers";
+import { docsUrl, enclosingClass, isLitComponent, type LitRule, memberPath } from "#helpers";
 
 /** The spellings of the global `fetch`. */
 const FETCH_PATHS: ReadonlySet<string> = new Set([

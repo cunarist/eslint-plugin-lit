@@ -19,7 +19,7 @@ This replaces the earlier hand-written order (metadata, `scripts`, `exports`,
   "repository": { "type": "git", "url": "git+https://github.com/..." },
   "type": "module",
   "files": ["dist"],
-  "engines": { "node": ">=22" },
+  "engines": { "node": ">=22.18" },
   "eslint-doc-generator": {/* tool options that can only live here */},
   "scripts": { "docs": "eslint-doc-generator" },
   "exports": { ".": "./dist/index.js" },
@@ -29,8 +29,8 @@ This replaces the earlier hand-written order (metadata, `scripts`, `exports`,
 }
 ```
 
-Every alias targets a direct subfolder of `src/` only; see
-[[imports-aliases-barrels]].
+An alias may point anywhere and owns its target, with no 2 aliases owning
+the same file; see [[imports-aliases-barrels]].
 
 ## Fields
 

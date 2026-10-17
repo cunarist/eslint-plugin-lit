@@ -1,7 +1,6 @@
 import type { TSESTree } from "@typescript-eslint/types";
 
-import type { LitRule } from "#helpers";
-import { docsUrl, importedLocalName, isRepeatModule, memberPath } from "#helpers";
+import { docsUrl, importedLocalName, isRepeatModule, type LitRule, memberPath } from "#helpers";
 
 /** Function-like nodes usable as a key function. */
 type KeyFunction = TSESTree.ArrowFunctionExpression | TSESTree.FunctionExpression;
