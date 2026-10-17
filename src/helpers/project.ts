@@ -121,10 +121,12 @@ interface ProjectListing {
 
 /**
  * How recent an `mtime` is too recent to trust, in milliseconds. File systems
- * stamp times from a coarse clock, so two changes a few milliseconds apart can
- * share one; a listing that saw such a folder is walked again next time.
+ * stamp times from a coarse clock (FAT and exFAT every 2 s, HFS+ and ext3
+ * every second), so a later change can share the `mtime` a walk saw; a
+ * listing that saw a folder changed within one such tick is walked again next
+ * time.
  */
-const RACY_MS = 50;
+const RACY_MS = 2000;
 
 /** A walk in progress: every path seen relative to the root, and the versions read. */
 interface Walk {

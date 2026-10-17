@@ -1,6 +1,5 @@
-import { readdirSync, realpathSync, rmSync, writeFileSync } from "node:fs";
-import { join } from "node:path";
-import { setTimeout as sleep } from "node:timers/promises";
+import { readdirSync, realpathSync, rmSync, utimesSync, writeFileSync } from "node:fs";
+import { dirname, join } from "node:path";
 
 import { beforeAll, describe, expect, it, vi } from "vite-plus/test";
 
@@ -28,22 +27,35 @@ function foldersRead(written: string): string[] {
     .map((path) => path.slice(root.length));
 }
 
-const root = writeProject(
-  new Map([
-    ["tsconfig.json", `{ "exclude": ["dist"] }\n`],
-    ["src/a.ts", element("cl-a")],
-    ["src/b.ts", element("cl-b")],
-    ["src/nested/c.ts", element("cl-c")],
-    ["dist/a.ts", element("cl-dist")],
-    ["packages/x/node_modules/dep/index.ts", element("cl-dep")],
-    [".cache/d.ts", element("cl-cache")],
-  ]),
-);
+const files = new Map([
+  ["tsconfig.json", `{ "exclude": ["dist"] }\n`],
+  ["src/a.ts", element("cl-a")],
+  ["src/b.ts", element("cl-b")],
+  ["src/nested/c.ts", element("cl-c")],
+  ["dist/a.ts", element("cl-dist")],
+  ["packages/x/node_modules/dep/index.ts", element("cl-dep")],
+  [".cache/d.ts", element("cl-cache")],
+]);
+const root = writeProject(files);
+
+/** Moves every written file and folder's `mtime` back past the racy window. */
+function backdate(): void {
+  const past = new Date(Date.now() - 60_000);
+  const paths = new Set([root]);
+  for (const file of files.keys()) {
+    for (let path = file; path !== "."; path = dirname(path)) {
+      paths.add(join(root, path));
+    }
+  }
+  for (const path of paths) {
+    utimesSync(path, past, past);
+  }
+}
 
 describe("project listing", () => {
-  beforeAll(async () => {
-    // Let the written folders' mtimes age past the racy window.
-    await sleep(200);
+  beforeAll(() => {
+    // Age the written folders' mtimes past the racy window, without waiting.
+    backdate();
   });
 
   it("walks the project once, never reading excluded folders", () => {
