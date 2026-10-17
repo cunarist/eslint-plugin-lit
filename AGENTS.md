@@ -43,8 +43,8 @@ and follow it before reasoning or responding.
   inside it, relative imports of siblings and subfolders are free. `../` is
   banned in every file. Files no alias owns import `./` siblings and
   subfolders freely. No `/*` patterns; `jsPlugins` entries stay path strings.
-  See `imports-aliases-barrels`. Our own files are `.ts` only, and `.js` imports are package
-  subpaths (`lit/decorators.js`); `project/no-asset-imports` fails any other
+  See `imports-aliases-barrels`. Our own files are `.ts` only; `.js`, `.mts`, and `.mjs` imports are
+  package subpaths (`lit/decorators.js`); `project/no-asset-imports` fails any other
   extension in the last path segment (CSS, JSON, SVG, ...), a query suffix
   like `?raw`, or import attributes. Bare package names, `#` aliases, and
   `node:` builtins pass.
