@@ -49,12 +49,12 @@ and type-literal members, class methods, and labels.
 Open gaps until the modules plugin is on npm: its `prefer-alias-import`,
 `no-barrel-bypass`, `no-relative-bypass`, `enforce-layer-order`, and
 `enforce-import-order` (the Deno repo's deno-import-check 0.7.0 already had
-the last two). A probe with the 0.10.0 tarball (2026-10-18, `package.json`
-aliases in layer order) still reports 9 `enforce-layer-order` errors (tests
-in `src/helpers/` importing `#testing` and `#helpers`) and 17
-`enforce-import-order` errors (blank lines between package imports, name
-order inside braces); fix them when lit adopts the plugin. Its 77
-`no-duplicate-import-source` reports flag a type-only import next to a
+the last two). A probe with the 0.10.0 tarball (2026-10-18) finds the code
+clean of the layer and import order errors: `#testing` no longer imports
+`#helpers` (`testRule` takes `@eslint/core`'s `RuleDefinition`), so
+`#helpers` sits above `#testing` and its tests import their own files
+relatively. The plugin checks type-only imports like any other import. Its
+75 `no-duplicate-import-source` reports flag a type-only import next to a
 value import from the same source, which the Deno rule allows (it did not
 exist in 0.7.0); settle that in the modules plugin first. After publishing, lit adds
 `@cunarist/eslint-plugin-modules` and `@cunarist/eslint-plugin-explicit-types`

@@ -86,7 +86,8 @@ fails `../` in every file, and TypeScript fails a deeper alias specifier
 aliases are not machine-checked here: keep them out by hand. A probe on
 2026-10-17 with a local eslint-plugin-modules 0.10.0 build caught every form, and the
 repo itself was clean of the alias-ownership forms. Its layer-order and
-import-order rules still report errors here; see [[lint-parity-with-deno]].
+import-order rules are clean too since 2026-10-18; see
+[[lint-parity-with-deno]].
 
 ## Local convention: aliases target direct `src/` subfolders
 
