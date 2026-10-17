@@ -29,14 +29,13 @@ read, since adding or removing an entry bumps its folder's `mtime`; a listing
 that saw an `mtime` under 2 s old is walked again (coarse fs clocks: FAT
 stamps every 2 s). The
 walk is our own `readdirSync` traversal from each `include` pattern's literal
-base, matched with `minimatch` using the options of Node's `path.matchesGlob`
-(that export needs Node 22.5; the plugin supports all of Node 22); it prunes `node_modules` (any default
+base, matched with `path.matchesGlob` (Node 22.5+, below the 22.12 that
+`oxc-parser` already needs); it prunes `node_modules` (any default
 exclude segment), dot-folders when no `include` names one, and literal
 `exclude` folders (`dist`, `dist/**`). Re-globbing per lookup, which walked
 `node_modules` through the `exclude` glob, cost memona's user_app 129 s of a
 182 s lint. `src/helpers/project.test.ts` counts `readdirSync` calls; the
-glob helpers live in `src/helpers/globs.ts`, and `globs.test.ts` checks them
-against `path.matchesGlob`.
+glob helpers live in `src/helpers/globs.ts`, tested in `globs.test.ts`.
 The Deno version checked `customElements` and `HTMLElementTagNameMap`
 against `lib.dom.d.ts`; a binding nested below the top level of another file
 is not seen now.

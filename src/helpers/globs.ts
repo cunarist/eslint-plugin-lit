@@ -1,25 +1,7 @@
 /**
- * Glob matching for the project listing: TypeScript `include` and `exclude`
- * patterns, read as Node's `fs.glob` reads them, plus what a walk can prune.
+ * Glob helpers for the project listing: where a TypeScript `include`
+ * pattern starts, and which folders a walk can prune.
  */
-
-import { minimatch } from "minimatch";
-
-/**
- * Whether a project-relative path matches a glob, as Node's `path.matchesGlob`
- * would decide (it wraps `minimatch` with these options). That export only
- * exists from Node 22.5, and the plugin supports every Node 22.
- */
-export function matchesGlob(path: string, pattern: string): boolean {
-  return minimatch(path, pattern, {
-    nocase: process.platform === "darwin" || process.platform === "win32",
-    nocaseMagicOnly: true,
-    windowsPathsNoEscape: true,
-    nonegate: true,
-    nocomment: true,
-    optimizationLevel: 2,
-  });
-}
 
 /** Whether a path segment holds glob syntax rather than a literal name. */
 function isMagic(segment: string): boolean {

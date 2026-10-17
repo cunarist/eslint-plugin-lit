@@ -15,9 +15,9 @@
  */
 
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
-import { dirname, join, posix } from "node:path";
+import { dirname, join, matchesGlob, posix } from "node:path";
 
-import { excludedFolder, matchesDotSegments, matchesGlob, patternBase } from "./globs.ts";
+import { excludedFolder, matchesDotSegments, patternBase } from "./globs.ts";
 import { realPath } from "./modules.ts";
 
 /** The extensions of the files a project's program is made of. */
