@@ -21,8 +21,8 @@
   "imports": {
     "#plugin": "./src/plugin/index.ts",
     "#rules": "./src/rules/index.ts",
-    "#testing": "./src/testing/index.ts",
-    "#helpers": "./src/helpers/index.ts"
+    "#helpers": "./src/helpers/index.ts",
+    "#testing": "./src/testing/index.ts"
   },
   "exports": {
     ".": "./dist/index.js"
