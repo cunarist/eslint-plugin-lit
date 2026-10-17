@@ -14,7 +14,7 @@ and follow it before reasoning or responding.
 - The package's only export is the default one, the plugin. Configs live at
   `plugin.configs`: the five presets and `all` (every rule, built from the
   rule registry). No `recommended`, no named exports.
-- Runs on Node.js 22+; Bun is not a supported target. Built with Vite+ (`vp`):
+- Runs on Node.js 22.18+; Bun is not a supported target. Built with Vite+ (`vp`):
   Oxlint, Oxfmt, type checking, Vitest, tsdown.
 - Ported from the Deno package `jsr:@cunarist/deno-lint-plugin-lit`. The
   published plugin mirrors exactly its 82 rules, same names and behavior,
@@ -101,7 +101,7 @@ and follow it before reasoning or responding.
   `lint-parity-with-deno` before removing anything from `configs.project`.
 - Every rule has a `docs/rules/<rule>.md` in the ESLint core layout: Rule
   Details, incorrect/correct examples, and When Not To Use It.
-- CI runs every rule test, ESLint and Oxlint halves alike, on node@22 and
+- CI runs every rule test, ESLint and Oxlint halves alike, on node@22.18.0 and
   node@latest. Bun is not tested and not supported.
 - `package.json` keys follow Oxfmt's standard sorting (`vp check --fix`).
   There is no `packageManager` field; npm is detected from `package-lock.json`.

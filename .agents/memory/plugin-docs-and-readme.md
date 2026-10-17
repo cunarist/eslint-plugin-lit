@@ -50,7 +50,7 @@ Keep `ts` examples valid at top level; `vp fmt` reformats Markdown.
 ## README
 
 - Under **60 lines**, for library users only (no contributor content).
-- States that it targets both ESLint and Oxlint and needs Node.js 22+.
+- States that it targets both ESLint and Oxlint and needs Node.js 22.18+.
 - Shows install plus ESLint and Oxlint usage, one short paragraph per config,
   then the generated rules list. It links to the rule docs, never repeats
   them. (lit's 82-rule list can't fit 60 lines, so it lives in `docs/rules/README.md`; see [[generated-docs]].)
