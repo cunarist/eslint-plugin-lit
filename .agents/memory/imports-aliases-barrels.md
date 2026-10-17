@@ -75,8 +75,12 @@ Relative imports are written with the `.ts` extension.
 
 ## What checks it in this repo
 
-This repo does not lint itself with eslint-plugin-modules (plugin repos don't depend
-on each other; see [[lint-parity-with-deno]]). `import/no-relative-parent-imports`
+This repo does not lint itself with eslint-plugin-modules yet: it is not on
+npm, and no `file:` or tarball specifier may be committed. The plugin chain
+(user decision 2026-10-17) is modules (lowest) → explicit-types → lit, no
+cycles: once both are published, lit lints itself with its own source plus
+modules and explicit-types from npm (see [[lint-parity-with-deno]]). Until
+then, `import/no-relative-parent-imports`
 fails `../` in every file, and TypeScript fails a deeper alias specifier
 (there are no `/*` patterns). Relative paths into an area and overlapping
 aliases are not machine-checked here: keep them out by hand. A probe on

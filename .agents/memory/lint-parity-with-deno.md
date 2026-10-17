@@ -46,8 +46,11 @@ import (`import { or_middle }`), unresolved global references and assignments
 ambient `declare` cases. Beyond Deno it also checks type parameters, interface
 and type-literal members, class methods, and labels.
 
-Open gaps, not decisions: the `modules` plugin's `prefer-alias-import`,
-`no-barrel-bypass`, and `no-relative-bypass`. Its `no-self-import`,
+Open gaps until the modules plugin is on npm: its `prefer-alias-import`,
+`no-barrel-bypass`, and `no-relative-bypass`. After publishing, lit adds
+`@cunarist/eslint-plugin-modules` and `@cunarist/eslint-plugin-explicit-types`
+from npm as devDependencies and lints itself with them (plugin chain,
+2026-10-17), which closes these. Its `no-self-import`,
 `no-absolute-import`, and `no-parent-import` map to `import/*` rules, and
 `import/no-cycle` stands in for its CLI's cycle check.
 
