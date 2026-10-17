@@ -17,11 +17,11 @@
  * class's declaration. Compiled dependencies keep only the augmentation in
  * their `.d.ts`, so all three are needed to cover source and package elements.
  *
- * The answer is memoized per worker and recomputed when a file they were
- * built from changes, or when the project gains or loses a file.
+ * The answer is memoized per worker and project root, so one lint run builds
+ * it once, and recomputed when a file it was built from changes or when the
+ * project gains or loses a file (see `project.ts`), so an editor session
+ * stays current.
  */
-
-import { statSync } from "node:fs";
 
 import type {
   Argument,
@@ -38,7 +38,7 @@ import { resolveLocal } from "./bindings.ts";
 import { isCustomElementDecorator } from "./identity.ts";
 import type { ModuleFile } from "./modules.ts";
 import { loadModule, resolveSpecifier } from "./modules.ts";
-import { projectFiles, projectRoot, SOURCE_EXTENSION } from "./project.ts";
+import { isUnchanged, modified, projectFiles, projectRoot, SOURCE_EXTENSION } from "./project.ts";
 
 /** The interface an element module augments to type its tag. */
 const TAG_NAME_MAP = "HTMLElementTagNameMap";
@@ -56,7 +56,7 @@ function isCustomTag(tag: string | null): tag is string {
 
 /** The registering file of every tag, and what that answer was built from. */
 interface RegistrationIndex {
-  files: string[];
+  files: readonly string[];
   versions: Map<string, number>;
   registrations: Map<string, string>;
 }
@@ -64,26 +64,12 @@ interface RegistrationIndex {
 /** The index of each project root, kept for the worker's lifetime. */
 const indexes: Map<string, RegistrationIndex> = new Map();
 
-/** A file's modification time, or `-1` when it is gone. */
-function modified(path: string): number {
-  try {
-    return statSync(path).mtimeMs;
-  } catch {
-    return -1;
-  }
-}
-
 /** Whether an index still describes the files it was built from. */
-function isCurrent(index: RegistrationIndex, files: string[]): boolean {
-  if (files.length !== index.files.length || files.some((file, at) => file !== index.files[at])) {
-    return false;
-  }
-  for (const [path, version] of index.versions) {
-    if (modified(path) !== version) {
-      return false;
-    }
-  }
-  return true;
+function isCurrent(index: RegistrationIndex, files: readonly string[]): boolean {
+  const sameFiles =
+    files === index.files ||
+    (files.length === index.files.length && files.every((file, at) => file === index.files[at]));
+  return sameFiles && isUnchanged(index.versions);
 }
 
 /**
@@ -110,7 +96,7 @@ export function registrationIndex(fromPath: string): ReadonlyMap<string, string>
  * Collects every registration in the project's files and in the declaration
  * files they reach through imports, which is where packages declare theirs.
  */
-function buildIndex(files: string[]): RegistrationIndex {
+function buildIndex(files: readonly string[]): RegistrationIndex {
   const registrations = new Map<string, string>();
   const versions = new Map<string, number>();
   const pending = [...files];
