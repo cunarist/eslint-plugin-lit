@@ -48,6 +48,11 @@ and follow it before reasoning or responding.
   extension in the last path segment (CSS, JSON, SVG, ...), a query suffix
   like `?raw`, or import attributes. Bare package names, `#` aliases, and
   `node:` builtins pass.
+- Local convention, stricter than the general alias rule and kept out of
+  plugin code and docs: in this repo, `imports` aliases point only at a
+  direct subfolder of `src/` (`"#helpers": "./src/helpers/index.ts"`). Code
+  outside `src/` imports its own files by `./` relative paths. See
+  `imports-aliases-barrels`.
 - `meta.name` and `meta.version` are written out in `src/plugin/index.ts`; a release
   bumps them with `package.json`, and `tests/package-meta.test.ts` checks both.
 - Rules use ESLint's standard `create` API, typed `LitRule`, with every

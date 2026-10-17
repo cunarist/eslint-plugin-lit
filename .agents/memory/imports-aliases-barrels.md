@@ -1,5 +1,5 @@
 ---
-description: An alias owns its target (folder index.ts = folder and below, any other file = that file); no overlap; outside an area only the exact alias reaches it; ../ is banned in every file; no folder names in the rule
+description: An alias owns its target (folder index.ts = folder and below, any other file = that file); no overlap; outside an area only the exact alias reaches it; ../ is banned in every file; no folder names in the rule; locally, aliases target only direct src/ subfolders
 ---
 
 ## `#` aliases own their targets
@@ -11,7 +11,7 @@ unbuilt. `vp pack` inlines them, so they never reach package consumers.
 
 One rule for every file, never tied to folder or file names (user rule
 2026-10-17; it replaces the earlier "aliases only point at direct `src/`
-subfolders" rule and the "modules plugin checks only aliased folders" scope):
+subfolders" rule as the general rule, and the "modules plugin checks only aliased folders" scope; this repo keeps the old rule as a local convention, see the last section):
 
 - **An alias may point anywhere** and owns its target. An alias to a
   folder's `index.ts` owns that folder and everything below it; an alias to
@@ -83,3 +83,18 @@ aliases are not machine-checked here: keep them out by hand. A probe on
 2026-10-17 with a local eslint-plugin-modules 0.10.0 build caught every form, and the
 repo itself was clean apart from the modules plugin's layer-order and import-order
 rules, which this repo never adopted.
+
+## Local convention: aliases target direct `src/` subfolders
+
+This is a convention of this repo only, stricter than the general rule
+above (which the published modules plugin checks and which allows more). It
+is not a plugin rule: keep it out of plugin code, the README, and rule docs.
+
+- Every `package.json` `imports` alias points only at the `index.ts` of a
+  direct subfolder of `src/`, e.g. `"#helpers": "./src/helpers/index.ts"`.
+  No alias to a single file, a deeper folder, `src/index.ts`, or anything
+  outside `src/`.
+- Code outside `src/` (`scripts/`, `tests/`, `vite.config.ts`) gets no alias
+  of its own and imports its own files by `./` relative paths. It reaches
+  `src/` only through the aliases, since `../` is banned.
+- No lint rule checks this; check `imports` by hand when adding an alias.
