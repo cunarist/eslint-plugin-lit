@@ -6,12 +6,16 @@ The user's rule, from the Deno days and restated for Node (2026-10-12): "No
 JS, not even JSX/TSX, only TS." Source, scripts, tests, and configs are all
 plain `.ts`. Build output in a gitignored folder is the only JS.
 
-`tsconfig.json`: no `allowJs`, no `jsx`, `"strict": true` written out (Deno
-was strict; user decision 2026-10-17), and the template's strict flags
-(`verbatimModuleSyntax`, `erasableSyntaxOnly`, `allowImportingTsExtensions`,
-`isolatedDeclarations` in packages, `exactOptionalPropertyTypes`,
-`noUncheckedIndexedAccess`). If a tool or framework seems to need a JS or TSX
-file, stop and flag it instead of adding one.
+`tsconfig.json`: no `allowJs`, no `jsx`, and exactly this strictness set
+(user decision 2026-10-18): `strict` (written out; Deno was strict),
+`noUncheckedIndexedAccess`, `noPropertyAccessFromIndexSignature`,
+`noImplicitReturns`, `noUnusedLocals`, `noUnusedParameters`,
+`noImplicitOverride`, `noFallthroughCasesInSwitch`, `erasableSyntaxOnly`. The
+mechanical flags are `verbatimModuleSyntax`, `allowImportingTsExtensions`,
+and `noEmit`; packages also keep `declaration` and `isolatedDeclarations`.
+`exactOptionalPropertyTypes` is off everywhere: writing a key with a
+possibly-`undefined` value is fine. If a tool or framework seems to need a JS
+or TSX file, stop and flag it instead of adding one.
 
 ## No asset imports (2026-10-16, widened 2026-10-17)
 

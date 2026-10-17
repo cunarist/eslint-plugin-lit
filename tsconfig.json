@@ -1,19 +1,20 @@
 {
   "compilerOptions": {
-    "strict": true,
     "target": "es2024",
     "module": "nodenext",
     "noEmit": true,
     "allowImportingTsExtensions": true,
-    "erasableSyntaxOnly": true,
     "verbatimModuleSyntax": true,
     "declaration": true,
     "isolatedDeclarations": true,
-    "exactOptionalPropertyTypes": true,
+    "strict": true,
     "noUncheckedIndexedAccess": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
     "noImplicitOverride": true,
     "noFallthroughCasesInSwitch": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true
+    "erasableSyntaxOnly": true
   }
 }
