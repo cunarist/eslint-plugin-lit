@@ -1,6 +1,5 @@
 import { readdirSync, realpathSync, rmSync, utimesSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
-
 import { beforeAll, describe, expect, it, vi } from "vite-plus/test";
 
 import { writeProject } from "#testing";

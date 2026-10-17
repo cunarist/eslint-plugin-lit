@@ -24,7 +24,6 @@
 
 import { readFileSync, realpathSync, statSync } from "node:fs";
 import { dirname, resolve } from "node:path";
-
 import type { Program } from "oxc-parser";
 import { parseSync } from "oxc-parser";
 import { ResolverFactory } from "oxc-resolver";

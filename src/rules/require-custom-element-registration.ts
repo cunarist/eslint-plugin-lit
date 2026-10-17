@@ -1,8 +1,8 @@
 import type { TSESTree } from "@typescript-eslint/types";
 
 import {
-  type ClassNode,
   classDecorators,
+  type ClassNode,
   docsUrl,
   isLitComponent,
   type LitRule,

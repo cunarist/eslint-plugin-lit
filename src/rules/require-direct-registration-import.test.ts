@@ -1,5 +1,4 @@
 import { join } from "node:path";
-
 import { vi } from "vite-plus/test";
 
 import { spanOf, testRule, writeProject } from "#testing";

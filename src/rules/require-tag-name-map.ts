@@ -2,8 +2,8 @@ import type { RuleTextEdit, RuleTextEditor, SuggestedEdit } from "@eslint/core";
 import type { TSESTree } from "@typescript-eslint/types";
 
 import {
-  type ClassNode,
   classDecorators,
+  type ClassNode,
   customElementTag,
   docsUrl,
   isLitComponent,

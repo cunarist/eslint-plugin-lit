@@ -1,6 +1,5 @@
-import { relative } from "node:path";
-
 import type { TSESTree } from "@typescript-eslint/types";
+import { relative } from "node:path";
 
 import type { LitRule, ParsedElement } from "#helpers";
 import {
