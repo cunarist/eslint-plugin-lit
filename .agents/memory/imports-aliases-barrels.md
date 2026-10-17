@@ -11,7 +11,7 @@ unbuilt. `vp pack` inlines them, so they never reach package consumers.
 
 One rule for every file, never tied to folder or file names (user rule
 2026-10-17; it replaces the earlier "aliases only point at direct `src/`
-subfolders" rule and the "the modules plugin checks only aliased folders" scope):
+subfolders" rule and the "modules plugin checks only aliased folders" scope):
 
 - **An alias may point anywhere** and owns its target. An alias to a
   folder's `index.ts` owns that folder and everything below it; an alias to
