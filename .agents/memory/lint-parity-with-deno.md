@@ -1,5 +1,5 @@
 ---
-description: The lint config must keep every lint check Deno ran; camelcase is Oxlint's id-match; three import-check rules are open gaps
+description: The lint config must keep every lint check Deno ran; camelcase is Oxlint's id-match; three eslint-plugin-modules rules are open gaps
 ---
 
 The user requires lint coverage never to shrink below the Deno setup:
@@ -46,7 +46,7 @@ import (`import { or_middle }`), unresolved global references and assignments
 ambient `declare` cases. Beyond Deno it also checks type parameters, interface
 and type-literal members, class methods, and labels.
 
-Open gaps, not decisions: `import-check`'s `prefer-alias-import`,
+Open gaps, not decisions: the `modules` plugin's `prefer-alias-import`,
 `no-barrel-bypass`, and `no-relative-bypass`. Its `no-self-import`,
 `no-absolute-import`, and `no-parent-import` map to `import/*` rules, and
 `import/no-cycle` stands in for its CLI's cycle check.
