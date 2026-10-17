@@ -10,8 +10,9 @@ plain `.ts`. Build output in a gitignored folder is the only JS.
 (user decision 2026-10-18): `strict` (written out; Deno was strict),
 `noUncheckedIndexedAccess`, `noPropertyAccessFromIndexSignature`,
 `noImplicitReturns`, `noUnusedLocals`, `noUnusedParameters`,
-`noImplicitOverride`, `noFallthroughCasesInSwitch`, `erasableSyntaxOnly`. The
-mechanical flags are `verbatimModuleSyntax`, `allowImportingTsExtensions`,
+`noImplicitOverride`, `noFallthroughCasesInSwitch`, `erasableSyntaxOnly`,
+`allowUnreachableCode: false`, and `allowUnusedLabels: false` (both on in
+Deno; they make unreachable code and unused labels errors). The mechanical flags are `verbatimModuleSyntax`, `allowImportingTsExtensions`,
 and `noEmit`; packages also keep `declaration` and `isolatedDeclarations`.
 `exactOptionalPropertyTypes` is off everywhere: writing a key with a
 possibly-`undefined` value is fine. If a tool or framework seems to need a JS
