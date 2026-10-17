@@ -85,8 +85,8 @@ fails `../` in every file, and TypeScript fails a deeper alias specifier
 (there are no `/*` patterns). Relative paths into an area and overlapping
 aliases are not machine-checked here: keep them out by hand. A probe on
 2026-10-17 with a local eslint-plugin-modules 0.10.0 build caught every form, and the
-repo itself was clean apart from the modules plugin's layer-order and import-order
-rules, which this repo never adopted.
+repo itself was clean of the alias-ownership forms. Its layer-order and
+import-order rules still report errors here; see [[lint-parity-with-deno]].
 
 ## Local convention: aliases target direct `src/` subfolders
 

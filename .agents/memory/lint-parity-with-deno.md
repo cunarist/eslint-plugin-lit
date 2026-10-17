@@ -1,5 +1,5 @@
 ---
-description: The lint config must keep every lint check Deno ran; camelcase is Oxlint's id-match; three eslint-plugin-modules rules are open gaps
+description: The lint config must keep every lint check Deno ran; camelcase is Oxlint's id-match; five eslint-plugin-modules rules are open gaps
 ---
 
 The user requires lint coverage never to shrink below the Deno setup:
@@ -47,7 +47,16 @@ ambient `declare` cases. Beyond Deno it also checks type parameters, interface
 and type-literal members, class methods, and labels.
 
 Open gaps until the modules plugin is on npm: its `prefer-alias-import`,
-`no-barrel-bypass`, and `no-relative-bypass`. After publishing, lit adds
+`no-barrel-bypass`, `no-relative-bypass`, `enforce-layer-order`, and
+`enforce-import-order` (the Deno repo's deno-import-check 0.7.0 already had
+the last two). A probe with the 0.10.0 tarball (2026-10-18, `package.json`
+aliases in layer order) still reports 9 `enforce-layer-order` errors (tests
+in `src/helpers/` importing `#testing` and `#helpers`) and 17
+`enforce-import-order` errors (blank lines between package imports, name
+order inside braces); fix them when lit adopts the plugin. Its 77
+`no-duplicate-import-source` reports flag a type-only import next to a
+value import from the same source, which the Deno rule allows (it did not
+exist in 0.7.0); settle that in the modules plugin first. After publishing, lit adds
 `@cunarist/eslint-plugin-modules` and `@cunarist/eslint-plugin-explicit-types`
 from npm as devDependencies and lints itself with them (plugin chain,
 2026-10-17), which closes these. Its `no-self-import`,
