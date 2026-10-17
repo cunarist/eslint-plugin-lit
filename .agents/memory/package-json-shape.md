@@ -29,8 +29,8 @@ This replaces the earlier hand-written order (metadata, `scripts`, `exports`,
 }
 ```
 
-Every alias targets a direct subfolder of `src/` only; see
-[[imports-aliases-barrels]].
+An alias may point anywhere and owns its target, with no 2 aliases owning
+the same file; see [[imports-aliases-barrels]].
 
 ## Fields
 

@@ -27,9 +27,8 @@ and follow it before reasoning or responding.
 - The only config files are `package.json`, `tsconfig.json`, and
   `vite.config.ts`, plus `package-lock.json`. Only `.ts` source files, configs
   included; there are no `.js`, `.mjs`, `.cjs`, `.jsx`, or `.tsx` files.
-- Every `src/` subfolder's entry file is `index.ts`, its barrel. `scripts/` is
-  flat, with no subfolders and no `index.ts`; its files are imported directly.
-  Every rule lives flat in
+- Entry files are `index.ts` only. `scripts/` is flat, with no subfolders and
+  no `index.ts`. Every rule lives flat in
   `src/rules/<rule-id>.ts`, tested in `src/rules/<rule-id>.test.ts` and
   registered in `src/rules/index.ts`. There are no per-preset folders.
 - Each rule file has one named export with a `Rule` suffix, e.g.
@@ -37,12 +36,14 @@ and follow it before reasoning or responding.
   in `src/plugin/index.ts`; `scripts/project-lint.ts` default-exports its own.
 - Configs are lists of rule ids in `src/plugin/index.ts`, since a rule can belong to
   several. `all` is built from the registry.
-- Shared code comes through `#helpers`, `#rules`, and `#testing`, never a relative path
-  out of a directory. A `package.json` `imports` alias may point only at a
-  direct subfolder of `src/` (`#helpers` → `./src/helpers/index.ts`): never
-  at `src/` itself, a deeper folder, or anything outside `src/` (`scripts/`,
-  root files). Code outside `src/` (`vite.config.ts`, `scripts/`) imports
-  relatively. Our own files are `.ts` only, and `.js` imports are package
+- A `package.json` `imports` alias may point anywhere and owns its target: a
+  folder's `index.ts` owns that folder and everything below it, any other file
+  owns only that file. No file is owned by 2 aliases. Outside an area, only
+  the exact alias reaches it (no deeper alias specifier, no relative path);
+  inside it, relative imports of siblings and subfolders are free. `../` is
+  banned in every file. Files no alias owns import `./` siblings and
+  subfolders freely. No `/*` patterns; `jsPlugins` entries stay path strings.
+  See `imports-aliases-barrels`. Our own files are `.ts` only, and `.js` imports are package
   subpaths (`lit/decorators.js`); `project/no-asset-imports` fails any other
   extension in the last path segment (CSS, JSON, SVG, ...), a query suffix
   like `?raw`, or import attributes. Bare package names, `#` aliases, and
