@@ -1,9 +1,17 @@
 import type { TSESTree } from "@typescript-eslint/types";
-import { parseFragment } from "parse5";
-import type { ParserError } from "parse5";
+import { parseFragment, type ParserError } from "parse5";
 
-import { docsUrl, isHtmlTemplate, rangeLoc, templateSource, walkElements } from "#helpers";
-import type { LitRule, LitRuleContext, ParsedElement, TemplateSource } from "#helpers";
+import {
+  docsUrl,
+  isHtmlTemplate,
+  type LitRule,
+  type LitRuleContext,
+  type ParsedElement,
+  rangeLoc,
+  type TemplateSource,
+  templateSource,
+  walkElements,
+} from "#helpers";
 
 /** Elements that never have an end tag. */
 const VOID_ELEMENTS: ReadonlySet<string> = new Set([

@@ -4,12 +4,15 @@ import {
   docsUrl,
   isHtmlTemplate,
   isTaggedWith,
+  type LitRule,
+  type LitRuleContext,
+  type ParsedElement,
   parseTemplate,
   rangeLoc,
+  type TemplateSource,
   templateSource,
   walkElements,
 } from "#helpers";
-import type { LitRule, LitRuleContext, ParsedElement, TemplateSource } from "#helpers";
 
 /** The HTML namespace; anything else is foreign content. */
 const HTML_NAMESPACE = "http://www.w3.org/1999/xhtml";

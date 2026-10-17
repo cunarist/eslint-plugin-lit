@@ -1,7 +1,12 @@
 import type { TSESTree } from "@typescript-eslint/types";
 
-import { docsUrl, LEGACY_LIT_SOURCES, LIT_CORE_SOURCES } from "#helpers";
-import type { LitRule, LitRuleContext } from "#helpers";
+import {
+  docsUrl,
+  LEGACY_LIT_SOURCES,
+  LIT_CORE_SOURCES,
+  type LitRule,
+  type LitRuleContext,
+} from "#helpers";
 
 /**
  * Names Lit 2 removed, mapped to their replacement. A static list, so `lit`

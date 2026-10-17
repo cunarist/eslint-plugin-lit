@@ -1,13 +1,15 @@
 import type { TSESTree } from "@typescript-eslint/types";
 
-import type { ClassNode, LitRule, LitRuleContext } from "#helpers";
 import {
   classMembers,
+  type ClassNode,
   docsUrl,
   enclosingClass,
   isLitComponent,
   isReactiveProperty,
   keyName,
+  type LitRule,
+  type LitRuleContext,
 } from "#helpers";
 
 /** A mutating array method called on `this.<receiver>`. */

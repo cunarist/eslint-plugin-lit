@@ -11,12 +11,15 @@
 import type { TSESTree } from "@typescript-eslint/types";
 import { resolve } from "node:path";
 
-import type { ClassNode } from "./ast.ts";
-import { classDecorators, memberPath } from "./ast.ts";
-import type { Binding } from "./bindings.ts";
-import { resolveExport, resolveImport } from "./bindings.ts";
-import type { LitTemplateKind, Seen } from "./identity.ts";
-import { extendsLitBase, isCustomElementDecorator, templateKindOf } from "./identity.ts";
+import { classDecorators, type ClassNode, memberPath } from "./ast.ts";
+import { type Binding, resolveExport, resolveImport } from "./bindings.ts";
+import {
+  extendsLitBase,
+  isCustomElementDecorator,
+  type LitTemplateKind,
+  type Seen,
+  templateKindOf,
+} from "./identity.ts";
 import { moduleFromText, realPath } from "./modules.ts";
 import { registrationIndex } from "./registration.ts";
 import type { LitRuleContext, ScopeDefinition, ScopeVariable } from "./rule.ts";

@@ -6,8 +6,7 @@
 
 import type { TSESTree } from "@typescript-eslint/types";
 
-import type { ClassNode } from "./ast.ts";
-import { classMembers, keyName } from "./ast.ts";
+import { classMembers, type ClassNode, keyName } from "./ast.ts";
 import { isReactiveProperty } from "./lit.ts";
 
 /** Name of an object literal key, as `static properties` entries spell it. */

@@ -23,21 +23,20 @@
  * stays current.
  */
 
-import type {
-  Argument,
-  Class,
-  Expression,
-  Program,
-  PropertyKey,
-  Statement,
-  TSInterfaceDeclaration,
+import {
+  type Argument,
+  type Class,
+  type Expression,
+  type Program,
+  type PropertyKey,
+  type Statement,
+  type TSInterfaceDeclaration,
+  Visitor,
 } from "oxc-parser";
-import { Visitor } from "oxc-parser";
 
 import { resolveLocal } from "./bindings.ts";
 import { isCustomElementDecorator } from "./identity.ts";
-import type { ModuleFile } from "./modules.ts";
-import { loadModule, resolveSpecifier } from "./modules.ts";
+import { loadModule, type ModuleFile, resolveSpecifier } from "./modules.ts";
 import { isUnchanged, modified, projectFiles, projectRoot, SOURCE_EXTENSION } from "./project.ts";
 
 /** The interface an element module augments to type its tag. */

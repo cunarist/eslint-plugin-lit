@@ -1,7 +1,6 @@
 import type { TSESTree } from "@typescript-eslint/types";
 
-import type { LitRule } from "#helpers";
-import { docsUrl, enclosingClass, isLitComponent, memberPath } from "#helpers";
+import { docsUrl, enclosingClass, isLitComponent, type LitRule, memberPath } from "#helpers";
 
 /** Receivers that are the component itself. */
 const SELF_RECEIVERS: ReadonlySet<string> = new Set(["this", "this.renderRoot"]);

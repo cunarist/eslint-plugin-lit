@@ -5,8 +5,7 @@
 
 import type { Program } from "oxc-parser";
 
-import type { ModuleFile } from "./modules.ts";
-import { importedModule } from "./modules.ts";
+import { importedModule, type ModuleFile } from "./modules.ts";
 
 /** The file name of a folder's barrel, which stands for the whole folder. */
 const BARREL = "index.ts";

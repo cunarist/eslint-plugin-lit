@@ -1,7 +1,6 @@
 import type { TSESTree } from "@typescript-eslint/types";
 
-import type { LitRule } from "#helpers";
-import { docsUrl, isHtmlTemplate, isSimpleReference } from "#helpers";
+import { docsUrl, isHtmlTemplate, isSimpleReference, type LitRule } from "#helpers";
 
 /**
  * `no-useless-template-literals` — rejects an `html` template whose entire

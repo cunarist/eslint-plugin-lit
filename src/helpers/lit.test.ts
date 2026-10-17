@@ -2,8 +2,7 @@ import type { TSESTree } from "@typescript-eslint/types";
 import { join } from "node:path";
 import { vi } from "vite-plus/test";
 
-import type { ExpectedError } from "#testing";
-import { testRule, writeProject } from "#testing";
+import { type ExpectedError, testRule, writeProject } from "#testing";
 
 import type { ClassNode } from "./ast.ts";
 import type { LitTemplateKind } from "./identity.ts";

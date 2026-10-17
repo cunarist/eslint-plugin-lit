@@ -1,7 +1,6 @@
 import type { TSESTree } from "@typescript-eslint/types";
 
-import type { ClassNode, LitRule } from "#helpers";
-import { docsUrl, isLitComponent, keyName } from "#helpers";
+import { type ClassNode, docsUrl, isLitComponent, keyName, type LitRule } from "#helpers";
 
 /** Lifecycle members a component may never override. */
 const BANNED_LIFECYCLE: ReadonlySet<string> = new Set([

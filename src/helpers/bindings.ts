@@ -16,8 +16,7 @@ import type {
   VariableDeclarator,
 } from "oxc-parser";
 
-import type { ModuleFile } from "./modules.ts";
-import { importedModule } from "./modules.ts";
+import { importedModule, type ModuleFile } from "./modules.ts";
 
 /** A declaration a name can finally point at. */
 export type DeclarationNode = Class | FunctionNode | VariableDeclarator;

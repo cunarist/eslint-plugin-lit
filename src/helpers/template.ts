@@ -9,8 +9,7 @@
 
 import type { SourceLocation } from "@eslint/core";
 import type { TSESTree } from "@typescript-eslint/types";
-import { parseFragment } from "parse5";
-import type { DefaultTreeAdapterMap } from "parse5";
+import { type DefaultTreeAdapterMap, parseFragment } from "parse5";
 
 import type { LitSourceCode } from "./rule.ts";
 

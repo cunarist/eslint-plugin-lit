@@ -1,11 +1,15 @@
 import type { TSESTree } from "@typescript-eslint/types";
 
-import type { LitRule, LitRuleContext, ParsedElement, SourceRange, TemplateSource } from "#helpers";
 import {
   docsUrl,
   isHtmlTemplate,
+  type LitRule,
+  type LitRuleContext,
+  type ParsedElement,
   parseTemplate,
   rangeLoc,
+  type SourceRange,
+  type TemplateSource,
   templateSource,
   walkElements,
 } from "#helpers";

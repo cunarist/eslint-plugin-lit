@@ -1,7 +1,13 @@
 import type { TSESTree } from "@typescript-eslint/types";
 
-import type { LitRule } from "#helpers";
-import { bindingPlaceholder, docsUrl, isHtmlTemplate, rangeLoc, templateSource } from "#helpers";
+import {
+  bindingPlaceholder,
+  docsUrl,
+  isHtmlTemplate,
+  type LitRule,
+  rangeLoc,
+  templateSource,
+} from "#helpers";
 
 /** Where a binding cannot go, and how the message names that place. */
 interface Position {

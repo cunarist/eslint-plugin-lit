@@ -2,14 +2,15 @@ import type { TSESTree } from "@typescript-eslint/types";
 
 import {
   classMembers,
+  type ClassNode,
   docsUrl,
   findDecorator,
   isLitComponent,
   keyName,
+  type LitRule,
   objectKeyName,
   staticPropertiesEntries,
 } from "#helpers";
-import type { ClassNode, LitRule } from "#helpers";
 
 /**
  * Whether a member name is private. A leading underscore is only a

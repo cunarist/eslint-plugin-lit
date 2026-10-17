@@ -4,13 +4,14 @@ import {
   bindingPlaceholder,
   docsUrl,
   isHtmlTemplate,
+  type LitRule,
+  type ParsedElement,
   parseTemplate,
   placeholderIndices,
   rangeLoc,
   templateSource,
   walkElements,
 } from "#helpers";
-import type { LitRule, ParsedElement } from "#helpers";
 
 /** Each sigil whose binding must stand alone, and what it binds. */
 const SIGILS: ReadonlyMap<string, string> = new Map([

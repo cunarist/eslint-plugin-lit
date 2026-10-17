@@ -1,7 +1,6 @@
 import type { TSESTree } from "@typescript-eslint/types";
 
-import type { LitRule } from "#helpers";
-import { docsUrl, keyName } from "#helpers";
+import { docsUrl, keyName, type LitRule } from "#helpers";
 
 /** Directive names that put an unparsed string into the DOM. */
 const BANNED: ReadonlySet<string> = new Set(["unsafeHTML", "unsafeSVG"]);

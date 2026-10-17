@@ -1,11 +1,12 @@
 import type { TSESTree } from "@typescript-eslint/types";
 import { relative } from "node:path";
 
-import type { LitRule, ParsedElement } from "#helpers";
 import {
   docsUrl,
   isHtmlTemplate,
   lintedRealPath,
+  type LitRule,
+  type ParsedElement,
   parseTemplate,
   rangeLoc,
   runtimeImports,

@@ -1,5 +1,4 @@
-import type { ExpectedError } from "#testing";
-import { spanOf, testRule } from "#testing";
+import { type ExpectedError, spanOf, testRule } from "#testing";
 
 import { noArrayMutationWithoutReassignRule } from "./no-array-mutation-without-reassign.ts";
 

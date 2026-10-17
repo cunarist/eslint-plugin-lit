@@ -1,7 +1,6 @@
 import type { TSESTree } from "@typescript-eslint/types";
 
-import type { LitRule } from "#helpers";
-import { docsUrl, importedLocalName, isContextModule, memberPath } from "#helpers";
+import { docsUrl, importedLocalName, isContextModule, type LitRule, memberPath } from "#helpers";
 
 /**
  * `require-context-type` — requires `createContext()` from `@lit/context` to

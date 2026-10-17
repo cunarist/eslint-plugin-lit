@@ -1,7 +1,6 @@
 import type { TSESTree } from "@typescript-eslint/types";
 
-import type { LitRule } from "#helpers";
-import { docsUrl, enclosingClass, isLitComponent, keyName } from "#helpers";
+import { docsUrl, enclosingClass, isLitComponent, keyName, type LitRule } from "#helpers";
 
 /**
  * `no-async-render` — rejects an `async render()` on a Lit component.

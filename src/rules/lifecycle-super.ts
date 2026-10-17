@@ -1,8 +1,14 @@
 import type { SuggestedEdit } from "@eslint/core";
 import type { TSESTree } from "@typescript-eslint/types";
 
-import type { LitRule, LitRuleContext } from "#helpers";
-import { docsUrl, enclosingMethod, isLitComponent, keyName } from "#helpers";
+import {
+  docsUrl,
+  enclosingMethod,
+  isLitComponent,
+  keyName,
+  type LitRule,
+  type LitRuleContext,
+} from "#helpers";
 
 /**
  * Lifecycle methods whose overrides must chain to `super`.
