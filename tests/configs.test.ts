@@ -7,10 +7,8 @@ const NAMESPACE = "lit-robust";
 
 /**
  * The rules of the Deno package this one ports, by the Deno plugin each came
- * from, which is the config it belongs to, plus `no-self-sync` and
- * `no-sync-in-render` in `reactive-controller`, the two rules added since. A
- * repo-only rule goes in `scripts/project-lint.ts`, never in the published
- * plugin.
+ * from, which is the config it belongs to. A repo-only rule goes in
+ * `scripts/project-lint.ts`, never in the published plugin.
  */
 const DENO_GROUPS: Map<string, string[]> = new Map([
   [
@@ -96,8 +94,6 @@ const DENO_GROUPS: Map<string, string[]> = new Map([
       "lifecycle-allowlist",
       "no-component-disposables",
       "no-fetch-in-component",
-      "no-self-sync",
-      "no-sync-in-render",
       "no-timers",
       "paired-lifecycle",
       "self-registration",
@@ -117,7 +113,7 @@ const DENO_GROUPS: Map<string, string[]> = new Map([
   ],
 ]);
 
-/** Every rule of the plugin. */
+/** Every rule of the Deno package. */
 const DENO_RULES: string[] = [...DENO_GROUPS.values()].flat();
 
 /** The preset configs, by the name of the Deno plugin each stands for. */
@@ -136,8 +132,8 @@ function configRuleIds(name: string): string[] {
 }
 
 describe("plugin.rules", () => {
-  it("holds exactly the 82 rules of the Deno package plus the 2 added since, 84 in all", () => {
-    expect(DENO_RULES).toHaveLength(84);
+  it("holds exactly the 82 rules of the Deno package", () => {
+    expect(DENO_RULES).toHaveLength(82);
     expect(Object.keys(plugin.rules ?? {}).toSorted()).toEqual(DENO_RULES.toSorted());
   });
 });
@@ -158,7 +154,7 @@ describe("plugin.configs", () => {
 
 describe("plugin.configs.all", () => {
   it("turns on every rule in the plugin", () => {
-    expect(Object.keys(plugin.configs.all.rules ?? {})).toHaveLength(84);
+    expect(Object.keys(plugin.configs.all.rules ?? {})).toHaveLength(82);
     const ruleIds = Object.keys(plugin.rules ?? {}).map((id) => `${NAMESPACE}/${id}`);
     expect(Object.keys(plugin.configs.all.rules ?? {}).toSorted()).toEqual(ruleIds.toSorted());
   });

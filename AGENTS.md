@@ -8,7 +8,7 @@ and follow it before reasoning or responding.
 ## Project
 
 - **eslint-plugin-lit-robust**: lint rules for Lit web components. One
-  ESLint plugin that also runs under Oxlint. Namespace `lit-robust`, 84
+  ESLint plugin that also runs under Oxlint. Namespace `lit-robust`, 82
   rules in five presets (`core`, `strict`, `dom-ref`, `reactive-controller`,
   `naming`).
 - The package's only export is the default one, the plugin. Configs live at
@@ -17,10 +17,8 @@ and follow it before reasoning or responding.
 - Runs on Node.js 22.18+; Bun is not a supported target. Built with Vite+ (`vp`):
   Oxlint, Oxfmt, type checking, Vitest, tsdown.
 - Ported from the Deno package `jsr:@cunarist/deno-lint-plugin-lit`. The
-  published plugin mirrors exactly its 82 rules, same names and behavior;
-  flag anything that cannot be 1:1 to the user. The only rules added since are
-  `no-self-sync` and `no-sync-in-render` (0.9.0, user-approved, moved from the
-  app repos' `scripts/project-lint.ts`).
+  published plugin mirrors exactly its 82 rules, same names and behavior,
+  nothing added or removed; flag anything that cannot be 1:1 to the user.
   Status and open questions: `port-from-deno`.
 
 ## Rules

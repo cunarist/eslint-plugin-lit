@@ -1,11 +1,11 @@
 ---
-description: Lit's 84-rule list is generated into the README like the other plugins; config emojis are fixed
+description: Lit's 82-rule list is generated into the README like the other plugins; config emojis are fixed
 ---
 
 The generator setup shared by every plugin repo is in
 [[plugin-docs-and-readme]]. What differs here:
 
-- The 84-rule list is generated into `README.md`, as in explicit-types and
+- The 82-rule list is generated into `README.md`, as in explicit-types and
   modules; it keeps the decorators note between the usage snippets and the
   configs.
 - Config emojis: 🧩 core, 🔒 strict, 🔗 dom-ref, 🔄 reactive-controller,

@@ -1,10 +1,9 @@
 ---
-description: The published plugin is the Deno package's 82 rules plus no-self-sync and no-sync-in-render, pinned by tests/configs.test.ts; scripts/project-lint.ts is explicit-types' copy retyped for Lit
+description: The published plugin is exactly the Deno package's 82 rules, pinned by tests/configs.test.ts; scripts/project-lint.ts is explicit-types' copy retyped for Lit
 ---
 
-The published plugin contains the 82 rules of
-`cunarist/deno-lint-plugin-lit` ([[plugin-port-exact-deno-rules]]) plus
-`no-self-sync` and `no-sync-in-render`, added in 0.9.0;
+The published plugin contains exactly the 82 rules of
+`cunarist/deno-lint-plugin-lit` ([[plugin-port-exact-deno-rules]]);
 `tests/configs.test.ts` pins that list.
 
 Everything this repo enforces only on itself lives in
