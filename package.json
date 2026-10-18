@@ -1,6 +1,6 @@
 {
   "name": "eslint-plugin-lit-robust",
-  "version": "0.8.0",
+  "version": "0.8.1",
   "description": "Lit web component lint rules for ESLint and Oxlint.",
   "keywords": [
     "eslint",
