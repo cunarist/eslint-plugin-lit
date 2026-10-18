@@ -11,13 +11,13 @@ unbuilt. `vp pack` inlines them, so they never reach package consumers.
 
 One rule for every file, never tied to folder or file names (user rule
 2026-10-17; it replaces the earlier "aliases only point at direct `src/`
-subfolders" rule as the general rule, and the "modules plugin checks only aliased folders" scope; this repo keeps the old rule as a local convention, see the last section):
+subfolders" rule as the general rule, and the "import-structure plugin checks only aliased folders" scope; this repo keeps the old rule as a local convention, see the last section):
 
 - **An alias may point anywhere** and owns its target. An alias to a
   folder's `index.ts` owns that folder and everything below it; an alias to
   any other file owns only that file.
 - **No overlap.** No file may be owned by 2 aliases: no alias inside another
-  alias's area, and no 2 aliases with the same target. the modules plugin's
+  alias's area, and no 2 aliases with the same target. the import-structure plugin's
   `enforce-layer-order` reports it once at the top of every file 2 aliases
   claim. Fix by merging the aliases or moving files apart.
 - **Outside an area, only the exact alias reaches it.** A deeper alias
@@ -75,16 +75,16 @@ Relative imports are written with the `.ts` extension.
 
 ## What checks it in this repo
 
-This repo does not lint itself with eslint-plugin-modules yet: it is not on
+This repo does not lint itself with eslint-plugin-import-structure yet: it is not on
 npm, and no `file:` or tarball specifier may be committed. The plugin chain
-(user decision 2026-10-17) is modules (lowest) → explicit-types → lit, no
+(user decision 2026-10-17) is import-structure (lowest) → explicit-types → lit-robust, no
 cycles: once both are published, lit lints itself with its own source plus
-modules and explicit-types from npm (see [[lint-parity-with-deno]]). Until
+import-structure and explicit-types from npm (see [[lint-parity-with-deno]]). Until
 then, `import/no-relative-parent-imports`
 fails `../` in every file, and TypeScript fails a deeper alias specifier
 (there are no `/*` patterns). Relative paths into an area and overlapping
 aliases are not machine-checked here: keep them out by hand. A probe on
-2026-10-17 with a local eslint-plugin-modules 0.10.0 build caught every form, and the
+2026-10-17 with a local eslint-plugin-import-structure 0.10.0 build caught every form, and the
 repo itself was clean of the alias-ownership forms. Its layer-order and
 import-order rules are clean too since 2026-10-18; see
 [[lint-parity-with-deno]].
@@ -92,7 +92,7 @@ import-order rules are clean too since 2026-10-18; see
 ## Local convention: aliases target direct `src/` subfolders
 
 This is a convention of this repo only, stricter than the general rule
-above (which the published modules plugin checks and which allows more). It
+above (which the published import-structure plugin checks and which allows more). It
 is not a plugin rule: keep it out of plugin code, the README, and rule docs.
 
 - Every `package.json` `imports` alias points only at the `index.ts` of a

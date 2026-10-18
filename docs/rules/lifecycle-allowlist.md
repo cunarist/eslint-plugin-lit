@@ -1,8 +1,8 @@
-# @cunarist/lit/lifecycle-allowlist
+# lit-robust/lifecycle-allowlist
 
 📝 Disallow Lit component lifecycle overrides other than `styles` and `render`.
 
-💼 This rule is enabled in the 🔄 `reactive-controller` [config](https://github.com/cunarist/eslint-plugin-lit#configs-and-rules).
+💼 This rule is enabled in the 🔄 `reactive-controller` [config](https://github.com/cunarist/eslint-plugin-lit-robust#configs-and-rules).
 
 <!-- end auto-generated rule header -->
 

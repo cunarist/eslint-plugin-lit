@@ -67,7 +67,7 @@ const oxlintTester: OxlintRunner = new OxlintRuleTester({
  * type-checks it, and is deleted after the test file. Returns its root.
  */
 export function writeProject(files: Map<string, string>): string {
-  const root = mkdtempSync(join(tmpdir(), "eslint-plugin-lit-"));
+  const root = mkdtempSync(join(tmpdir(), "eslint-plugin-lit-robust-"));
   symlinkSync(resolve("node_modules"), join(root, "node_modules"), "dir");
   for (const [path, text] of files) {
     const file = join(root, path);

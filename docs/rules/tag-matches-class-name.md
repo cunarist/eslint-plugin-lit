@@ -1,8 +1,8 @@
-# @cunarist/lit/tag-matches-class-name
+# lit-robust/tag-matches-class-name
 
 📝 Require a `@customElement` tag to name its class.
 
-💼 This rule is enabled in the 🔤 `naming` [config](https://github.com/cunarist/eslint-plugin-lit#configs-and-rules).
+💼 This rule is enabled in the 🔤 `naming` [config](https://github.com/cunarist/eslint-plugin-lit-robust#configs-and-rules).
 
 <!-- end auto-generated rule header -->
 

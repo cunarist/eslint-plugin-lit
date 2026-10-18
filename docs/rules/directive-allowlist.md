@@ -1,8 +1,8 @@
-# @cunarist/lit/directive-allowlist
+# lit-robust/directive-allowlist
 
 📝 Disallow Lit directive imports other than `ref` and `repeat`.
 
-💼 This rule is enabled in the 🔒 `strict` [config](https://github.com/cunarist/eslint-plugin-lit#configs-and-rules).
+💼 This rule is enabled in the 🔒 `strict` [config](https://github.com/cunarist/eslint-plugin-lit-robust#configs-and-rules).
 
 <!-- end auto-generated rule header -->
 

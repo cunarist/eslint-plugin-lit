@@ -1,8 +1,8 @@
-# @cunarist/lit/prefer-static-styles
+# lit-robust/prefer-static-styles
 
 📝 Enforce `static styles` over `<style>` elements in templates.
 
-💼 This rule is enabled in the 🧩 `core` [config](https://github.com/cunarist/eslint-plugin-lit#configs-and-rules).
+💼 This rule is enabled in the 🧩 `core` [config](https://github.com/cunarist/eslint-plugin-lit-robust#configs-and-rules).
 
 <!-- end auto-generated rule header -->
 

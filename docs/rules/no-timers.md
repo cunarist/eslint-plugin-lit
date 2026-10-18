@@ -1,8 +1,8 @@
-# @cunarist/lit/no-timers
+# lit-robust/no-timers
 
 📝 Disallow `setTimeout`, `setInterval`, `requestAnimationFrame`, and `queueMicrotask` inside a Lit component.
 
-💼 This rule is enabled in the 🔄 `reactive-controller` [config](https://github.com/cunarist/eslint-plugin-lit#configs-and-rules).
+💼 This rule is enabled in the 🔄 `reactive-controller` [config](https://github.com/cunarist/eslint-plugin-lit-robust#configs-and-rules).
 
 <!-- end auto-generated rule header -->
 

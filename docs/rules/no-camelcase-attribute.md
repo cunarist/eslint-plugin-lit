@@ -1,8 +1,8 @@
-# @cunarist/lit/no-camelcase-attribute
+# lit-robust/no-camelcase-attribute
 
 📝 Disallow uppercase letters and underscores in `html` template attribute names.
 
-💼 This rule is enabled in the 🔤 `naming` [config](https://github.com/cunarist/eslint-plugin-lit#configs-and-rules).
+💼 This rule is enabled in the 🔤 `naming` [config](https://github.com/cunarist/eslint-plugin-lit-robust#configs-and-rules).
 
 💡 This rule is manually fixable by [editor suggestions](https://eslint.org/docs/latest/use/core-concepts#rule-suggestions).
 

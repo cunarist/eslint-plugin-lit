@@ -1,8 +1,8 @@
-# @cunarist/lit/no-duplicate-template-bindings
+# lit-robust/no-duplicate-template-bindings
 
 📝 Disallow binding the same attribute, property, or event twice on one element.
 
-💼 This rule is enabled in the 🧩 `core` [config](https://github.com/cunarist/eslint-plugin-lit#configs-and-rules).
+💼 This rule is enabled in the 🧩 `core` [config](https://github.com/cunarist/eslint-plugin-lit-robust#configs-and-rules).
 
 💡 This rule is manually fixable by [editor suggestions](https://eslint.org/docs/latest/use/core-concepts#rule-suggestions).
 

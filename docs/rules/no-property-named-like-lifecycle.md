@@ -1,8 +1,8 @@
-# @cunarist/lit/no-property-named-like-lifecycle
+# lit-robust/no-property-named-like-lifecycle
 
 📝 Disallow fields and reactive properties named after Lit lifecycle members.
 
-💼 This rule is enabled in the 🧩 `core` [config](https://github.com/cunarist/eslint-plugin-lit#configs-and-rules).
+💼 This rule is enabled in the 🧩 `core` [config](https://github.com/cunarist/eslint-plugin-lit-robust#configs-and-rules).
 
 <!-- end auto-generated rule header -->
 

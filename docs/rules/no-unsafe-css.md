@@ -1,8 +1,8 @@
-# @cunarist/lit/no-unsafe-css
+# lit-robust/no-unsafe-css
 
 📝 Disallow `unsafeCSS` from Lit.
 
-💼 This rule is enabled in the 🧩 `core` [config](https://github.com/cunarist/eslint-plugin-lit#configs-and-rules).
+💼 This rule is enabled in the 🧩 `core` [config](https://github.com/cunarist/eslint-plugin-lit-robust#configs-and-rules).
 
 <!-- end auto-generated rule header -->
 

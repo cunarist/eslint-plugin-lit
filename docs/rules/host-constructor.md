@@ -1,8 +1,8 @@
-# @cunarist/lit/host-constructor
+# lit-robust/host-constructor
 
 📝 Require a reactive controller constructor to be exactly `constructor(host: ReactiveControllerHost)`.
 
-💼 This rule is enabled in the 🔄 `reactive-controller` [config](https://github.com/cunarist/eslint-plugin-lit#configs-and-rules).
+💼 This rule is enabled in the 🔄 `reactive-controller` [config](https://github.com/cunarist/eslint-plugin-lit-robust#configs-and-rules).
 
 💡 This rule is manually fixable by [editor suggestions](https://eslint.org/docs/latest/use/core-concepts#rule-suggestions).
 

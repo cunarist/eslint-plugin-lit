@@ -1,8 +1,8 @@
-# @cunarist/lit/require-dispatch-on-this
+# lit-robust/require-dispatch-on-this
 
 📝 Require a component's events to be dispatched on the component itself.
 
-💼 This rule is enabled in the 🧩 `core` [config](https://github.com/cunarist/eslint-plugin-lit#configs-and-rules).
+💼 This rule is enabled in the 🧩 `core` [config](https://github.com/cunarist/eslint-plugin-lit-robust#configs-and-rules).
 
 💡 This rule is manually fixable by [editor suggestions](https://eslint.org/docs/latest/use/core-concepts#rule-suggestions).
 

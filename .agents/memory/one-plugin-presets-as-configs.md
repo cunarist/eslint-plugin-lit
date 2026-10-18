@@ -1,14 +1,14 @@
 ---
-description: One plugin, namespace @cunarist/lit, default export only; Deno's five plugins survive as plugin.configs, plus all
+description: One plugin, namespace lit-robust, default export only; Deno's five plugins survive as plugin.configs, plus all
 ---
 
 The shared shape (default export only, `all`, no `recommended`) is in
 [[plugin-exports-and-configs]]; this note is lit's mapping.
 
 ESLint's convention is one plugin per package, named from the package:
-`@cunarist/eslint-plugin-lit` becomes the namespace `@cunarist/lit`. Oxlint
+`eslint-plugin-lit-robust` becomes the namespace `lit-robust`. Oxlint
 normalizes `meta.name` the same way, so a rule id is
-`@cunarist/lit/no-unsafe-html` under both. Deno's ids were
+`lit-robust/no-unsafe-html` under both. Deno's ids were
 `lit-core/no-unsafe-html` and so on; the rule names themselves are unchanged.
 
 The Deno package was five plugins, `lit-core`, `lit-strict`, `lit-dom-ref`,
@@ -27,7 +27,7 @@ exported every rule and each group's record (`coreRules`, ...) and its
 `#helpers` for composing custom plugins; none of that is public any more.
 ESLint users list `plugin.configs.<name>`; Oxlint, whose plugins turn no rule on
 by themselves, spreads `plugin.configs.<name>.rules` next to
-`jsPlugins: ["@cunarist/eslint-plugin-lit"]`. In Deno, loading a plugin turned
+`jsPlugins: ["eslint-plugin-lit-robust"]`. In Deno, loading a plugin turned
 on every rule in it, which is what a config does now.
 
 **No rule takes settings**, as in Deno: the directive allowlist, tag prefix,

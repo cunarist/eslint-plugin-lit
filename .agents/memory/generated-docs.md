@@ -11,6 +11,6 @@ The generator setup shared by every plugin repo is in
 - Config emojis: 🧩 core, 🔒 strict, 🔗 dom-ref, 🔄 reactive-controller,
   🔤 naming. Emojis with a U+FE0F variation selector (🏷️, 🕳️) were avoided.
 - `urlConfigs` links the configs to the README "Configs and rules" section.
-- Rule doc headers are titled `@cunarist/lit/<rule>`. Keep `ts` examples valid
+- Rule doc headers are titled `lit-robust/<rule>`. Keep `ts` examples valid
   at top level; wrap a bare `readonly` or `private` modifier in a
   `class … { }` body.

@@ -1,8 +1,8 @@
-# @cunarist/lit/no-dispatch-in-render
+# lit-robust/no-dispatch-in-render
 
 📝 Disallow dispatching events from `render()`.
 
-💼 This rule is enabled in the 🧩 `core` [config](https://github.com/cunarist/eslint-plugin-lit#configs-and-rules).
+💼 This rule is enabled in the 🧩 `core` [config](https://github.com/cunarist/eslint-plugin-lit-robust#configs-and-rules).
 
 <!-- end auto-generated rule header -->
 

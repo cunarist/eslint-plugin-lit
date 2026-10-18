@@ -1,5 +1,5 @@
 {
-  "name": "@cunarist/eslint-plugin-lit",
+  "name": "eslint-plugin-lit-robust",
   "version": "0.8.0",
   "description": "Lit web component lint rules for ESLint and Oxlint.",
   "keywords": [
@@ -7,12 +7,18 @@
     "eslint-plugin",
     "eslintplugin",
     "lit",
-    "oxlint"
+    "lit-element",
+    "oxlint",
+    "web-components"
   ],
+  "homepage": "https://github.com/cunarist/eslint-plugin-lit-robust#readme",
+  "bugs": {
+    "url": "https://github.com/cunarist/eslint-plugin-lit-robust/issues"
+  },
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/cunarist/eslint-plugin-lit.git"
+    "url": "git+https://github.com/cunarist/eslint-plugin-lit-robust.git"
   },
   "files": [
     "dist"
@@ -83,6 +89,6 @@
       "Rule Details",
       "When Not To Use It"
     ],
-    "urlConfigs": "https://github.com/cunarist/eslint-plugin-lit#configs-and-rules"
+    "urlConfigs": "https://github.com/cunarist/eslint-plugin-lit-robust#configs-and-rules"
   }
 }

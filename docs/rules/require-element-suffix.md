@@ -1,8 +1,8 @@
-# @cunarist/lit/require-element-suffix
+# lit-robust/require-element-suffix
 
 📝 Require registered component class names to end in `Element`.
 
-💼 This rule is enabled in the 🔤 `naming` [config](https://github.com/cunarist/eslint-plugin-lit#configs-and-rules).
+💼 This rule is enabled in the 🔤 `naming` [config](https://github.com/cunarist/eslint-plugin-lit-robust#configs-and-rules).
 
 <!-- end auto-generated rule header -->
 

@@ -1,8 +1,8 @@
-# @cunarist/lit/no-partial-property-binding
+# lit-robust/no-partial-property-binding
 
 📝 Disallow property, event, and boolean bindings that are not the whole attribute value.
 
-💼 This rule is enabled in the 🧩 `core` [config](https://github.com/cunarist/eslint-plugin-lit#configs-and-rules).
+💼 This rule is enabled in the 🧩 `core` [config](https://github.com/cunarist/eslint-plugin-lit-robust#configs-and-rules).
 
 <!-- end auto-generated rule header -->
 

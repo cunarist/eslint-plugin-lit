@@ -1,8 +1,8 @@
-# @cunarist/lit/binding-positions
+# lit-robust/binding-positions
 
 📝 Disallow bindings in tag names, closing tags, and attribute names.
 
-💼 This rule is enabled in the 🧩 `core` [config](https://github.com/cunarist/eslint-plugin-lit#configs-and-rules).
+💼 This rule is enabled in the 🧩 `core` [config](https://github.com/cunarist/eslint-plugin-lit-robust#configs-and-rules).
 
 <!-- end auto-generated rule header -->
 

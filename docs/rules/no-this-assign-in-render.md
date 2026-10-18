@@ -1,8 +1,8 @@
-# @cunarist/lit/no-this-assign-in-render
+# lit-robust/no-this-assign-in-render
 
 📝 Disallow assigning to `this` or its members inside `render()`.
 
-💼 This rule is enabled in the 🧩 `core` [config](https://github.com/cunarist/eslint-plugin-lit#configs-and-rules).
+💼 This rule is enabled in the 🧩 `core` [config](https://github.com/cunarist/eslint-plugin-lit-robust#configs-and-rules).
 
 <!-- end auto-generated rule header -->
 
