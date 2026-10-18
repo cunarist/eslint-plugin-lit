@@ -17,7 +17,9 @@ removed. `tests/configs.test.ts` pins the rule list.
   ([[project-lint-plugin]]).
 - **New rules after the port** are separate, later PRs the user asks for
   (explicit-types PR 2 adds `single-capital-type-params` to `naming`). Never
-  slip a new rule into a port PR.
+  slip a new rule into a port PR. lit-robust 0.9.0 added `no-self-sync` and
+  `no-sync-in-render` to `reactive-controller` (84 rules), moved from the app
+  repos' `scripts/project-lint.ts`.
 - **Differences forced by Node** are allowed and documented: `deno.json`
   `imports` → `package.json` `imports`, `mod.ts` → `index.ts` (the import-structure plugin's
   `enforce-mod-file` keeps its name but now requires `index.ts`, and lit's

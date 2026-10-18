@@ -55,7 +55,9 @@ import { noQueryDecoratorsRule } from "./no-query-decorators.ts";
 import { noRequestUpdateInUpdatedRule } from "./no-request-update-in-updated.ts";
 import { noScriptInTemplateRule } from "./no-script-in-template.ts";
 import { noSelfClosingNonVoidRule } from "./no-self-closing-non-void.ts";
+import { noSelfSyncRule } from "./no-self-sync.ts";
 import { noStringContextKeyRule } from "./no-string-context-key.ts";
+import { noSyncInRenderRule } from "./no-sync-in-render.ts";
 import { noThisAssignInRenderRule } from "./no-this-assign-in-render.ts";
 import { noThisInStaticStylesRule } from "./no-this-in-static-styles.ts";
 import { noTimersRule } from "./no-timers.ts";
@@ -145,7 +147,9 @@ export const rules: Map<string, LitRule> = new Map([
   ["no-request-update-in-updated", noRequestUpdateInUpdatedRule],
   ["no-script-in-template", noScriptInTemplateRule],
   ["no-self-closing-non-void", noSelfClosingNonVoidRule],
+  ["no-self-sync", noSelfSyncRule],
   ["no-string-context-key", noStringContextKeyRule],
+  ["no-sync-in-render", noSyncInRenderRule],
   ["no-this-assign-in-render", noThisAssignInRenderRule],
   ["no-this-in-static-styles", noThisInStaticStylesRule],
   ["no-timers", noTimersRule],
