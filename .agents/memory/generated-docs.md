@@ -6,8 +6,8 @@ The generator setup shared by every plugin repo is in
 [[plugin-docs-and-readme]]. What differs here:
 
 - The 82-rule list is generated into `README.md`, as in explicit-types and
-  modules, so the README runs past the 60-line budget; it keeps the decorators
-  note between the usage snippets and the configs.
+  modules; it keeps the decorators note between the usage snippets and the
+  configs.
 - Config emojis: 🧩 core, 🔒 strict, 🔗 dom-ref, 🔄 reactive-controller,
   🔤 naming. Emojis with a U+FE0F variation selector (🏷️, 🕳️) were avoided.
 - `urlConfigs` links the configs to the README "Configs and rules" section.
