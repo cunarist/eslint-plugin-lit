@@ -54,9 +54,9 @@ clean of the layer and import order errors: `#testing` no longer imports
 `#helpers` (`testRule` takes `@eslint/core`'s `RuleDefinition`), so
 `#helpers` sits above `#testing` and its tests import their own files
 relatively. The plugin checks type-only imports like any other import. Its
-75 `no-duplicate-import-source` reports flag a type-only import next to a
-value import from the same source, which the Deno rule allows (it did not
-exist in 0.7.0); settle that in the modules plugin first. After publishing, lit adds
+`no-duplicate-import-source` (not in 0.7.0) flags an `import type` next to a
+value import from the same source, so each such pair is one declaration with
+inline `type` specifiers; the probe finds none left. After publishing, lit adds
 `@cunarist/eslint-plugin-modules` and `@cunarist/eslint-plugin-explicit-types`
 from npm as devDependencies and lints itself with them (plugin chain,
 2026-10-17), which closes these. Its `no-self-import`,
