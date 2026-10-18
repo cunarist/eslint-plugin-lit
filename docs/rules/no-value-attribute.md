@@ -1,8 +1,8 @@
-# @cunarist/lit/no-value-attribute
+# lit-robust/no-value-attribute
 
 📝 Disallow a bound `value` attribute on a form control.
 
-💼 This rule is enabled in the 🧩 `core` [config](https://github.com/cunarist/eslint-plugin-lit#configs-and-rules).
+💼 This rule is enabled in the 🧩 `core` [config](https://github.com/cunarist/eslint-plugin-lit-robust#configs-and-rules).
 
 💡 This rule is manually fixable by [editor suggestions](https://eslint.org/docs/latest/use/core-concepts#rule-suggestions).
 

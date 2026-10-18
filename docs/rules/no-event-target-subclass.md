@@ -1,8 +1,8 @@
-# @cunarist/lit/no-event-target-subclass
+# lit-robust/no-event-target-subclass
 
 📝 Disallow classes that extend `EventTarget`.
 
-💼 This rule is enabled in the 🔒 `strict` [config](https://github.com/cunarist/eslint-plugin-lit#configs-and-rules).
+💼 This rule is enabled in the 🔒 `strict` [config](https://github.com/cunarist/eslint-plugin-lit-robust#configs-and-rules).
 
 <!-- end auto-generated rule header -->
 

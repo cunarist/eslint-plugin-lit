@@ -1,21 +1,21 @@
-# eslint-plugin-lit
+# eslint-plugin-lit-robust
 
 [Lit](https://lit.dev) web component rules for both [ESLint](https://eslint.org) and [Oxlint](https://oxc.rs/docs/guide/usage/linter): they catch the Lit mistakes that still compile.\
-Install with `npm install --save-dev @cunarist/eslint-plugin-lit`. Requires Node.js 22.18+.
+Install with `npm install --save-dev eslint-plugin-lit-robust`. Requires Node.js 22.18+.
 
 ```ts
 // Oxlint, through Vite+: vite.config.ts
-import plugin from "@cunarist/eslint-plugin-lit";
+import plugin from "eslint-plugin-lit-robust";
 import { defineConfig } from "vite-plus";
 const rules = { ...plugin.configs.core.rules };
 export default defineConfig({
-  lint: { jsPlugins: ["@cunarist/eslint-plugin-lit"], rules },
+  lint: { jsPlugins: ["eslint-plugin-lit-robust"], rules },
 });
 ```
 
 ```ts
 // ESLint 9: eslint.config.ts (loading a .ts config needs jiti)
-import plugin from "@cunarist/eslint-plugin-lit";
+import plugin from "eslint-plugin-lit-robust";
 import { parser } from "typescript-eslint";
 const ts = { files: ["**/*.ts"], languageOptions: { parser } };
 export default [ts, plugin.configs.core];
@@ -37,12 +37,12 @@ from look-alikes, so `lit` must be installed where the linted code is.
 <!-- prettier-ignore-start -->
 <!-- begin auto-generated rules list -->
 
-💼 [Configurations](https://github.com/cunarist/eslint-plugin-lit#configs-and-rules) enabled in.\
-🧩 Set in the `core` [configuration](https://github.com/cunarist/eslint-plugin-lit#configs-and-rules).\
-🔗 Set in the `dom-ref` [configuration](https://github.com/cunarist/eslint-plugin-lit#configs-and-rules).\
-🔤 Set in the `naming` [configuration](https://github.com/cunarist/eslint-plugin-lit#configs-and-rules).\
-🔄 Set in the `reactive-controller` [configuration](https://github.com/cunarist/eslint-plugin-lit#configs-and-rules).\
-🔒 Set in the `strict` [configuration](https://github.com/cunarist/eslint-plugin-lit#configs-and-rules).
+💼 [Configurations](https://github.com/cunarist/eslint-plugin-lit-robust#configs-and-rules) enabled in.\
+🧩 Set in the `core` [configuration](https://github.com/cunarist/eslint-plugin-lit-robust#configs-and-rules).\
+🔗 Set in the `dom-ref` [configuration](https://github.com/cunarist/eslint-plugin-lit-robust#configs-and-rules).\
+🔤 Set in the `naming` [configuration](https://github.com/cunarist/eslint-plugin-lit-robust#configs-and-rules).\
+🔄 Set in the `reactive-controller` [configuration](https://github.com/cunarist/eslint-plugin-lit-robust#configs-and-rules).\
+🔒 Set in the `strict` [configuration](https://github.com/cunarist/eslint-plugin-lit-robust#configs-and-rules).
 
 | Name                                                                                           | Description                                                                                                | 💼 |
 | :--------------------------------------------------------------------------------------------- | :--------------------------------------------------------------------------------------------------------- | :- |

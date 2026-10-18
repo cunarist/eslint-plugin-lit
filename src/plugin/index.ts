@@ -1,8 +1,8 @@
 /**
- * `@cunarist/eslint-plugin-lit` — lint rules for Lit web components.
+ * `eslint-plugin-lit-robust` — lint rules for Lit web components.
  *
- * One plugin, namespace `@cunarist/lit`, so a rule id reads
- * `@cunarist/lit/no-unsafe-html`. The rules come in five presets, one per
+ * One plugin, namespace `lit-robust`, so a rule id reads
+ * `lit-robust/no-unsafe-html`. The rules come in five presets, one per
  * plugin of the Deno package this ports — `core`, `strict`, `dom-ref`,
  * `reactive-controller`, and `naming` — plus `all`, which turns on every rule.
  * The plugin is the only export; its configs are at `plugin.configs`.
@@ -15,7 +15,7 @@ import type { ConfigObject, Plugin } from "@eslint/core";
 import { rules } from "#rules";
 
 /** The prefix of every rule id, as ESLint derives it from the package name. */
-const NAMESPACE = "@cunarist/lit";
+const NAMESPACE = "lit-robust";
 
 /**
  * The `core` preset — Lit code that does not do what it looks like it does.
@@ -151,7 +151,7 @@ const basePlugin: Plugin = {
     // Written out rather than imported from `package.json`, so the source has
     // only `.ts` imports. A release bumps both; `tests/package-meta.test.ts`
     // fails if they drift apart.
-    name: "@cunarist/eslint-plugin-lit",
+    name: "eslint-plugin-lit-robust",
     version: "0.8.0",
     namespace: NAMESPACE,
   },

@@ -1,8 +1,8 @@
-# @cunarist/lit/no-duplicate-property-declaration
+# lit-robust/no-duplicate-property-declaration
 
 📝 Disallow declaring a reactive property both by decorator and in `static properties`.
 
-💼 This rule is enabled in the 🧩 `core` [config](https://github.com/cunarist/eslint-plugin-lit#configs-and-rules).
+💼 This rule is enabled in the 🧩 `core` [config](https://github.com/cunarist/eslint-plugin-lit-robust#configs-and-rules).
 
 <!-- end auto-generated rule header -->
 

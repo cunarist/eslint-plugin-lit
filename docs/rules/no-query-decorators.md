@@ -1,8 +1,8 @@
-# @cunarist/lit/no-query-decorators
+# lit-robust/no-query-decorators
 
 📝 Disallow the Lit `@query` decorators and their imports.
 
-💼 This rule is enabled in the 🔗 `dom-ref` [config](https://github.com/cunarist/eslint-plugin-lit#configs-and-rules).
+💼 This rule is enabled in the 🔗 `dom-ref` [config](https://github.com/cunarist/eslint-plugin-lit-robust#configs-and-rules).
 
 <!-- end auto-generated rule header -->
 

@@ -1,8 +1,8 @@
-# @cunarist/lit/no-async-render
+# lit-robust/no-async-render
 
 📝 Disallow an `async` `render()` on Lit components.
 
-💼 This rule is enabled in the 🧩 `core` [config](https://github.com/cunarist/eslint-plugin-lit#configs-and-rules).
+💼 This rule is enabled in the 🧩 `core` [config](https://github.com/cunarist/eslint-plugin-lit-robust#configs-and-rules).
 
 <!-- end auto-generated rule header -->
 

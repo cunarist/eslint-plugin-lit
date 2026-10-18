@@ -1,8 +1,8 @@
-# @cunarist/lit/no-native-attributes
+# lit-robust/no-native-attributes
 
 📝 Disallow reactive properties named after global HTML attributes.
 
-💼 This rule is enabled in the 🧩 `core` [config](https://github.com/cunarist/eslint-plugin-lit#configs-and-rules).
+💼 This rule is enabled in the 🧩 `core` [config](https://github.com/cunarist/eslint-plugin-lit-robust#configs-and-rules).
 
 <!-- end auto-generated rule header -->
 

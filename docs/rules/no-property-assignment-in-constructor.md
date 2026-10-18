@@ -1,8 +1,8 @@
-# @cunarist/lit/no-property-assignment-in-constructor
+# lit-robust/no-property-assignment-in-constructor
 
 📝 Disallow assigning a reactive property in the constructor.
 
-💼 This rule is enabled in the 🔒 `strict` [config](https://github.com/cunarist/eslint-plugin-lit#configs-and-rules).
+💼 This rule is enabled in the 🔒 `strict` [config](https://github.com/cunarist/eslint-plugin-lit-robust#configs-and-rules).
 
 <!-- end auto-generated rule header -->
 

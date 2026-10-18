@@ -1,8 +1,8 @@
-# @cunarist/lit/no-duplicate-tag-registration
+# lit-robust/no-duplicate-tag-registration
 
 📝 Disallow registering the same custom element tag twice in one file.
 
-💼 This rule is enabled in the 🧩 `core` [config](https://github.com/cunarist/eslint-plugin-lit#configs-and-rules).
+💼 This rule is enabled in the 🧩 `core` [config](https://github.com/cunarist/eslint-plugin-lit-robust#configs-and-rules).
 
 <!-- end auto-generated rule header -->
 

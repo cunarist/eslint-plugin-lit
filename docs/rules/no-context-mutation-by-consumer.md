@@ -1,8 +1,8 @@
-# @cunarist/lit/no-context-mutation-by-consumer
+# lit-robust/no-context-mutation-by-consumer
 
 📝 Disallow assigning to fields declared with `@consume`.
 
-💼 This rule is enabled in the 🧩 `core` [config](https://github.com/cunarist/eslint-plugin-lit#configs-and-rules).
+💼 This rule is enabled in the 🧩 `core` [config](https://github.com/cunarist/eslint-plugin-lit-robust#configs-and-rules).
 
 <!-- end auto-generated rule header -->
 

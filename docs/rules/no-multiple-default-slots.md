@@ -1,8 +1,8 @@
-# @cunarist/lit/no-multiple-default-slots
+# lit-robust/no-multiple-default-slots
 
 📝 Disallow more than one default `<slot>` in a template.
 
-💼 This rule is enabled in the 🧩 `core` [config](https://github.com/cunarist/eslint-plugin-lit#configs-and-rules).
+💼 This rule is enabled in the 🧩 `core` [config](https://github.com/cunarist/eslint-plugin-lit-robust#configs-and-rules).
 
 <!-- end auto-generated rule header -->
 

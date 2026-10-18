@@ -1,8 +1,8 @@
-# @cunarist/lit/no-legacy-imports
+# lit-robust/no-legacy-imports
 
 📝 Disallow Lit 1 module paths and the names Lit 2 removed.
 
-💼 This rule is enabled in the 🧩 `core` [config](https://github.com/cunarist/eslint-plugin-lit#configs-and-rules).
+💼 This rule is enabled in the 🧩 `core` [config](https://github.com/cunarist/eslint-plugin-lit-robust#configs-and-rules).
 
 💡 This rule is manually fixable by [editor suggestions](https://eslint.org/docs/latest/use/core-concepts#rule-suggestions).
 

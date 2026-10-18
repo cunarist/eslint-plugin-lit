@@ -1,8 +1,8 @@
-# @cunarist/lit/require-tag-prefix
+# lit-robust/require-tag-prefix
 
 📝 Require a namespace prefix in custom element names.
 
-💼 This rule is enabled in the 🔤 `naming` [config](https://github.com/cunarist/eslint-plugin-lit#configs-and-rules).
+💼 This rule is enabled in the 🔤 `naming` [config](https://github.com/cunarist/eslint-plugin-lit-robust#configs-and-rules).
 
 <!-- end auto-generated rule header -->
 

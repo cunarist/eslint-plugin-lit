@@ -3,7 +3,7 @@ import { describe, expect, it } from "vite-plus/test";
 
 import plugin from "#plugin";
 
-const NAMESPACE = "@cunarist/lit";
+const NAMESPACE = "lit-robust";
 
 /**
  * The rules of the Deno package this one ports, by the Deno plugin each came

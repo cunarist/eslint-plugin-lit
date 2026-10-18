@@ -1,8 +1,8 @@
-# @cunarist/lit/prefer-create-ref
+# lit-robust/prefer-create-ref
 
 📝 Enforce `createRef` over a `ref` callback that only stashes the element.
 
-💼 This rule is enabled in the 🔗 `dom-ref` [config](https://github.com/cunarist/eslint-plugin-lit#configs-and-rules).
+💼 This rule is enabled in the 🔗 `dom-ref` [config](https://github.com/cunarist/eslint-plugin-lit-robust#configs-and-rules).
 
 <!-- end auto-generated rule header -->
 

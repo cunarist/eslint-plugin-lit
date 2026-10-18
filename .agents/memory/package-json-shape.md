@@ -11,7 +11,7 @@ This replaces the earlier hand-written order (metadata, `scripts`, `exports`,
 
 ```jsonc
 {
-  "name": "@cunarist/eslint-plugin-x",
+  "name": "eslint-plugin-x",
   "version": "0.1.0",
   "description": "...",
   "keywords": ["eslint", "eslint-plugin", "eslintplugin", "oxlint"],

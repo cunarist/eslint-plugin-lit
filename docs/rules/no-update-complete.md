@@ -1,8 +1,8 @@
-# @cunarist/lit/no-update-complete
+# lit-robust/no-update-complete
 
 📝 Disallow accessing `updateComplete`.
 
-💼 This rule is enabled in the 🔒 `strict` [config](https://github.com/cunarist/eslint-plugin-lit#configs-and-rules).
+💼 This rule is enabled in the 🔒 `strict` [config](https://github.com/cunarist/eslint-plugin-lit-robust#configs-and-rules).
 
 <!-- end auto-generated rule header -->
 

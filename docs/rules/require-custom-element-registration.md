@@ -1,8 +1,8 @@
-# @cunarist/lit/require-custom-element-registration
+# lit-robust/require-custom-element-registration
 
 📝 Require every Lit component in a file to be registered as a custom element.
 
-💼 This rule is enabled in the 🔒 `strict` [config](https://github.com/cunarist/eslint-plugin-lit#configs-and-rules).
+💼 This rule is enabled in the 🔒 `strict` [config](https://github.com/cunarist/eslint-plugin-lit-robust#configs-and-rules).
 
 <!-- end auto-generated rule header -->
 

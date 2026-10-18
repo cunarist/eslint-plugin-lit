@@ -1,8 +1,8 @@
-# @cunarist/lit/svg-template-for-svg-content
+# lit-robust/svg-template-for-svg-content
 
 📝 Require SVG-only elements to sit in an `svg` template or an `<svg>` element.
 
-💼 This rule is enabled in the 🧩 `core` [config](https://github.com/cunarist/eslint-plugin-lit#configs-and-rules).
+💼 This rule is enabled in the 🧩 `core` [config](https://github.com/cunarist/eslint-plugin-lit-robust#configs-and-rules).
 
 <!-- end auto-generated rule header -->
 

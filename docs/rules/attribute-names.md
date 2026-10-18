@@ -1,8 +1,8 @@
-# @cunarist/lit/attribute-names
+# lit-robust/attribute-names
 
 📝 Require an explicit `attribute` option on camelCase reactive properties.
 
-💼 This rule is enabled in the 🔤 `naming` [config](https://github.com/cunarist/eslint-plugin-lit#configs-and-rules).
+💼 This rule is enabled in the 🔤 `naming` [config](https://github.com/cunarist/eslint-plugin-lit-robust#configs-and-rules).
 
 💡 This rule is manually fixable by [editor suggestions](https://eslint.org/docs/latest/use/core-concepts#rule-suggestions).
 

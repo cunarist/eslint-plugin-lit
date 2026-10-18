@@ -7,8 +7,8 @@ and follow it before reasoning or responding.
 
 ## Project
 
-- **@cunarist/eslint-plugin-lit**: lint rules for Lit web components. One
-  ESLint plugin that also runs under Oxlint. Namespace `@cunarist/lit`, 82
+- **eslint-plugin-lit-robust**: lint rules for Lit web components. One
+  ESLint plugin that also runs under Oxlint. Namespace `lit-robust`, 82
   rules in five presets (`core`, `strict`, `dom-ref`, `reactive-controller`,
   `naming`).
 - The package's only export is the default one, the plugin. Configs live at

@@ -1,5 +1,5 @@
 ---
-description: The lint config must keep every lint check Deno ran; camelcase is Oxlint's id-match; five eslint-plugin-modules rules are open gaps
+description: The lint config must keep every lint check Deno ran; camelcase is Oxlint's id-match; five eslint-plugin-import-structure rules are open gaps
 ---
 
 The user requires lint coverage never to shrink below the Deno setup:
@@ -46,7 +46,7 @@ import (`import { or_middle }`), unresolved global references and assignments
 ambient `declare` cases. Beyond Deno it also checks type parameters, interface
 and type-literal members, class methods, and labels.
 
-Open gaps until the modules plugin is on npm: its `prefer-alias-import`,
+Open gaps until the import-structure plugin is on npm: its `prefer-alias-import`,
 `no-barrel-bypass`, `no-relative-bypass`, `enforce-layer-order`, and
 `enforce-import-order` (the Deno repo's deno-import-check 0.7.0 already had
 the last two). A probe with the 0.10.0 tarball (2026-10-18) finds the code
@@ -57,7 +57,7 @@ relatively. The plugin checks type-only imports like any other import. Its
 `no-duplicate-import-source` (not in 0.7.0) flags an `import type` next to a
 value import from the same source, so each such pair is one declaration with
 inline `type` specifiers; the probe finds none left. After publishing, lit adds
-`@cunarist/eslint-plugin-modules` and `@cunarist/eslint-plugin-explicit-types`
+`eslint-plugin-import-structure` and `eslint-plugin-explicit-types`
 from npm as devDependencies and lints itself with them (plugin chain,
 2026-10-17), which closes these. Its `no-self-import`,
 `no-absolute-import`, and `no-parent-import` map to `import/*` rules, and
