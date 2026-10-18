@@ -6,6 +6,7 @@
  */
 
 export * from "./ast.ts";
+export * from "./controller-sync.ts";
 export * from "./controllers.ts";
 export * from "./docs.ts";
 export * from "./lit.ts";

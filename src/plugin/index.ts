@@ -109,6 +109,8 @@ const REACTIVE_CONTROLLER: string[] = [
   "lifecycle-allowlist",
   "no-component-disposables",
   "no-fetch-in-component",
+  "no-self-sync",
+  "no-sync-in-render",
   "no-timers",
   "paired-lifecycle",
   "self-registration",
@@ -152,7 +154,7 @@ const basePlugin: Plugin = {
     // only `.ts` imports. A release bumps both; `tests/package-meta.test.ts`
     // fails if they drift apart.
     name: "eslint-plugin-lit-robust",
-    version: "0.8.1",
+    version: "0.9.0",
     namespace: NAMESPACE,
   },
   rules: Object.fromEntries(rules),
