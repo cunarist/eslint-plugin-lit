@@ -1,7 +1,13 @@
 import type { TSESTree } from "@typescript-eslint/types";
 
-import { docsUrl, isHtmlTemplate, quasiOffsets, rangeLoc, templateSource } from "#helpers";
-import type { LitRule } from "#helpers";
+import {
+  docsUrl,
+  isHtmlTemplate,
+  type LitRule,
+  quasiOffsets,
+  rangeLoc,
+  templateSource,
+} from "#helpers";
 
 const HEX: RegExp = /^[\da-f]*$/iu;
 

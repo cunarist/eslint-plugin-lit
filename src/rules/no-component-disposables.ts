@@ -1,7 +1,13 @@
 import type { TSESTree } from "@typescript-eslint/types";
 
-import type { LitRule, LitRuleContext } from "#helpers";
-import { docsUrl, enclosingClass, isLitComponent, memberPath } from "#helpers";
+import {
+  docsUrl,
+  enclosingClass,
+  isLitComponent,
+  type LitRule,
+  type LitRuleContext,
+  memberPath,
+} from "#helpers";
 
 /** Constructors that hand back something needing an explicit release. */
 const DISPOSABLE_CONSTRUCTORS: ReadonlySet<string> = new Set([

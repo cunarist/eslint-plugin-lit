@@ -5,8 +5,7 @@
 
 import type { TSESTree } from "@typescript-eslint/types";
 
-import type { ClassNode } from "./ast.ts";
-import { findConstructor, memberPath, typeReferenceName } from "./ast.ts";
+import { type ClassNode, findConstructor, memberPath, typeReferenceName } from "./ast.ts";
 
 /** Whether a class declares `implements ReactiveController`. */
 export function hasReactiveControllerInterface(node: ClassNode): boolean {

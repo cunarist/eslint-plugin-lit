@@ -1,31 +1,39 @@
 ---
-description: Every file is .ts (no js/mjs/cjs/jsx/tsx, configs included); imports are .ts or package .js subpaths, never assets; JSON/SVG become .ts modules
+description: Every file is .ts (no js/mjs/cjs/jsx/tsx, configs included); imports are .ts or package .js/.mts/.mjs subpaths, never assets; JSON/SVG become .ts modules
 ---
 
 The user's rule, from the Deno days and restated for Node (2026-10-12): "No
 JS, not even JSX/TSX, only TS." Source, scripts, tests, and configs are all
 plain `.ts`. Build output in a gitignored folder is the only JS.
 
-`tsconfig.json`: no `allowJs`, no `jsx`, and the template's strict flags
-(`verbatimModuleSyntax`, `erasableSyntaxOnly`, `allowImportingTsExtensions`,
-`isolatedDeclarations` in packages, `exactOptionalPropertyTypes`,
-`noUncheckedIndexedAccess`). If a tool or framework seems to need a JS or TSX
-file, stop and flag it instead of adding one.
+`tsconfig.json`: no `allowJs`, no `jsx`, and exactly this strictness set
+(user decision 2026-10-18): `strict` (written out; Deno was strict),
+`noUncheckedIndexedAccess`, `noPropertyAccessFromIndexSignature`,
+`noImplicitReturns`, `noUnusedLocals`, `noUnusedParameters`,
+`noImplicitOverride`, `noFallthroughCasesInSwitch`, `erasableSyntaxOnly`,
+`allowUnreachableCode: false`, and `allowUnusedLabels: false` (both on in
+Deno; they make unreachable code and unused labels errors). The mechanical flags are `verbatimModuleSyntax`, `allowImportingTsExtensions`,
+and `noEmit`; packages also keep `declaration` and `isolatedDeclarations`.
+`exactOptionalPropertyTypes` is off everywhere: writing a key with a
+possibly-`undefined` value is fine. If a tool or framework seems to need a JS
+or TSX file, stop and flag it instead of adding one.
 
-## No asset imports (2026-10-16)
+## No asset imports (2026-10-16, widened 2026-10-17)
 
 `project/no-asset-imports` (in `scripts/project-lint.ts`, renamed from
-`no-non-ts-imports`) allows `.ts` and `.js` imports: `.js` covers package
-subpaths such as `lit/decorators.js`, while this repo's own files stay `.ts`.
-It fails:
+`no-non-ts-imports`) fails:
 
 - a relative, absolute, `#`, or package-subpath specifier whose last segment
-  has any other extension: `.css`, `.json`, `.svg`, `.mjs`, `.tsx`;
+  has an extension other than `.ts`, `.js`, `.mts`, or `.mjs`: `.css`,
+  `.json`, `.svg`, `.jsx`, `.tsx`, `.cjs`, and every other asset;
 - any `?query` suffix (`?raw`, `?url`, `?inline`);
 - any import attributes (`with { type: "json" }`, `with { type: "text" }`).
 
-Bare packages (`lit`, `@types/json-schema`, `lodash.debounce`), `#` aliases,
-and `node:` builtins pass. `@fortawesome/x/svgs/a.svg` fails.
+`.js`, `.mts`, and `.mjs` are allowed (user decision, 2026-10-17) for package
+subpaths such as `lit/decorators.js` or `pdfjs-dist/legacy/build/pdf.mjs`;
+this repo's own files are still `.ts` only. `.jsx` and `.tsx` stay banned. Bare
+packages (`lit`, `@types/json-schema`, `lodash.debounce`), `#` aliases, and
+`node:` builtins pass. `@fortawesome/x/svgs/a.svg` fails.
 
 ```ts
 import "./theme.css"; // no

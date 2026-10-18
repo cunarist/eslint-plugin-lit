@@ -1,7 +1,13 @@
 import type { TSESTree } from "@typescript-eslint/types";
 
-import type { ClassNode, LitRule } from "#helpers";
-import { classDecorators, docsUrl, isLitComponent, memberPath } from "#helpers";
+import {
+  classDecorators,
+  type ClassNode,
+  docsUrl,
+  isLitComponent,
+  type LitRule,
+  memberPath,
+} from "#helpers";
 
 /** Names the spec reserves, which the registry rejects despite the hyphen. */
 const RESERVED_NAMES: ReadonlySet<string> = new Set([

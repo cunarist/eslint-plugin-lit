@@ -1,7 +1,6 @@
 import type { TSESTree } from "@typescript-eslint/types";
 
-import type { LitRule } from "#helpers";
-import { docsUrl, enclosingClass, isLitComponent } from "#helpers";
+import { docsUrl, enclosingClass, isLitComponent, type LitRule } from "#helpers";
 
 /** Scheduling primitives banned inside a component. */
 const TIMER_NAMES: ReadonlySet<string> = new Set([

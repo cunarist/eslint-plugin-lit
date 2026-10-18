@@ -1,7 +1,13 @@
 import type { TSESTree } from "@typescript-eslint/types";
 
-import type { ClassNode, LitRule } from "#helpers";
-import { docsUrl, isLitComponent, isReactiveController, keyName } from "#helpers";
+import {
+  type ClassNode,
+  docsUrl,
+  isLitComponent,
+  isReactiveController,
+  keyName,
+  type LitRule,
+} from "#helpers";
 
 /**
  * Find an instance member by name, whether it is written as a method or as a

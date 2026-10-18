@@ -2,14 +2,15 @@ import type { TSESTree } from "@typescript-eslint/types";
 
 import {
   classMembers,
+  type ClassNode,
   docsUrl,
   isLitComponent,
   keyName,
   LIT_LIFECYCLE_MEMBERS,
+  type LitRule,
   objectKeyName,
   staticPropertiesEntries,
 } from "#helpers";
-import type { ClassNode, LitRule } from "#helpers";
 
 /** Whether a name collides with a Lit lifecycle member. */
 function isLifecycleName(name: string): boolean {

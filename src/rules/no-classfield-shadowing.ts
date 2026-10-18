@@ -1,12 +1,14 @@
 import type { TSESTree } from "@typescript-eslint/types";
 
-import type { ClassMember, ClassNode, LitRule } from "#helpers";
 import {
+  type ClassMember,
   classMembers,
+  type ClassNode,
   docsUrl,
   isLitComponent,
   isReactiveProperty,
   keyName,
+  type LitRule,
   parentOf,
 } from "#helpers";
 

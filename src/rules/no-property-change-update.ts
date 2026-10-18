@@ -5,10 +5,10 @@ import {
   enclosingClass,
   isInsideMethod,
   isLitComponent,
+  type LitRule,
   reactivePropertyNames,
   thisPropertyName,
 } from "#helpers";
-import type { LitRule } from "#helpers";
 
 /**
  * `no-property-change-update` — rejects assigning to a reactive property

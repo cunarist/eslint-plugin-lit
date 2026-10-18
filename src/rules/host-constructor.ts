@@ -1,18 +1,70 @@
 import type { TSESTree } from "@typescript-eslint/types";
 
-import type { ClassNode, LitRuleContext } from "#helpers";
 import {
+  type ClassNode,
   docsUrl,
   findConstructor,
   isLitComponent,
   isReactiveController,
   type LitRule,
+  type LitRuleContext,
   typeReferenceName,
 } from "#helpers";
 
 /** A class in scope for the controller rules. */
 function isControllerClass(node: ClassNode, context: LitRuleContext): boolean {
   return !isLitComponent(node, context) && isReactiveController(node);
+}
+
+/** Reports the first way the lone `host` parameter strays from the contract. */
+function checkHost(context: LitRuleContext, first: TSESTree.Parameter): void {
+  if (first.type !== "Identifier" || first.name !== "host") {
+    context.report({ node: first, messageId: "parameterName" });
+    return;
+  }
+  if (first.optional) {
+    const question = first.range[0] + first.name.length;
+    context.report({
+      node: first,
+      messageId: "optionalHost",
+      suggest: [
+        {
+          messageId: "makeRequired",
+          fix: (fixer) => fixer.removeRange([question, question + 1]),
+        },
+      ],
+    });
+    return;
+  }
+  if (typeReferenceName(first.typeAnnotation ?? null) !== "ReactiveControllerHost") {
+    context.report({ node: first, messageId: "hostType" });
+  }
+}
+
+/** Reports the first way a controller's constructor strays from the contract. */
+function check(context: LitRuleContext, node: ClassNode): void {
+  if (!isControllerClass(node, context)) {
+    return;
+  }
+  const constructor = findConstructor(node);
+  if (constructor === null) {
+    context.report({ node: node.id ?? node, messageId: "missingConstructor" });
+    return;
+  }
+  const { params } = constructor.value;
+  const [first] = params;
+  const last = params.at(-1);
+  if (params.length !== 1 || first === undefined || last === undefined) {
+    context.report({
+      ...(first === undefined || last === undefined
+        ? { node: constructor.key }
+        : { loc: { start: first.loc.start, end: last.loc.end } }),
+      messageId: "parameterCount",
+      data: { count: String(params.length) },
+    });
+    return;
+  }
+  checkHost(context, first);
 }
 
 /**
@@ -46,57 +98,12 @@ export const hostConstructorRule: LitRule = {
     },
   },
   create(context) {
-    /** Reports the first way a controller's constructor strays from the contract. */
-    function check(node: ClassNode): void {
-      if (!isControllerClass(node, context)) {
-        return;
-      }
-      const constructor = findConstructor(node);
-      if (constructor === null) {
-        context.report({ node: node.id ?? node, messageId: "missingConstructor" });
-        return;
-      }
-      const { params } = constructor.value;
-      const [first] = params;
-      const last = params.at(-1);
-      if (params.length !== 1 || first === undefined || last === undefined) {
-        context.report({
-          ...(first === undefined || last === undefined
-            ? { node: constructor.key }
-            : { loc: { start: first.loc.start, end: last.loc.end } }),
-          messageId: "parameterCount",
-          data: { count: String(params.length) },
-        });
-        return;
-      }
-      if (first.type !== "Identifier" || first.name !== "host") {
-        context.report({ node: first, messageId: "parameterName" });
-        return;
-      }
-      if (first.optional) {
-        const question = first.range[0] + first.name.length;
-        context.report({
-          node: first,
-          messageId: "optionalHost",
-          suggest: [
-            {
-              messageId: "makeRequired",
-              fix: (fixer) => fixer.removeRange([question, question + 1]),
-            },
-          ],
-        });
-        return;
-      }
-      if (typeReferenceName(first.typeAnnotation ?? null) !== "ReactiveControllerHost") {
-        context.report({ node: first, messageId: "hostType" });
-      }
-    }
     return {
       ClassDeclaration(node: TSESTree.ClassDeclaration): void {
-        check(node);
+        check(context, node);
       },
       ClassExpression(node: TSESTree.ClassExpression): void {
-        check(node);
+        check(context, node);
       },
     };
   },

@@ -7,16 +7,14 @@
  * tester is configured here.
  */
 
+import type { RuleDefinition } from "@eslint/core";
+import tsParser from "@typescript-eslint/parser";
+import { RuleTester as EslintRuleTester } from "eslint";
 import { mkdirSync, mkdtempSync, rmSync, symlinkSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { dirname, join, resolve } from "node:path";
-
-import tsParser from "@typescript-eslint/parser";
-import { RuleTester as EslintRuleTester } from "eslint";
 import { RuleTester as OxlintRuleTester } from "vite-plus/lint/plugins-dev";
 import { afterAll, describe, it } from "vite-plus/test";
-
-import type { LitRule } from "#helpers";
 
 EslintRuleTester.describe = describe;
 EslintRuleTester.it = it;
@@ -158,7 +156,7 @@ function position(code: string, offset: number): Position {
  * `<rule> > eslint|oxlint`, so a full test name contains ` eslint ` or
  * ` oxlint `, which is what CI filters each host's step by.
  */
-export function testRule(name: string, rule: LitRule, cases: RuleCases): void {
+export function testRule(name: string, rule: RuleDefinition, cases: RuleCases): void {
   const valid = cases.valid.map(validCase);
   describe(name, () => {
     describe("eslint", () => {

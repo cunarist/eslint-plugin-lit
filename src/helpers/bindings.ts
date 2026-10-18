@@ -7,6 +7,8 @@
 import type {
   Class,
   Declaration,
+  ExportDefaultDeclaration,
+  ExportNamedDeclaration,
   Function as FunctionNode,
   ModuleExportName,
   Program,
@@ -14,8 +16,7 @@ import type {
   VariableDeclarator,
 } from "oxc-parser";
 
-import type { ModuleFile } from "./modules.ts";
-import { importedModule } from "./modules.ts";
+import { importedModule, type ModuleFile } from "./modules.ts";
 
 /** A declaration a name can finally point at. */
 export type DeclarationNode = Class | FunctionNode | VariableDeclarator;
@@ -151,6 +152,86 @@ export function resolveImport(
   return resolveExport(target, imported, visited);
 }
 
+/** One export name being looked up in one module. */
+interface ExportLookup {
+  module: ModuleFile;
+  name: string;
+  visited: Visited;
+}
+
+/**
+ * A statement's answer for an export name: a binding, or `null`, when the
+ * statement settles the name; `undefined` when it says nothing about it.
+ */
+type ExportAnswer = Binding | null | undefined;
+
+/** What an `export const …` or `export { … }` statement says about the name. */
+function namedExportAnswer(lookup: ExportLookup, statement: ExportNamedDeclaration): ExportAnswer {
+  const { module, name, visited } = lookup;
+  if (statement.declaration !== null) {
+    const found = declaredNames(statement.declaration).find(([declared]) => declared === name);
+    return found === undefined ? undefined : { kind: "declaration", module, node: found[1] };
+  }
+  for (const specifier of statement.specifiers) {
+    if (exportName(specifier.exported) !== name) {
+      continue;
+    }
+    const local = exportName(specifier.local);
+    return statement.source === null
+      ? resolveLocal(module, local, visited)
+      : resolveImport(module.path, statement.source.value, local, visited);
+  }
+  return undefined;
+}
+
+/** What an `export default …` statement says about the name. */
+function defaultExportAnswer(
+  lookup: ExportLookup,
+  statement: ExportDefaultDeclaration,
+): ExportAnswer {
+  if (lookup.name !== "default") {
+    return undefined;
+  }
+  const declaration = statement.declaration;
+  if (
+    declaration.type === "ClassDeclaration" ||
+    declaration.type === "ClassExpression" ||
+    declaration.type === "FunctionDeclaration"
+  ) {
+    return { kind: "declaration", module: lookup.module, node: declaration };
+  }
+  if (declaration.type === "Identifier") {
+    return resolveLocal(lookup.module, declaration.name, lookup.visited);
+  }
+  return null;
+}
+
+/**
+ * What one top-level statement says about the name. An unnamed `export *`
+ * says nothing yet: its source is collected into `starSources` instead.
+ */
+function statementAnswer(
+  lookup: ExportLookup,
+  statement: Program["body"][number],
+  starSources: string[],
+): ExportAnswer {
+  switch (statement.type) {
+    case "ExportNamedDeclaration":
+      return namedExportAnswer(lookup, statement);
+    case "ExportDefaultDeclaration":
+      return defaultExportAnswer(lookup, statement);
+    case "ExportAllDeclaration":
+      if (statement.exported === null) {
+        starSources.push(statement.source.value);
+      } else if (exportName(statement.exported) === lookup.name) {
+        return resolveImport(lookup.module.path, statement.source.value, "*", lookup.visited);
+      }
+      return undefined;
+    default:
+      return undefined;
+  }
+}
+
 /** What a module's export `name` finally points at, across files. */
 export function resolveExport(
   module: ModuleFile,
@@ -162,57 +243,12 @@ export function resolveExport(
     return null;
   }
   visited.add(key);
+  const lookup: ExportLookup = { module, name, visited };
   const starSources: string[] = [];
   for (const statement of module.program.body) {
-    switch (statement.type) {
-      case "ExportNamedDeclaration": {
-        if (statement.declaration !== null) {
-          const found = declaredNames(statement.declaration).find(
-            ([declared]) => declared === name,
-          );
-          if (found !== undefined) {
-            return { kind: "declaration", module, node: found[1] };
-          }
-          break;
-        }
-        for (const specifier of statement.specifiers) {
-          if (exportName(specifier.exported) !== name) {
-            continue;
-          }
-          const local = exportName(specifier.local);
-          return statement.source === null
-            ? resolveLocal(module, local, visited)
-            : resolveImport(module.path, statement.source.value, local, visited);
-        }
-        break;
-      }
-      case "ExportDefaultDeclaration": {
-        if (name !== "default") {
-          break;
-        }
-        const declaration = statement.declaration;
-        if (
-          declaration.type === "ClassDeclaration" ||
-          declaration.type === "ClassExpression" ||
-          declaration.type === "FunctionDeclaration"
-        ) {
-          return { kind: "declaration", module, node: declaration };
-        }
-        if (declaration.type === "Identifier") {
-          return resolveLocal(module, declaration.name, visited);
-        }
-        return null;
-      }
-      case "ExportAllDeclaration": {
-        if (statement.exported === null) {
-          starSources.push(statement.source.value);
-        } else if (exportName(statement.exported) === name) {
-          return resolveImport(module.path, statement.source.value, "*", visited);
-        }
-        break;
-      }
-      default:
-        break;
+    const answer = statementAnswer(lookup, statement, starSources);
+    if (answer !== undefined) {
+      return answer;
     }
   }
   if (name === "default") {

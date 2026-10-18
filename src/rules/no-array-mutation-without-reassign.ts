@@ -1,14 +1,23 @@
 import type { TSESTree } from "@typescript-eslint/types";
 
-import type { ClassNode, LitRule } from "#helpers";
 import {
   classMembers,
+  type ClassNode,
   docsUrl,
   enclosingClass,
   isLitComponent,
   isReactiveProperty,
   keyName,
+  type LitRule,
+  type LitRuleContext,
 } from "#helpers";
+
+/** A mutating array method called on `this.<receiver>`. */
+interface Mutation {
+  node: TSESTree.CallExpression;
+  receiver: string;
+  method: string;
+}
 
 /** Array methods that mutate the receiver in place. */
 const MUTATING_METHODS: ReadonlySet<string> = new Set([
@@ -86,6 +95,51 @@ function thisPropertyName(node: TSESTree.Node): string | null {
 }
 
 /**
+ * The new array a statement-level `push` or `unshift` amounts to, or null.
+ * Only a call used as a statement can be rewritten: its return value, the
+ * new length, is otherwise read.
+ */
+function replacement(text: string, { node, receiver, method }: Mutation): string | null {
+  if (node.parent.type !== "ExpressionStatement" || node.optional) {
+    return null;
+  }
+  const items = node.arguments.map((argument) => text.slice(argument.range[0], argument.range[1]));
+  const spread = `...this.${receiver}`;
+  if (method === "push") {
+    return `this.${receiver} = [${[spread, ...items].join(", ")}]`;
+  }
+  if (method === "unshift") {
+    return `this.${receiver} = [${[...items, spread].join(", ")}]`;
+  }
+  return null;
+}
+
+/** The mutating call on a reactive property of a Lit component, or null. */
+function mutationOf(context: LitRuleContext, node: TSESTree.CallExpression): Mutation | null {
+  const callee = node.callee;
+  if (callee.type !== "MemberExpression" || callee.computed) {
+    return null;
+  }
+  const method = callee.property;
+  if (method.type !== "Identifier" || !MUTATING_METHODS.has(method.name)) {
+    return null;
+  }
+  const receiver = thisPropertyName(callee.object);
+  if (receiver === null) {
+    return null;
+  }
+  const classNode = enclosingClass(node);
+  if (
+    classNode === null ||
+    !isLitComponent(classNode, context) ||
+    !reactivePropertyNames(classNode).has(receiver)
+  ) {
+    return null;
+  }
+  return { node, receiver, method: method.name };
+}
+
+/**
  * `no-array-mutation-without-reassign` — rejects calling a mutating array
  * method on a reactive property.
  *
@@ -109,58 +163,14 @@ export const noArrayMutationWithoutReassignRule: LitRule = {
     },
   },
   create(context) {
-    const { sourceCode } = context;
-
-    /**
-     * The new array a statement-level `push` or `unshift` amounts to, or null.
-     * Only a call used as a statement can be rewritten: its return value, the
-     * new length, is otherwise read.
-     */
-    function replacement(
-      node: TSESTree.CallExpression,
-      receiver: string,
-      method: string,
-    ): string | null {
-      if (node.parent.type !== "ExpressionStatement" || node.optional) {
-        return null;
-      }
-      const items = node.arguments.map((argument) =>
-        sourceCode.text.slice(argument.range[0], argument.range[1]),
-      );
-      const spread = `...this.${receiver}`;
-      if (method === "push") {
-        return `this.${receiver} = [${[spread, ...items].join(", ")}]`;
-      }
-      if (method === "unshift") {
-        return `this.${receiver} = [${[...items, spread].join(", ")}]`;
-      }
-      return null;
-    }
-
     return {
       CallExpression(node: TSESTree.CallExpression): void {
-        const callee = node.callee;
-        if (callee.type !== "MemberExpression" || callee.computed) {
+        const mutation = mutationOf(context, node);
+        if (mutation === null) {
           return;
         }
-        const method = callee.property;
-        if (method.type !== "Identifier" || !MUTATING_METHODS.has(method.name)) {
-          return;
-        }
-        const receiver = thisPropertyName(callee.object);
-        if (receiver === null) {
-          return;
-        }
-        const classNode = enclosingClass(node);
-        if (
-          classNode === null ||
-          !isLitComponent(classNode, context) ||
-          !reactivePropertyNames(classNode).has(receiver)
-        ) {
-          return;
-        }
-        const data = { name: receiver, method: method.name };
-        const text = replacement(node, receiver, method.name);
+        const data = { name: mutation.receiver, method: mutation.method };
+        const text = replacement(context.sourceCode.text, mutation);
         context.report({
           node,
           messageId: "mutation",

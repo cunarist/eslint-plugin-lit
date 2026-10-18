@@ -1,7 +1,6 @@
 import type { TSESTree } from "@typescript-eslint/types";
 
-import type { LitRule } from "#helpers";
-import { docsUrl, keyName } from "#helpers";
+import { docsUrl, keyName, type LitRule } from "#helpers";
 
 /** Constructors that take an event-init object as their second argument. */
 const EVENT_CONSTRUCTORS: ReadonlySet<string> = new Set(["Event", "CustomEvent"]);

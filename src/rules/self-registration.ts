@@ -1,8 +1,8 @@
 import type { SuggestedEdit } from "@eslint/core";
 import type { TSESTree } from "@typescript-eslint/types";
 
-import type { ClassNode, LitRule, LitRuleContext } from "#helpers";
 import {
+  type ClassNode,
   controllerHostField,
   controllerHostParam,
   docsUrl,
@@ -11,6 +11,8 @@ import {
   findConstructor,
   isLitComponent,
   isReactiveController,
+  type LitRule,
+  type LitRuleContext,
   memberPath,
 } from "#helpers";
 

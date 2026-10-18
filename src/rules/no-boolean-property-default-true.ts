@@ -2,13 +2,14 @@ import type { RuleTextEdit, RuleTextEditor } from "@eslint/core";
 import type { TSESTree } from "@typescript-eslint/types";
 
 import {
-  type ClassNode,
   classMembers,
+  type ClassNode,
   docsUrl,
   findDecorator,
   isLitComponent,
   keyName,
   type LitRule,
+  type LitRuleContext,
 } from "#helpers";
 
 /** A class field, plain or `accessor`. */
@@ -84,6 +85,86 @@ function fieldsByName(node: ClassNode): Map<string, FieldNode> {
   return fields;
 }
 
+/** Reports a boolean property's default, suggesting literal `false`. */
+function report(context: LitRuleContext, node: TSESTree.Expression, name: string): void {
+  context.report({
+    node,
+    messageId: "truthyDefault",
+    data: { name },
+    suggest: [
+      {
+        messageId: "defaultFalse",
+        fix: (fixer: RuleTextEditor): RuleTextEdit => fixer.replaceText(node, "false"),
+      },
+    ],
+  });
+}
+
+/** Checks a `static properties = { ... }` declaration against the fields. */
+function checkStaticProperties(
+  context: LitRuleContext,
+  value: TSESTree.Expression | null,
+  fields: Map<string, FieldNode>,
+): void {
+  if (value?.type !== "ObjectExpression") {
+    return;
+  }
+  for (const entry of value.properties) {
+    if (entry.type !== "Property") {
+      continue;
+    }
+    const name = keyName(entry.key);
+    if (name === null || attributeDisabled(entry.value) || !declaresBoolean(entry.value)) {
+      continue;
+    }
+    const field = fields.get(name);
+    const initializer = field === undefined ? null : unsafeInitializer(field);
+    if (initializer !== null) {
+      report(context, initializer, name);
+    }
+  }
+}
+
+/** Checks a field decorated with `@property(...)`. */
+function checkDecorated(
+  context: LitRuleContext,
+  member: FieldNode,
+  decorator: TSESTree.Decorator,
+): void {
+  const options = decoratorOptions(decorator);
+  const initializer = unsafeInitializer(member);
+  const name = keyName(member.key);
+  if (
+    !attributeDisabled(options) &&
+    declaresBoolean(options) &&
+    initializer !== null &&
+    name !== null
+  ) {
+    report(context, initializer, name);
+  }
+}
+
+/** Checks every boolean reactive property of a Lit component. */
+function check(context: LitRuleContext, node: ClassNode): void {
+  if (!isLitComponent(node, context)) {
+    return;
+  }
+  const fields = fieldsByName(node);
+  for (const member of classMembers(node)) {
+    if (!isField(member)) {
+      continue;
+    }
+    const decorator = findDecorator(member.decorators, "property");
+    if (decorator !== null) {
+      checkDecorated(context, member, decorator);
+      continue;
+    }
+    if (member.static && keyName(member.key) === "properties") {
+      checkStaticProperties(context, member.value, fields);
+    }
+  }
+}
+
 /**
  * `no-boolean-property-default-true` — Lit's `Boolean` converter follows the
  * HTML rule: the attribute's presence is `true` and its absence is `false`.
@@ -107,80 +188,12 @@ export const noBooleanPropertyDefaultTrueRule: LitRule = {
     },
   },
   create(context) {
-    function report(node: TSESTree.Expression, name: string): void {
-      context.report({
-        node,
-        messageId: "truthyDefault",
-        data: { name },
-        suggest: [
-          {
-            messageId: "defaultFalse",
-            fix: (fixer: RuleTextEditor): RuleTextEdit => fixer.replaceText(node, "false"),
-          },
-        ],
-      });
-    }
-
-    /** Checks a `static properties = { ... }` declaration against the fields. */
-    function checkStaticProperties(
-      value: TSESTree.Expression | null,
-      fields: Map<string, FieldNode>,
-    ): void {
-      if (value?.type !== "ObjectExpression") {
-        return;
-      }
-      for (const entry of value.properties) {
-        if (entry.type !== "Property") {
-          continue;
-        }
-        const name = keyName(entry.key);
-        if (name === null || attributeDisabled(entry.value) || !declaresBoolean(entry.value)) {
-          continue;
-        }
-        const field = fields.get(name);
-        const initializer = field === undefined ? null : unsafeInitializer(field);
-        if (initializer !== null) {
-          report(initializer, name);
-        }
-      }
-    }
-
-    function check(node: ClassNode): void {
-      if (!isLitComponent(node, context)) {
-        return;
-      }
-      const fields = fieldsByName(node);
-      for (const member of classMembers(node)) {
-        if (!isField(member)) {
-          continue;
-        }
-        const decorator = findDecorator(member.decorators, "property");
-        if (decorator !== null) {
-          const options = decoratorOptions(decorator);
-          const initializer = unsafeInitializer(member);
-          const name = keyName(member.key);
-          if (
-            !attributeDisabled(options) &&
-            declaresBoolean(options) &&
-            initializer !== null &&
-            name !== null
-          ) {
-            report(initializer, name);
-          }
-          continue;
-        }
-        if (member.static && keyName(member.key) === "properties") {
-          checkStaticProperties(member.value, fields);
-        }
-      }
-    }
-
     return {
       ClassDeclaration(node: TSESTree.ClassDeclaration): void {
-        check(node);
+        check(context, node);
       },
       ClassExpression(node: TSESTree.ClassExpression): void {
-        check(node);
+        check(context, node);
       },
     };
   },

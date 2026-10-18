@@ -1,11 +1,15 @@
 import type { TSESTree } from "@typescript-eslint/types";
 
-import type { LitRule, ParsedElement, SourceRange } from "#helpers";
 import {
   docsUrl,
   isHtmlTemplate,
+  type LitRule,
+  type LitRuleContext,
+  type ParsedElement,
   parseTemplate,
   rangeLoc,
+  type SourceRange,
+  type TemplateSource,
   templateSource,
   walkElements,
 } from "#helpers";
@@ -70,6 +74,70 @@ function attributeValue(text: string, start: number, end: number): AttributeValu
   return { start: start + valueStart, end: start + valueEnd };
 }
 
+/** One offending character in an attribute value. */
+interface Offender {
+  range: SourceRange;
+  character: string;
+  /** The value text from the character on, to tell a possible reference. */
+  rest: string;
+}
+
+/** Reports an offender: fixed outright, or suggested when it may be a reference. */
+function report(context: LitRuleContext, { range, character, rest }: Offender): void {
+  const entity = REPLACEMENTS.get(character) ?? character;
+  const loc = rangeLoc(context.sourceCode, range);
+  const data = { character, entity };
+  if (MAYBE_REFERENCE.test(rest)) {
+    context.report({
+      loc,
+      messageId: "unescaped",
+      data,
+      suggest: [
+        {
+          messageId: "escape",
+          data,
+          fix: (fixer) => fixer.replaceTextRange(range, entity),
+        },
+      ],
+    });
+    return;
+  }
+  context.report({
+    loc,
+    messageId: "unescaped",
+    data,
+    fix: (fixer) => fixer.replaceTextRange(range, entity),
+  });
+}
+
+/** Reports every offender in the static attribute values of one element. */
+function checkElement(
+  context: LitRuleContext,
+  source: TemplateSource,
+  element: ParsedElement,
+): void {
+  const locations = element.sourceCodeLocation?.attrs;
+  if (locations === undefined) {
+    return;
+  }
+  for (const location of Object.values(locations)) {
+    const value = attributeValue(source.text, location.startOffset, location.endOffset);
+    if (value === null) {
+      continue;
+    }
+    const raw = maskPlaceholders(source.text.slice(value.start, value.end));
+    for (const match of raw.matchAll(OFFENDERS)) {
+      const character = match[0];
+      const at = value.start + match.index;
+      report(context, {
+        range: source.toSourceRange(at, at + character.length),
+        character,
+        rest: raw.slice(match.index),
+      });
+    }
+  }
+}
+
 /**
  * `attribute-value-entities` — rejects an unescaped `&`, `<`, `>`, or `"`
  * inside a static attribute value in an `html` template.
@@ -95,33 +163,6 @@ export const attributeValueEntitiesRule: LitRule = {
     },
   },
   create(context) {
-    function report(range: SourceRange, character: string, rest: string): void {
-      const entity = REPLACEMENTS.get(character) ?? character;
-      const loc = rangeLoc(context.sourceCode, range);
-      const data = { character, entity };
-      if (MAYBE_REFERENCE.test(rest)) {
-        context.report({
-          loc,
-          messageId: "unescaped",
-          data,
-          suggest: [
-            {
-              messageId: "escape",
-              data,
-              fix: (fixer) => fixer.replaceTextRange(range, entity),
-            },
-          ],
-        });
-        return;
-      }
-      context.report({
-        loc,
-        messageId: "unescaped",
-        data,
-        fix: (fixer) => fixer.replaceTextRange(range, entity),
-      });
-    }
-
     return {
       TaggedTemplateExpression(node: TSESTree.TaggedTemplateExpression): void {
         if (!isHtmlTemplate(node, context)) {
@@ -129,26 +170,7 @@ export const attributeValueEntitiesRule: LitRule = {
         }
         const source = templateSource(node);
         walkElements(parseTemplate(source.text), (element: ParsedElement) => {
-          const locations = element.sourceCodeLocation?.attrs;
-          if (locations === undefined) {
-            return;
-          }
-          for (const location of Object.values(locations)) {
-            const value = attributeValue(source.text, location.startOffset, location.endOffset);
-            if (value === null) {
-              continue;
-            }
-            const raw = maskPlaceholders(source.text.slice(value.start, value.end));
-            for (const match of raw.matchAll(OFFENDERS)) {
-              const character = match[0];
-              const at = value.start + match.index;
-              report(
-                source.toSourceRange(at, at + character.length),
-                character,
-                raw.slice(match.index),
-              );
-            }
-          }
+          checkElement(context, source, element);
         });
       },
     };

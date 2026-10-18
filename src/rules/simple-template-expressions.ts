@@ -1,11 +1,11 @@
 import type { TSESTree } from "@typescript-eslint/types";
 
-import type { LitRule } from "#helpers";
 import {
   docsUrl,
   isHtmlTemplate,
   isSimpleReference,
   keyName,
+  type LitRule,
   memberPath,
   parentOf,
 } from "#helpers";

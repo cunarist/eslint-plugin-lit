@@ -2,14 +2,15 @@ import type { TSESTree } from "@typescript-eslint/types";
 
 import {
   classMembers,
+  type ClassNode,
   docsUrl,
   isLitComponent,
   isReactiveProperty,
   keyName,
+  type LitRule,
   objectKeyName,
   staticPropertiesEntries,
 } from "#helpers";
-import type { ClassNode, LitRule } from "#helpers";
 
 /** Global attributes with existing platform semantics. */
 const NATIVE_ATTRIBUTES: ReadonlySet<string> = new Set([

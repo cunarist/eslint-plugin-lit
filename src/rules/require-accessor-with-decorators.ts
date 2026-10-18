@@ -1,7 +1,13 @@
 import type { TSESTree } from "@typescript-eslint/types";
 
-import type { LitRule } from "#helpers";
-import { docsUrl, enclosingClass, isLitComponent, isReactiveProperty, keyName } from "#helpers";
+import {
+  docsUrl,
+  enclosingClass,
+  isLitComponent,
+  isReactiveProperty,
+  keyName,
+  type LitRule,
+} from "#helpers";
 
 /**
  * `require-accessor-with-decorators` — reports a `@property` or `@state`
