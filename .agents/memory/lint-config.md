@@ -56,7 +56,9 @@ export const projectOverrides: OxlintOverride[] = [
   `typescript/switch-exhaustiveness-check` (TypeScript's type checking
   covers it; no `considerDefaultExhaustiveForUnions` anywhere),
   `consistent-return` (not type-aware; `noImplicitReturns` covers it),
-  `no-await-in-loop` (sequential awaits are intentional; keep plain loops).
+  `no-await-in-loop` (sequential awaits are intentional; keep plain loops),
+  `default-case` (TypeScript checks completeness; a forced `default:` hides
+  missing cases).
 - **On** through the categories, never turned off:
   `init-declarations` (an uninitialized `let` becomes
   `let x: T | null = null;`, narrowed by assignment, no extra checks),
@@ -76,8 +78,10 @@ export const projectOverrides: OxlintOverride[] = [
   `no-modifier-private`, `no-nan` (no `NaN` sentinels: use `null`),
   `no-unsafe-number`, `no-useless-continue`, `no-useless-type`. They are
   copied from `cunarist/eslint-plugin-explicit-types`, retyped for
-  `LitRuleTypes`. hugoalh's `no-enum` is not needed: `erasableSyntaxOnly`
-  rejects enums.
+  `LitRuleTypes`. hugoalh's `no-enum` comes from `explicit-types/no-enum`
+  (`eslint-plugin-explicit-types` devDependency, loaded as a `jsPlugins`
+  entry); `no-duplicate-awaits`/`no-duplicate-voids` are left out for
+  `unicorn/no-unnecessary-await` and `typescript/no-meaningless-void-operator`.
 - **Fixes stay minimal:** no file or function splitting just to satisfy a
   rule. Behavior may change only when the result is more modern, cleaner,
   and not more dangerous.

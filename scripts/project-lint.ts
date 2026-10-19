@@ -78,6 +78,9 @@ const rules: DummyRuleMap = {
   "project/no-unsafe-number": "error",
   "project/no-useless-continue": "error",
   "project/no-useless-type": "error",
+  // hugoalh's `no-enum`, from explicit-types alone: its other rules target
+  // app code, not this plugin's AST-typed sources.
+  "explicit-types/no-enum": "error",
   // Off, collides with a repo or plugin rule, Oxfmt, or another category rule:
   // Collides with the mutable AST nodes the rules read.
   "typescript/prefer-readonly-parameter-types": "off",
@@ -132,6 +135,8 @@ const rules: DummyRuleMap = {
   "unicorn/no-process-exit": "off",
   // Off: TypeScript's type checking already proves switches exhaustive.
   "typescript/switch-exhaustiveness-check": "off",
+  // Off: TypeScript checks completeness; a forced `default:` hides missing cases.
+  "default-case": "off",
   // Off: not type-aware; `noImplicitReturns` covers missing returns.
   "consistent-return": "off",
   // Off: sequential awaits in loops are intentional; workarounds cost more.

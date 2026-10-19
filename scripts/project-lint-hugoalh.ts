@@ -4,10 +4,9 @@
  * the old Deno config loaded and Oxlint has no built-in for:
  * `no-duplicate-typeofs`, `no-empty-yield`, `no-nan`, `no-unsafe-number`,
  * and `no-useless-continue`. Each keeps its original name and behavior.
- * hugoalh's `no-duplicate-awaits` and `no-duplicate-voids` are left out for
+ * `no-duplicate-awaits` and `no-duplicate-voids` are covered by
  * `unicorn/no-unnecessary-await` and `typescript/no-meaningless-void-operator`,
- * and `no-enum` for `erasableSyntaxOnly` in `tsconfig.json`, which already
- * rejects enums.
+ * and `no-enum` by `explicit-types/no-enum`.
  *
  * @module
  */
