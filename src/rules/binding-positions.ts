@@ -17,9 +17,9 @@ interface Position {
 
 /** Checked in this order; the first match is the one reported. */
 const POSITIONS: readonly Position[] = [
-  { pattern: /<\/\s*\{\{__lit_(\d+)__\}\}/u, what: "a closing tag" },
-  { pattern: /<\s*\{\{__lit_(\d+)__\}\}/u, what: "a tag name" },
-  { pattern: /<[a-zA-Z][^>]*?\s\{\{__lit_(\d+)__\}\}\s*=/u, what: "an attribute name" },
+  { pattern: /<\/\s*\{\{__lit_(?<index>\d+)__\}\}/u, what: "a closing tag" },
+  { pattern: /<\s*\{\{__lit_(?<index>\d+)__\}\}/u, what: "a tag name" },
+  { pattern: /<[a-zA-Z][^>]*?\s\{\{__lit_(?<index>\d+)__\}\}\s*=/u, what: "an attribute name" },
 ];
 
 /**

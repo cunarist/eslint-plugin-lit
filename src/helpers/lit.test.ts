@@ -62,7 +62,7 @@ function template(kind: LitTemplateKind): ExpectedError {
 }
 
 /** Files holding base classes, Lit's and lookalikes. */
-const PROJECT: Map<string, string> = new Map([
+const PROJECT = new Map<string, string>([
   ["tsconfig.json", "{}\n"],
   ["package.json", `{ "type": "module" }\n`],
   // Base classes in other files, reached by name, through a renaming barrel,

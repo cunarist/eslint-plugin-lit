@@ -11,7 +11,7 @@ const EVENT_CONSTRUCTORS: ReadonlySet<string> = new Set(["Event", "CustomEvent"]
 /** Kebab-case form: camel humps and underscores turned into dashes. */
 function kebabName(name: string): string {
   return name
-    .replaceAll(/([a-z0-9])([A-Z])/gu, "$1-$2")
+    .replaceAll(/(?<lower>[a-z0-9])(?<upper>[A-Z])/gu, "$1-$2")
     .replaceAll("_", "-")
     .toLowerCase();
 }

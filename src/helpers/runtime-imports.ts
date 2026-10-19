@@ -73,11 +73,9 @@ export function runtimeImportedFiles(module: ModuleFile): ReadonlySet<string> {
   const files = new Set<string>();
   const visited = new Set([module.path]);
   const pending: { module: ModuleFile; scope: string | null }[] = [{ module, scope: null }];
-  for (let at = 0; at < pending.length; at += 1) {
-    const current = pending[at];
-    if (current === undefined) {
-      continue;
-    }
+  // The array iterator reads `pending.length` on every step, so modules
+  // pushed while walking are visited too.
+  for (const current of pending) {
     for (const statement of current.module.program.body) {
       const specifier = runtimeSpecifier(statement);
       const imported = specifier === null ? null : importedModule(current.module.path, specifier);

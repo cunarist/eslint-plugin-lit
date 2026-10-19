@@ -66,7 +66,7 @@ function element(tag: string, file: string, imported: string): ExpectedError {
 }
 
 /** Files that each register one tag in their own way. */
-const PROJECT: Map<string, string> = new Map([
+const PROJECT = new Map<string, string>([
   ["tsconfig.json", "{}\n"],
   ["package.json", `{ "type": "module", "imports": { "#outside": "./element-a.ts" } }\n`],
   // Registration by augmentation, by `customElements.define`, and by decorator.

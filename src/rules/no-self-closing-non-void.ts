@@ -39,7 +39,7 @@ const VOID_ELEMENTS: ReadonlySet<string> = new Set([
 ]);
 
 /** The tag name as written, after `<` and before any space, `/`, or `>`. */
-const WRITTEN_NAME: RegExp = /^<([^\s/>]+)/u;
+const WRITTEN_NAME: RegExp = /^<(?<name>[^\s/>]+)/u;
 
 /**
  * Whether a start tag really ends in a self-closing slash.

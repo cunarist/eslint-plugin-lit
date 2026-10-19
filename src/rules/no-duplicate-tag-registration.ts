@@ -77,7 +77,9 @@ export const noDuplicateTagRegistrationRule: LitRule = {
       "Program:exit"(): void {
         // Order of collection across visitor kinds is not guaranteed, so sort
         // by position to make "the first one wins" mean the first in the file.
-        const ordered = registrations.toSorted((a, b) => a.node.range[0] - b.node.range[0]);
+        const ordered = registrations.toSorted(
+          (left, right) => left.node.range[0] - right.node.range[0],
+        );
         const seen = new Set<string>();
         for (const registration of ordered) {
           if (seen.has(registration.tag)) {

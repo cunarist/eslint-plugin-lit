@@ -202,8 +202,8 @@ export function typeReferenceName(annotation: TSESTree.TSTypeAnnotation | null):
 /** Convert `PathBar` to `path-bar`. */
 export function pascalToKebab(name: string): string {
   return name
-    .replaceAll(/([a-z0-9])([A-Z])/gu, "$1-$2")
-    .replaceAll(/([A-Z]+)([A-Z][a-z])/gu, "$1-$2")
+    .replaceAll(/(?<lower>[a-z0-9])(?<upper>[A-Z])/gu, "$1-$2")
+    .replaceAll(/(?<run>[A-Z]+)(?<word>[A-Z][a-z])/gu, "$1-$2")
     .toLowerCase();
 }
 

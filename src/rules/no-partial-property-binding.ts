@@ -55,9 +55,9 @@ function rawAttributes(element: ParsedElement, text: string): RawAttribute[] {
     const raw = text.slice(location.startOffset, location.endOffset);
     const equals = raw.indexOf("=");
     attributes.push({
-      name: equals < 0 ? raw : raw.slice(0, equals),
-      value: equals < 0 ? "" : unquote(raw.slice(equals + 1).trim()),
-      hasValue: equals >= 0,
+      name: equals === -1 ? raw : raw.slice(0, equals),
+      value: equals === -1 ? "" : unquote(raw.slice(equals + 1).trim()),
+      hasValue: equals !== -1,
       start: location.startOffset,
       end: location.endOffset,
     });

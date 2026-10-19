@@ -31,7 +31,7 @@ export function bindingPlaceholder(index: number): string {
 }
 
 /** Matches every binding placeholder in a string. */
-const PLACEHOLDER_PATTERN: RegExp = /\{\{__lit_(\d+)__\}\}/gu;
+const PLACEHOLDER_PATTERN: RegExp = /\{\{__lit_(?<index>\d+)__\}\}/gu;
 
 /** Whether a string contains at least one binding placeholder. */
 export function hasPlaceholder(text: string): boolean {

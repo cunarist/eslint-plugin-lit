@@ -29,7 +29,7 @@ const JSX_NAMES: ReadonlySet<string> = new Set(["classname", "htmlfor"]);
 
 /** Whether an attribute's `=…` part is exactly one binding, quoted or not. */
 function isSingleBinding(value: string): boolean {
-  const unquoted = value.trim().replaceAll(/^(["'])(.*)\1$/gu, "$2");
+  const unquoted = value.trim().replaceAll(/^(?<quote>["'])(?<inner>.*)\1$/gu, "$2");
   const indices = placeholderIndices(unquoted);
   const [index] = indices;
   return indices.length === 1 && index !== undefined && unquoted === bindingPlaceholder(index);

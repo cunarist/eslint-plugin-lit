@@ -157,16 +157,19 @@ const noAssetImportsRule: ProjectRule = {
 
 /**
  * This repository's own rule list, spread by `vite.config.ts` after the
- * published `all` config: rules beyond the Oxlint categories, plus a few
- * extras and opt-outs. Built-in Oxlint rule ids sit here too, so
+ * published `all` config: the repo's own rules, offs from the Oxlint
+ * categories, and option tweaks. Built-in Oxlint rule ids sit here too, so
  * `vite.config.ts` lists no rule by name.
  */
 const rules: DummyRuleMap = {
-  // Rules beyond the categories in `vite.config.ts`. First, naming: no `_`
-  // inside the name once leading and trailing ones are trimmed, unless it
-  // has no lowercase ASCII letter (UPPER_SNAKE). Shorthand destructuring
-  // binds a key the code does not own, and property names are not
-  // declarations.
+  // The repo's own rules.
+  "project/no-disable-comments": "error",
+  "project/no-asset-imports": "error",
+
+  // Option tweaks. First, camelCase names: no `_` inside the name once
+  // leading and trailing ones are trimmed, unless it has no lowercase ASCII
+  // letter (UPPER_SNAKE). Shorthand destructuring binds a key the code does
+  // not own, and property names are not declarations.
   "id-match": [
     "error",
     "^_*[^_]*_*$|^[^a-z]*$",
@@ -177,30 +180,91 @@ const rules: DummyRuleMap = {
       ignoreDestructuring: true,
     },
   ],
-  curly: "error",
-  "guard-for-in": "error",
-  "no-console": "error",
-  "no-empty": "error",
-  "no-regex-spaces": "error",
   "no-restricted-globals": ["error", "window"],
-  "no-var": "error",
-  "prefer-const": "error",
-  "import/no-cycle": "error",
-  "import/no-relative-parent-imports": "error",
-  "typescript/adjacent-overload-signatures": "error",
-  "typescript/consistent-type-imports": "error",
-  "typescript/no-empty-interface": "error",
-  "typescript/no-explicit-any": "error",
-  "typescript/no-namespace": "error",
-  "typescript/no-non-null-assertion": "error",
-  "project/no-disable-comments": "error",
-  "project/no-asset-imports": "error",
-  "unicorn/no-abusive-eslint-disable": "error",
-  // Pedantic rules that fight the AST types: nodes are mutable, and `type`
-  // is an enum imported only as a type.
-  "typescript/prefer-readonly-parameter-types": "off",
-  "typescript/no-unsafe-enum-comparison": "off",
   "typescript/switch-exhaustiveness-check": ["error", { considerDefaultExhaustiveForUnions: true }],
+  "one-var": ["error", "never"],
+  "no-use-before-define": ["error", { functions: false }],
+  "func-style": ["error", "declaration", { allowArrowFunctions: true }],
+  // Single capital type parameters (`T`) are allowed.
+  "id-length": ["error", { exceptionPatterns: ["^[A-Z]$"] }],
+  // Limits set to the smallest values the current code passes.
+  "max-statements": ["error", { max: 25 }],
+  "max-params": ["error", { max: 4 }],
+  "unicorn/max-nested-calls": ["error", { max: 4 }],
+
+  // Off: fights the AST types, whose nodes are mutable and whose `type` is
+  // an enum imported only as a type.
+  "typescript/no-unsafe-enum-comparison": "off",
+
+  // Off, collides with this repo's conventions or other rules.
+  // Collides with the mutable AST nodes the rules read.
+  "typescript/prefer-readonly-parameter-types": "off",
+  // Collides with plain TypeScript classes: no `public` noise.
+  "typescript/explicit-member-accessibility": "off",
+  // Collides with mutable private state the code writes on purpose.
+  "typescript/prefer-readonly": "off",
+  // Collides with written-out index signatures in place of `Record`.
+  "typescript/consistent-indexed-object-style": "off",
+  // Collides with written-out type annotations.
+  "typescript/no-inferrable-types": "off",
+  // Collides with Oxfmt's import sorting.
+  "sort-imports": "off",
+  // Collides with the `index.ts` barrels the `#` aliases point at.
+  "oxc/no-barrel-file": "off",
+  // Collides with exporting each declaration where it is written.
+  "import/group-exports": "off",
+  // Collides with exporting each declaration where it is written.
+  "import/exports-last": "off",
+  // Collides with named exports, the rule files' convention.
+  "import/prefer-default-export": "off",
+  // Collides with the named `Rule` exports of the rule files.
+  "import/no-named-export": "off",
+  // Collides with consistent-type-imports' top-level `import type`.
+  "import/consistent-type-specifier-style": "off",
+  // Collides with the default exports the plugin entry and configs require.
+  "import/no-default-export": "off",
+  // Collides with RuleTester cases, whose code strings hold template literals.
+  "no-template-curly-in-string": "off",
+  // Collides with the bivariant method signatures the ESLint and Oxlint types need.
+  "typescript/method-signature-style": "off",
+  // Collides with no-undef-init: a `let` assigned in try or if/else has no
+  // value to start from but `undefined`.
+  "init-declarations": "off",
+  // Collides with the `path` locals the code names: a default `path` import
+  // of `node:path` would shadow them.
+  "unicorn/import-style": "off",
+  // Collides with ordinary modern TypeScript.
+  "no-ternary": "off",
+  // Collides with ordinary modern TypeScript.
+  "oxc/no-async-await": "off",
+  // Collides with ordinary modern TypeScript.
+  "oxc/no-optional-chaining": "off",
+  // Collides with flags and hashing where bit operators are the point.
+  "no-bitwise": "off",
+  // Collides with `undefined` as the spelled-out absence of a value.
+  "no-undefined": "off",
+  // Collides with no-floating-promises' `void` for fire-and-forget calls.
+  "no-void": "off",
+  // Collides with the `null` that AST and DOM APIs return.
+  "unicorn/no-null": "off",
+
+  // Off, too much churn for what it buys.
+  "no-magic-numbers": "off",
+  "sort-keys": "off",
+  "capitalized-comments": "off",
+  "typescript/explicit-function-return-type": "off",
+  "typescript/explicit-module-boundary-types": "off",
+  "no-empty-function": "off",
+  "class-methods-use-this": "off",
+  "unicorn/switch-case-braces": "off",
+  "prefer-destructuring": "off",
+  "oxc/no-rest-spread-properties": "off",
+  "unicorn/numeric-separators-style": "off",
+  "no-continue": "off",
+
+  // Off, Node code: the plugin, its tests, and its tooling all run on Node.
+  "import/no-nodejs-modules": "off",
+  "unicorn/no-process-exit": "off",
 };
 
 /**

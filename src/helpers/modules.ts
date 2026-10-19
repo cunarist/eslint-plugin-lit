@@ -42,7 +42,7 @@ interface CachedModule {
 }
 
 /** Every file parsed so far in this worker, by real path. */
-const moduleCache: Map<string, CachedModule> = new Map();
+const moduleCache = new Map<string, CachedModule>();
 
 /** Resolves module specifiers the way TypeScript resolves declarations. */
 const resolver: ResolverFactory = new ResolverFactory({});
@@ -104,7 +104,7 @@ interface CurrentModule {
 }
 
 /** The file being linted, parsed from the text the host holds, not from disk. */
-const currentModules: Map<string, CurrentModule> = new Map();
+const currentModules = new Map<string, CurrentModule>();
 
 /**
  * The file being linted, parsed from its text in the host, which an editor

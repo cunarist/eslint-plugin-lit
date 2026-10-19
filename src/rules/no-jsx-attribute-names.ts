@@ -57,7 +57,7 @@ export const noJsxAttributeNamesRule: LitRule = {
             }
             const raw = source.text.slice(location.startOffset, location.endOffset);
             const equals = raw.indexOf("=");
-            const name = equals < 0 ? raw : raw.slice(0, equals);
+            const name = equals === -1 ? raw : raw.slice(0, equals);
             const range = source.toSourceRange(
               location.startOffset,
               location.startOffset + name.length,
