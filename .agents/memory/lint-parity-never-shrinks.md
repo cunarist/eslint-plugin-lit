@@ -38,9 +38,10 @@ The template's list in `configs.project` is the baseline to copy: `curly`,
 `typescript/consistent-type-imports`, `typescript/no-empty-interface`,
 `typescript/no-explicit-any`, `typescript/no-namespace`,
 `typescript/no-non-null-assertion`, the two `project/*` rules,
-`unicorn/no-abusive-eslint-disable`, `id-match`, and
-`typescript/switch-exhaustiveness-check` with
-`considerDefaultExhaustiveForUnions`.
+`unicorn/no-abusive-eslint-disable`, and `id-match`. Since the 2026-10-19
+blacklist policy the categories turn these on; `configs.project` keeps only
+offs and option tweaks. `typescript/switch-exhaustiveness-check` is off by
+user decision (TypeScript covers it), not a parity loss.
 
 Each migration PR states its parity mapping (or links the template's table in
 cunarist/eslint-plugin-explicit-types#1) so the user can check it.

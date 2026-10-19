@@ -11,12 +11,17 @@ Oxlint plugin with `meta.name` `"project"`, loaded through `jsPlugins` in
   plugin configs: parity rules, extras, per-rule options, and opt-outs,
   built-in Oxlint ids included (`curly`, `id-match`, `import/no-cycle`, ...).
 - **Custom rules**, enabled as `project/<rule>`. Every repo has
-  `no-disable-comments` and `no-asset-imports`.
+  `no-disable-comments`, `no-asset-imports`, `prefer-ascii`, and the
+  hugoalh ports (2026-10-19, see [[lint-config]]).
 
-Rules and plugin stay in this one file while it is under 300 lines. When it
-grows past `max-lines`, split it into flat themed files sharing the prefix
-(`project-lint-modules.ts`, `project-lint-types.ts`, ...) that
-`project-lint.ts` imports; never `scripts/rules/` or `scripts/index.ts`.
+The custom rules live in flat themed files sharing the prefix, the same
+layout as `cunarist/eslint-plugin-explicit-types`, which `project-lint.ts`
+imports; never `scripts/rules/` or `scripts/index.ts`:
+`project-lint-types.ts` (`ProjectRule`), `project-lint-source.ts`
+(`no-disable-comments`, `prefer-ascii`), `project-lint-modules.ts`
+(`no-asset-imports`), `project-lint-hugoalh.ts` and
+`project-lint-hugoalh-types.ts` (the hugoalh ports). `project-lint.ts`
+itself holds only the rule list, `projectOverrides`, and the plugin object.
 
 ```ts
 import type { DummyRuleMap } from "vite-plus/lint";
