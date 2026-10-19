@@ -167,7 +167,6 @@ const rules: DummyRuleMap = {
     },
   ],
   "no-restricted-globals": ["error", "window"],
-  "typescript/switch-exhaustiveness-check": ["error", { considerDefaultExhaustiveForUnions: true }],
   // Single capital type parameters (`T`) are allowed.
   "id-length": ["error", { exceptionPatterns: ["^[A-Z]$"] }],
   // Limits set to the smallest values the current code passes.
@@ -235,6 +234,12 @@ const rules: DummyRuleMap = {
   // Collides with Node code: the plugin, its tests, and tooling run on Node.
   "import/no-nodejs-modules": "off",
   "unicorn/no-process-exit": "off",
+  // Off: TypeScript's type checking already proves switches exhaustive.
+  "typescript/switch-exhaustiveness-check": "off",
+  // Off: not type-aware; `noImplicitReturns` covers missing returns.
+  "consistent-return": "off",
+  // Off: sequential awaits in loops are intentional; workarounds cost more.
+  "no-await-in-loop": "off",
   // Off, too much churn:
   // Limits and indexes are plain numbers.
   "no-magic-numbers": "off",
