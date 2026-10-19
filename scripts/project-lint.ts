@@ -162,10 +162,6 @@ const noAssetImportsRule: ProjectRule = {
  * `vite.config.ts` lists no rule by name.
  */
 const rules: DummyRuleMap = {
-  // The repo's own rules.
-  "project/no-disable-comments": "error",
-  "project/no-asset-imports": "error",
-
   // Option tweaks. First, camelCase names: no `_` inside the name once
   // leading and trailing ones are trimmed, unless it has no lowercase ASCII
   // letter (UPPER_SNAKE). Shorthand destructuring binds a key the code does
@@ -182,21 +178,19 @@ const rules: DummyRuleMap = {
   ],
   "no-restricted-globals": ["error", "window"],
   "typescript/switch-exhaustiveness-check": ["error", { considerDefaultExhaustiveForUnions: true }],
-  "one-var": ["error", "never"],
-  "no-use-before-define": ["error", { functions: false }],
-  "func-style": ["error", "declaration", { allowArrowFunctions: true }],
   // Single capital type parameters (`T`) are allowed.
   "id-length": ["error", { exceptionPatterns: ["^[A-Z]$"] }],
   // Limits set to the smallest values the current code passes.
   "max-statements": ["error", { max: 25 }],
   "max-params": ["error", { max: 4 }],
   "unicorn/max-nested-calls": ["error", { max: 4 }],
-
-  // Off: fights the AST types, whose nodes are mutable and whose `type` is
-  // an enum imported only as a type.
-  "typescript/no-unsafe-enum-comparison": "off",
-
-  // Off, collides with this repo's conventions or other rules.
+  "one-var": ["error", "never"],
+  "no-use-before-define": ["error", { functions: false }],
+  "func-style": ["error", "declaration", { allowArrowFunctions: true }],
+  // The repo's own rules: no lint suppression and only `.ts` imports.
+  "project/no-disable-comments": "error",
+  "project/no-asset-imports": "error",
+  // Off, collides with a repo or plugin rule, Oxfmt, or another category rule:
   // Collides with the mutable AST nodes the rules read.
   "typescript/prefer-readonly-parameter-types": "off",
   // Collides with plain TypeScript classes: no `public` noise.
@@ -213,7 +207,6 @@ const rules: DummyRuleMap = {
   "oxc/no-barrel-file": "off",
   // Collides with exporting each declaration where it is written.
   "import/group-exports": "off",
-  // Collides with exporting each declaration where it is written.
   "import/exports-last": "off",
   // Collides with named exports, the rule files' convention.
   "import/prefer-default-export": "off",
@@ -233,11 +226,13 @@ const rules: DummyRuleMap = {
   // Collides with the `path` locals the code names: a default `path` import
   // of `node:path` would shadow them.
   "unicorn/import-style": "off",
-  // Collides with ordinary modern TypeScript.
+  // Collides with the AST node `type` enum, imported only as a type.
+  "typescript/no-unsafe-enum-comparison": "off",
+  // Collides with `unicorn/prefer-ternary`.
   "no-ternary": "off",
-  // Collides with ordinary modern TypeScript.
+  // Collides with the Node target, which has `async`/`await`.
   "oxc/no-async-await": "off",
-  // Collides with ordinary modern TypeScript.
+  // Collides with the Node target, which has `?.`.
   "oxc/no-optional-chaining": "off",
   // Collides with flags and hashing where bit operators are the point.
   "no-bitwise": "off",
@@ -247,29 +242,50 @@ const rules: DummyRuleMap = {
   "no-void": "off",
   // Collides with the `null` that AST and DOM APIs return.
   "unicorn/no-null": "off",
-
-  // Off, too much churn for what it buys.
-  "no-magic-numbers": "off",
-  "sort-keys": "off",
-  "capitalized-comments": "off",
-  "typescript/explicit-function-return-type": "off",
-  "typescript/explicit-module-boundary-types": "off",
-  "no-empty-function": "off",
-  "class-methods-use-this": "off",
-  "unicorn/switch-case-braces": "off",
-  "prefer-destructuring": "off",
-  "oxc/no-rest-spread-properties": "off",
-  "unicorn/numeric-separators-style": "off",
-  "no-continue": "off",
-
-  // Off, Node code: the plugin, its tests, and its tooling all run on Node.
+  // Collides with Node code: the plugin, its tests, and tooling run on Node.
   "import/no-nodejs-modules": "off",
+  "unicorn/no-process-exit": "off",
+  // Off, too much churn:
+  // Limits and indexes are plain numbers.
+  "no-magic-numbers": "off",
+  // Keys follow meaning, not the alphabet.
+  "sort-keys": "off",
+  // Comments continue sentences and quote code.
+  "capitalized-comments": "off",
+  // Arrow callbacks infer their return types.
+  "typescript/explicit-function-return-type": "off",
+  // Exports already declare their types.
+  "typescript/explicit-module-boundary-types": "off",
+  // No-op callbacks are common in tests and defaults.
+  "no-empty-function": "off",
+  // Methods that ignore `this` stay on their class.
+  "class-methods-use-this": "off",
+  // Most cases are one statement.
+  "unicorn/switch-case-braces": "off",
+  // Indexed reads would become destructuring everywhere.
+  "prefer-destructuring": "off",
+  // Object spread builds most option objects.
+  "oxc/no-rest-spread-properties": "off",
+  // Numeric literals keep their existing grouping.
+  "unicorn/numeric-separators-style": "off",
+  // Loops skip items with `continue`.
+  "no-continue": "off",
+};
+
+/** Node code (`vite.config.ts` and `scripts/`), spread into `overrides`. */
+const nodeRules: DummyRuleMap = {
+  // Vite and the Oxlint plugin host read a default export.
+  "import/no-default-export": "off",
+  // Node code: tooling imports Node's built-ins.
+  "import/no-nodejs-modules": "off",
+  // Node code: a CLI exits with a status.
   "unicorn/no-process-exit": "off",
 };
 
 /**
  * The repo-local plugin, namespace `project`: its own rules, enabled as
- * `project/<rule>`, and `configs.project`, the rule list above.
+ * `project/<rule>`, `configs.project`, the rule list above, and
+ * `configs.node`, the Node code override.
  */
 const plugin = {
   meta: { name: "project" },
@@ -277,7 +293,7 @@ const plugin = {
     "no-disable-comments": noDisableCommentsRule,
     "no-asset-imports": noAssetImportsRule,
   },
-  configs: { project: { rules } },
+  configs: { project: { rules }, node: { rules: nodeRules } },
 };
 
 export default plugin;

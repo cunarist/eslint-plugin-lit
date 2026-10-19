@@ -19,8 +19,11 @@ export default defineConfig({
       restriction: "error",
     },
     rules: { ...lit.configs.all.rules, ...projectLint.configs.project.rules },
-    // File globs are config, not a rule list: the registry imports every rule.
-    overrides: [{ files: ["src/rules/index.ts"], rules: { "import/max-dependencies": "off" } }],
+    overrides: [
+      { files: ["vite.config.ts", "scripts/**"], rules: projectLint.configs.node.rules },
+      // The rule registry must import every rule, more than max-dependencies allows.
+      { files: ["src/rules/index.ts"], rules: { "import/max-dependencies": "off" } },
+    ],
     options: {
       typeAware: true,
       typeCheck: true,
