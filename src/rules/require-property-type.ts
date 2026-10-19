@@ -10,7 +10,7 @@ import {
   type LitRule,
 } from "#helpers";
 
-/** The options object passed to `@property({…})`, if it is a literal. */
+/** The options object passed to `@property({...})`, if it is a literal. */
 function decoratorOptions(decorator: TSESTree.Decorator): TSESTree.ObjectExpression | null {
   const expression = decorator.expression;
   if (expression.type !== "CallExpression") {
@@ -45,7 +45,7 @@ function settlesConversion(options: TSESTree.ObjectExpression): boolean {
 }
 
 /**
- * `require-property-type` — requires `{type: …}` on every `@property` that has
+ * `require-property-type` - requires `{type: ...}` on every `@property` that has
  * an attribute.
  *
  * An attribute is always a string; `type` tells Lit how to convert it. The

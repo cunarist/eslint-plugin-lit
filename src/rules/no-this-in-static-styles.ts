@@ -10,7 +10,7 @@ import { docsUrl, enclosingClass, isLitComponent, keyName, type LitRule, parentO
  */
 function inStaticStylesInitializer(node: TSESTree.Node): boolean {
   let current: TSESTree.Node | null = node;
-  let child: TSESTree.Node | undefined;
+  let child: TSESTree.Node | null = null;
   while (current !== null) {
     if (current.type === "FunctionExpression" || current.type === "FunctionDeclaration") {
       return false;
@@ -31,7 +31,7 @@ function inStaticStylesInitializer(node: TSESTree.Node): boolean {
 }
 
 /**
- * `no-this-in-static-styles` — rejects `this` inside a `static styles`
+ * `no-this-in-static-styles` - rejects `this` inside a `static styles`
  * initializer.
  *
  * `static styles` is evaluated once on the class, so `this` there is the

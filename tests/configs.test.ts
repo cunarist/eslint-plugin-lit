@@ -10,7 +10,7 @@ const NAMESPACE = "lit-robust";
  * from, which is the config it belongs to. A repo-only rule goes in
  * `scripts/project-lint.ts`, never in the published plugin.
  */
-const DENO_GROUPS: Map<string, string[]> = new Map([
+const DENO_GROUPS = new Map<string, string[]>([
   [
     "core",
     [
@@ -117,7 +117,7 @@ const DENO_GROUPS: Map<string, string[]> = new Map([
 const DENO_RULES: string[] = [...DENO_GROUPS.values()].flat();
 
 /** The preset configs, by the name of the Deno plugin each stands for. */
-const PRESETS: Map<string, ConfigObject> = new Map([
+const PRESETS = new Map<string, ConfigObject>([
   ["core", plugin.configs.core],
   ["strict", plugin.configs.strict],
   ["dom-ref", plugin.configs["dom-ref"]],

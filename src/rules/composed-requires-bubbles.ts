@@ -32,7 +32,7 @@ function isLiteral(node: TSESTree.Node, value: boolean): boolean {
 }
 
 /**
- * `composed-requires-bubbles` — requires `bubbles: true` whenever an event is
+ * `composed-requires-bubbles` - requires `bubbles: true` whenever an event is
  * constructed with `composed: true`.
  *
  * `composed: true` means "keep propagating once you reach a shadow boundary".

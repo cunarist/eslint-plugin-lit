@@ -32,7 +32,7 @@ function isNative(name: string): boolean {
 }
 
 /**
- * `no-native-attributes` — rejects a reactive property named after a global
+ * `no-native-attributes` - rejects a reactive property named after a global
  * HTML attribute.
  *
  * Such a property replaces the accessor `HTMLElement` already defines, so

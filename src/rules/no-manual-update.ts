@@ -10,7 +10,7 @@ const SCHEDULING_METHODS: ReadonlySet<string> = new Set([
 ]);
 
 /**
- * `no-manual-update` — a Lit component does not schedule its own renders.
+ * `no-manual-update` - a Lit component does not schedule its own renders.
  * `requestUpdate`, `performUpdate`, and `scheduleUpdate` on `this` mean some
  * state driving the template is not a reactive property.
  *

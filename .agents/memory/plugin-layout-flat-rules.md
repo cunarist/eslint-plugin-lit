@@ -27,12 +27,16 @@ scripts/project-lint.ts              repo-local lint plugin, never published
   into the object a plugin needs), which keeps naming rules satisfied without
   disable comments.
 - **Registry override:** `src/rules/index.ts` must import every rule and
-  breaks pedantic `import/max-dependencies` (10). Its per-file override in
-  `vite.config.ts` is the **only** `overrides` entry allowed in source, and
-  only in plugin repos:
+  breaks pedantic `import/max-dependencies` (10). Its per-file override, in
+  `projectOverrides` of `scripts/project-lint.ts` (spread into the
+  `vite.config.ts` overrides after the Node one), is the **only** `overrides`
+  entry allowed in source, and only in plugin repos:
 
   ```ts
-  overrides: [{ files: ["src/rules/index.ts"], rules: { "import/max-dependencies": "off" } }],
+  export const projectOverrides: OxlintOverride[] = [
+    // The rule registry imports every rule module by design.
+    { files: ["src/rules/index.ts"], rules: { "import/max-dependencies": "off" } },
+  ];
   ```
 
 - Rules use ESLint's standard `create(context)` API, never Oxlint's

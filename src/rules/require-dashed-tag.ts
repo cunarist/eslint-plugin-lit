@@ -54,7 +54,7 @@ function tagLiteral(node: ClassNode): TSESTree.StringLiteral | null {
 }
 
 /**
- * `require-dashed-tag` — rejects a custom element name the registry will not
+ * `require-dashed-tag` - rejects a custom element name the registry will not
  * accept: one with no hyphen, uppercase, a leading non-letter, or a name the
  * spec reserves. `customElements.define()` throws on it, so the element never
  * exists.

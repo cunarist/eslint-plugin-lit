@@ -21,7 +21,7 @@ function isPrivateName(name: string): boolean {
 }
 
 /**
- * `no-private-properties` — rejects `@property` on a `#private` field.
+ * `no-private-properties` - rejects `@property` on a `#private` field.
  *
  * `@property` declares public API, an observed attribute anyone can set from
  * markup, which contradicts a private name. `@state` is the internal form.

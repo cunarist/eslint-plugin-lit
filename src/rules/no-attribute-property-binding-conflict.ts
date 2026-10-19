@@ -21,7 +21,7 @@ function leadingSpaceStart(text: string, offset: number): number {
 }
 
 /**
- * `no-attribute-property-binding-conflict` — rejects the same name bound as
+ * `no-attribute-property-binding-conflict` - rejects the same name bound as
  * both an attribute and a property on one element.
  *
  * `<x-y foo=${a} .foo=${b}>` sets the attribute and the property from two

@@ -14,7 +14,7 @@
  * never read.
  */
 
-import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
+import { type Dirent, existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { dirname, join, matchesGlob, posix } from "node:path";
 
 import { excludedFolder, matchesDotSegments, patternBase } from "./globs.ts";
@@ -54,10 +54,10 @@ interface ProgramGlobs {
 function parseJsonc(text: string): unknown {
   const stripped = text
     .replaceAll(
-      /("(?:[^"\\]|\\.)*")|\/\/[^\n]*|\/\*[\s\S]*?\*\//gu,
+      /(?<string>"(?:[^"\\]|\\.)*")|\/\/[^\n]*|\/\*[\s\S]*?\*\//gu,
       (_match, string?: string) => string ?? "",
     )
-    .replaceAll(/,(\s*[}\]])/gu, "$1");
+    .replaceAll(/,(?<close>\s*[}\]])/gu, "$1");
   return JSON.parse(stripped);
 }
 
@@ -159,7 +159,7 @@ function walkFolder(walk: Walk, relative: string): void {
   }
   walk.walked.add(relative);
   walk.versions.set(absolute, modified(absolute));
-  let entries;
+  let entries: Dirent[] | null = null;
   try {
     entries = readdirSync(absolute, { withFileTypes: true });
   } catch {
@@ -222,7 +222,7 @@ function listProject(root: string): ProjectListing {
 }
 
 /** The listing of each project root, kept for the worker's lifetime. */
-const listings: Map<string, ProjectListing> = new Map();
+const listings = new Map<string, ProjectListing>();
 
 /** Whether every file and folder a listing was walked from is unchanged. */
 export function isUnchanged(versions: ReadonlyMap<string, number>): boolean {

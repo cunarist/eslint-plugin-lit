@@ -62,7 +62,7 @@ function returnsThis(body: TSESTree.BlockStatement | TSESTree.Expression): boole
 }
 
 /**
- * `no-light-dom` — `createRenderRoot()` returning `this` renders into the light
+ * `no-light-dom` - `createRenderRoot()` returning `this` renders into the light
  * DOM, which drops style and DOM encapsulation for the whole component.
  */
 export const noLightDomRule: LitRule = {

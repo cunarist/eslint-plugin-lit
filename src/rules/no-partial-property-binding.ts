@@ -55,9 +55,9 @@ function rawAttributes(element: ParsedElement, text: string): RawAttribute[] {
     const raw = text.slice(location.startOffset, location.endOffset);
     const equals = raw.indexOf("=");
     attributes.push({
-      name: equals < 0 ? raw : raw.slice(0, equals),
-      value: equals < 0 ? "" : unquote(raw.slice(equals + 1).trim()),
-      hasValue: equals >= 0,
+      name: equals === -1 ? raw : raw.slice(0, equals),
+      value: equals === -1 ? "" : unquote(raw.slice(equals + 1).trim()),
+      hasValue: equals !== -1,
       start: location.startOffset,
       end: location.endOffset,
     });
@@ -73,7 +73,7 @@ function isSinglePlaceholder(text: string): boolean {
 }
 
 /**
- * `no-partial-property-binding` — rejects a property, event or boolean binding
+ * `no-partial-property-binding` - rejects a property, event or boolean binding
  * that is not the entire attribute value.
  *
  * Lit cannot compose a value out of parts for these, so it throws at render

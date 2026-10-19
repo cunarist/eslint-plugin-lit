@@ -25,7 +25,7 @@ function slotName(element: ParsedElement): string | null {
 }
 
 /**
- * `no-duplicate-slot-names` — rejects two `<slot>` elements with the same
+ * `no-duplicate-slot-names` - rejects two `<slot>` elements with the same
  * `name` in one template.
  *
  * Slot assignment matches light-DOM children against the first slot of a given

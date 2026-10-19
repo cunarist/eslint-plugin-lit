@@ -30,11 +30,11 @@ function allHex(text: string): boolean {
 function invalidUnicode(raw: string, index: number): InvalidEscape | null {
   if (raw[index + 2] === "{") {
     const close = raw.indexOf("}", index + 3);
-    const body = close < 0 ? "" : raw.slice(index + 3, close);
+    const body = close === -1 ? "" : raw.slice(index + 3, close);
     if (body.length > 0 && allHex(body)) {
       return null;
     }
-    return { index, length: (close < 0 ? raw.length : close + 1) - index, kind: "u" };
+    return { index, length: (close === -1 ? raw.length : close + 1) - index, kind: "u" };
   }
   const digits = raw.slice(index + 2, index + 6);
   if (digits.length === 4 && allHex(digits)) {
@@ -67,7 +67,7 @@ function invalidEscapes(raw: string): InvalidEscape[] {
 }
 
 /**
- * `no-invalid-escape-sequences` — rejects a malformed `\x` or `\u` escape
+ * `no-invalid-escape-sequences` - rejects a malformed `\x` or `\u` escape
  * inside an `html` template.
  *
  * A tagged template makes a malformed escape legal to write while its cooked
@@ -85,7 +85,7 @@ export const noInvalidEscapeSequencesRule: LitRule = {
     schema: [],
     messages: {
       hex: "Invalid `\\x` escape sequence; `\\x` takes exactly two hex digits.",
-      unicode: "Invalid `\\u` escape sequence; `\\u` takes four hex digits or `{…}`.",
+      unicode: "Invalid `\\u` escape sequence; `\\u` takes four hex digits or `{...}`.",
       escapeBackslash: "Escape the backslash to keep it as literal text.",
     },
   },

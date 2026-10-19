@@ -95,7 +95,7 @@ import { valueAfterConstraintsRule } from "./value-after-constraints.ts";
  * A `Map` rather than an object literal: a rule record is a lookup keyed by
  * rule id, so the ids belong in value position.
  */
-export const rules: Map<string, LitRule> = new Map([
+export const rules = new Map<string, LitRule>([
   ["attribute-names", attributeNamesRule],
   ["attribute-value-entities", attributeValueEntitiesRule],
   ["binding-positions", bindingPositionsRule],

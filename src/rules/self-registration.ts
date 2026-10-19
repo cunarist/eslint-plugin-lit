@@ -81,7 +81,7 @@ function registerSuggestions(
 }
 
 /**
- * `self-registration` — a reactive controller registers itself.
+ * `self-registration` - a reactive controller registers itself.
  *
  * The host constructs it and forgets about it; the controller calls
  * `host.addController(this)` in its constructor so the host hooks fire

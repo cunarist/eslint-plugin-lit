@@ -23,7 +23,7 @@ function customElementTagNode(node: ClassNode): TSESTree.StringLiteral | null {
   return null;
 }
 
-/** Whether a call is `customElements.define(…)`, however it is qualified. */
+/** Whether a call is `customElements.define(...)`, however it is qualified. */
 function isDefineCall(node: TSESTree.CallExpression): boolean {
   const path = memberPath(node.callee);
   return (
@@ -32,7 +32,7 @@ function isDefineCall(node: TSESTree.CallExpression): boolean {
 }
 
 /**
- * `no-duplicate-tag-registration` — rejects registering the same custom
+ * `no-duplicate-tag-registration` - rejects registering the same custom
  * element tag twice in one file.
  *
  * `customElements.define` throws `NotSupportedError` when a tag is already
@@ -77,7 +77,9 @@ export const noDuplicateTagRegistrationRule: LitRule = {
       "Program:exit"(): void {
         // Order of collection across visitor kinds is not guaranteed, so sort
         // by position to make "the first one wins" mean the first in the file.
-        const ordered = registrations.toSorted((a, b) => a.node.range[0] - b.node.range[0]);
+        const ordered = registrations.toSorted(
+          (left, right) => left.node.range[0] - right.node.range[0],
+        );
         const seen = new Set<string>();
         for (const registration of ordered) {
           if (seen.has(registration.tag)) {

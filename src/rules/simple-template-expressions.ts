@@ -137,11 +137,11 @@ function isRenderReturn(node: TSESTree.ReturnStatement): boolean {
 }
 
 /**
- * `simple-template-expressions` — every `${…}` binding in an `html` template
+ * `simple-template-expressions` - every `${...}` binding in an `html` template
  * must be an identifier, `this`, or a non-computed member chain of any depth.
  *
  * Calls (directive calls included), inline functions, `.bind(this)`,
- * `.map(…)`, conditionals, logical operators, literals, and `await` are
+ * `.map(...)`, conditionals, logical operators, literals, and `await` are
  * computed before the `return` and interpolated by name. The expression
  * `render()` returns may not be a conditional either.
  */
@@ -157,11 +157,11 @@ export const simpleTemplateExpressionsRule: LitRule = {
       hoist:
         "Unexpected {{shape}} in a template; compute it before the `return` and interpolate the local by name.",
       inlineFunction:
-        "Unexpected {{shape}} in a template; make it a private method field such as `readonly #onClick = () => {…}` and bind it by name.",
-      bind: "Unexpected `.bind(this)` in a template; make it a private method field such as `readonly #onClick = () => {…}` and bind it by name.",
-      map: "Unexpected `.map(…)` call in a template; build the list with `repeat(…)` hoisted into a local and interpolate the local.",
+        "Unexpected {{shape}} in a template; make it a private method field such as `readonly #onClick = () => {...}` and bind it by name.",
+      bind: "Unexpected `.bind(this)` in a template; make it a private method field such as `readonly #onClick = () => {...}` and bind it by name.",
+      map: "Unexpected `.map(...)` call in a template; build the list with `repeat(...)` hoisted into a local and interpolate the local.",
       directive:
-        "Unexpected directive call `{{name}}(…)` in a template; directives are hoisted out too, into a local before the `return`.",
+        "Unexpected directive call `{{name}}(...)` in a template; directives are hoisted out too, into a local before the `return`.",
       conditionalRender:
         "Unexpected conditional expression returned from `render()`; return early inside an `if`, or precompute the template into a local.",
     },

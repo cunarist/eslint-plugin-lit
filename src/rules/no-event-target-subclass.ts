@@ -3,7 +3,7 @@ import type { TSESTree } from "@typescript-eslint/types";
 import { type ClassNode, docsUrl, type LitRule, memberPath } from "#helpers";
 
 /**
- * `no-event-target-subclass` — extending `EventTarget` builds a state bus that
+ * `no-event-target-subclass` - extending `EventTarget` builds a state bus that
  * Lit knows nothing about. Shared state belongs in a context.
  */
 export const noEventTargetSubclassRule: LitRule = {

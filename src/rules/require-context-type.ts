@@ -3,7 +3,7 @@ import type { TSESTree } from "@typescript-eslint/types";
 import { docsUrl, importedLocalName, isContextModule, type LitRule, memberPath } from "#helpers";
 
 /**
- * `require-context-type` — requires `createContext()` from `@lit/context` to
+ * `require-context-type` - requires `createContext()` from `@lit/context` to
  * be given an explicit type argument.
  *
  * Without one the context is `Context<unknown, unknown>`, so every `@consume`
@@ -19,7 +19,7 @@ export const requireContextTypeRule: LitRule = {
     schema: [],
     messages: {
       untyped:
-        "`createContext()` has no type argument, so its consumers receive `unknown`; write `createContext<Type>(…)`.",
+        "`createContext()` has no type argument, so its consumers receive `unknown`; write `createContext<Type>(...)`.",
     },
   },
   create(context) {
@@ -37,7 +37,7 @@ export const requireContextTypeRule: LitRule = {
       },
       CallExpression(node: TSESTree.CallExpression): void {
         const path = memberPath(node.callee);
-        // Oxlint gives a call without `<…>` `null` type arguments, ESLint none.
+        // Oxlint gives a call without `<...>` `null` type arguments, ESLint none.
         const typed = (node.typeArguments ?? null) !== null;
         if (path === null || !locals.has(path) || typed) {
           return;

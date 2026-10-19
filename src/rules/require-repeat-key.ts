@@ -3,7 +3,7 @@ import type { TSESTree } from "@typescript-eslint/types";
 import { docsUrl, importedLocalName, isRepeatModule, type LitRule, memberPath } from "#helpers";
 
 /**
- * `require-repeat-key` — rejects `repeat(items, template)`, the two-argument
+ * `require-repeat-key` - rejects `repeat(items, template)`, the two-argument
  * form with no key function.
  *
  * Without a key `repeat` reconciles by index, exactly what a plain array
@@ -20,7 +20,7 @@ export const requireRepeatKeyRule: LitRule = {
     schema: [],
     messages: {
       noKey:
-        "`repeat(…)` called without a key function reconciles by index; pass `(item) => item.id` as the second argument.",
+        "`repeat(...)` called without a key function reconciles by index; pass `(item) => item.id` as the second argument.",
     },
   },
   create(context) {

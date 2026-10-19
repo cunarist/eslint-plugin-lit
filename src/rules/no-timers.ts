@@ -26,7 +26,7 @@ function calleeBareName(callee: TSESTree.Expression): string | null {
 }
 
 /**
- * `no-timers` — timers inside a component are hidden scheduling.
+ * `no-timers` - timers inside a component are hidden scheduling.
  *
  * They make DOM or editor state "settle" instead of deriving it, and they
  * create a handle nobody releases on disconnect.

@@ -55,12 +55,12 @@ const SVG_ONLY_ELEMENTS: ReadonlySet<string> = new Set([
 ]);
 
 /**
- * `svg-template-for-svg-content` — rejects SVG-only elements written directly
+ * `svg-template-for-svg-content` - rejects SVG-only elements written directly
  * in an `html` template with no enclosing `<svg>`.
  *
  * Lit parses an `html` template in the HTML namespace, so a bare `<path>`
  * becomes an HTML element named `path` that renders nothing. A complete
- * `<svg>…</svg>` is fine: the parser switches namespace at its start tag.
+ * `<svg>...</svg>` is fine: the parser switches namespace at its start tag.
  */
 export const svgTemplateForSvgContentRule: LitRule = {
   meta: {

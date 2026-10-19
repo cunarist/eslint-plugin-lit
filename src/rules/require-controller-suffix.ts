@@ -22,7 +22,7 @@ function check(context: LitRuleContext, node: ClassNode): void {
 }
 
 /**
- * `require-controller-suffix` — requires a reactive controller class name to
+ * `require-controller-suffix` - requires a reactive controller class name to
  * end in `Controller`.
  *
  * At the call site `#items = new ItemsController(this)` says which of the
@@ -37,7 +37,7 @@ export const requireControllerSuffixRule: LitRule = {
     },
     schema: [],
     messages: {
-      suffix: 'Reactive controller "{{name}}" is not named `…Controller`.',
+      suffix: 'Reactive controller "{{name}}" is not named `...Controller`.',
     },
   },
   create(context) {

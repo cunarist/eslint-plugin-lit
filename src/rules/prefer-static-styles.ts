@@ -15,11 +15,11 @@ import {
 const STYLE_TAG: RegExp = /<\s*style[\s>]/iu;
 
 /**
- * `prefer-static-styles` — rejects a `<style>` element inside an `html`
+ * `prefer-static-styles` - rejects a `<style>` element inside an `html`
  * template.
  *
  * It is re-parsed on every render and cannot be shared between instances;
- * `static styles` with a `` css`…` `` literal is parsed once and shared.
+ * `static styles` with a `` css`...` `` literal is parsed once and shared.
  */
 export const preferStaticStylesRule: LitRule = {
   meta: {

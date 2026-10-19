@@ -76,7 +76,7 @@ function directlyInConstructor(node: TSESTree.Node): boolean {
   return false;
 }
 
-/** The property name of a `this.foo = …` target, if that is the shape. */
+/** The property name of a `this.foo = ...` target, if that is the shape. */
 function thisPropertyName(node: TSESTree.Node): string | null {
   if (node.type !== "MemberExpression" || node.computed || node.object.type !== "ThisExpression") {
     return null;
@@ -85,7 +85,7 @@ function thisPropertyName(node: TSESTree.Node): string | null {
 }
 
 /**
- * `no-property-assignment-in-constructor` — writing a reactive property in the
+ * `no-property-assignment-in-constructor` - writing a reactive property in the
  * constructor runs before the element is connected, so Lit records a change
  * from `undefined` and schedules an update with nothing to react to. It is
  * also the one write SSR hydration cannot see: the client constructor

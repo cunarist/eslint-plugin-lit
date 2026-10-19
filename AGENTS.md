@@ -74,8 +74,10 @@ and follow it before reasoning or responding.
   and `invalid` lists. Write cases once, in ESLint's shape and 1-based columns.
 - Rules this repo enforces on itself but does not publish live in
   `scripts/project-lint.ts`, a repo-local plugin named `project` loaded by
-  `vite.config.ts`. Its custom rules are `no-disable-comments` and
-  `no-asset-imports`. Naming is Oxlint's built-in `id-match`, set in its
+  `vite.config.ts`. Its custom rules, each in a flat `scripts/project-lint-*.ts`
+  file, are `no-disable-comments`, `prefer-ascii`, `no-asset-imports`, and
+  ports of the hugoalh `recommended` rules Oxlint lacks (`no-nan`,
+  `no-unsafe-number`, `no-duplicate-types`, ...). Naming is Oxlint's built-in `id-match`, set in its
   `configs.project`.
   `scripts/` is never packed or published.
 - `scripts/` is repo tooling, not production code: no tests.
@@ -88,11 +90,16 @@ and follow it before reasoning or responding.
 - `vite.config.ts` lists no rule by name: its `rules` spreads
   `configs.all.rules` from `src/plugin/index.ts` and `configs.project.rules` from
   `scripts/project-lint.ts`, which holds the repo's own rule list (parity rules,
-  extras, opt-outs, built-in ids included). Only `overrides`, being file globs,
-  stays in `vite.config.ts`, and its one entry (`import/max-dependencies` off
-  for the `src/rules/index.ts` registry) is the only override allowed: none
-  for other source files, and `scripts/**` only when a script truly needs one,
-  each with a one-line reason.
+  extras, opt-outs, built-in ids included). `vite.config.ts` sets exactly
+  `overrides: projectOverrides`, the whole list exported by
+  `scripts/project-lint.ts`: the Node code entry first, then per-file
+  exceptions, each with a why-comment (no rule takes an `allowFiles`
+  option). Its one exception (`import/max-dependencies` off for the
+  `src/rules/index.ts` registry) is the only source exception allowed;
+  `ignorePatterns` is only for generated output. See `lint-config`.
+- Enum-like string values are UPPER_SNAKE wherever this repo owns the format;
+  external formats are converted at the boundary. See
+  `naming-upper-snake-values`.
 - Every file stays under Oxlint's default `max-lines` of 300, `scripts/`
   included; there is no `max-lines` override. Split a growing file into flat
   themed files (`src/helpers/bindings.ts` beside `modules.ts`; in `scripts/`,

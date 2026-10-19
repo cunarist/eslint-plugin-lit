@@ -11,13 +11,13 @@ const EVENT_CONSTRUCTORS: ReadonlySet<string> = new Set(["Event", "CustomEvent"]
 /** Kebab-case form: camel humps and underscores turned into dashes. */
 function kebabName(name: string): string {
   return name
-    .replaceAll(/([a-z0-9])([A-Z])/gu, "$1-$2")
+    .replaceAll(/(?<lower>[a-z0-9])(?<upper>[A-Z])/gu, "$1-$2")
     .replaceAll("_", "-")
     .toLowerCase();
 }
 
 /**
- * `event-name-case` — requires the name given to `new CustomEvent(...)` or
+ * `event-name-case` - requires the name given to `new CustomEvent(...)` or
  * `new Event(...)` to be kebab-case: no uppercase letters and no underscores.
  *
  * Event names are matched as plain strings, so `addEventListener("itemselected")`

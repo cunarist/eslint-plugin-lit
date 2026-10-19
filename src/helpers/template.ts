@@ -25,13 +25,13 @@ export type ParsedFragment = DefaultTreeAdapterMap["parentNode"];
 /** A `[start, end)` pair of offsets in the source file. */
 export type SourceRange = [number, number];
 
-/** Marker substituted for each `${…}` binding. */
+/** Marker substituted for each `${...}` binding. */
 export function bindingPlaceholder(index: number): string {
   return `{{__lit_${index}__}}`;
 }
 
 /** Matches every binding placeholder in a string. */
-const PLACEHOLDER_PATTERN: RegExp = /\{\{__lit_(\d+)__\}\}/gu;
+const PLACEHOLDER_PATTERN: RegExp = /\{\{__lit_(?<index>\d+)__\}\}/gu;
 
 /** Whether a string contains at least one binding placeholder. */
 export function hasPlaceholder(text: string): boolean {
@@ -66,7 +66,7 @@ interface Segment {
   /**
    * Placeholder segments have no character-by-character correspondence with
    * the source (`{{__lit_0__}}` is not the same length as `${this.tag}`), so
-   * any offset inside one snaps to the whole `${…}` span.
+   * any offset inside one snaps to the whole `${...}` span.
    */
   isPlaceholder: boolean;
 }
@@ -155,7 +155,7 @@ function mapRange(map: SegmentMap, start: number, end: number): SourceRange {
   const from = mapOffset(map, start);
   const last = Math.max(start, end - 1);
   const lastSegment = segmentAt(map.segments, last);
-  let to: number;
+  let to: number | null = null;
   if (lastSegment === null) {
     to = from + 1;
   } else if (lastSegment.isPlaceholder) {
@@ -171,7 +171,7 @@ function mapRange(map: SegmentMap, start: number, end: number): SourceRange {
  * source offsets.
  *
  * Only the static quasis map back faithfully; an offset landing inside a
- * placeholder maps to the start of the corresponding `${…}` binding.
+ * placeholder maps to the start of the corresponding `${...}` binding.
  */
 export function templateSource(node: TSESTree.TaggedTemplateExpression): TemplateSource {
   const { text, segments } = substitute(node.quasi.quasis);

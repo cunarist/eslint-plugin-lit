@@ -33,7 +33,7 @@ function optionEntry(options: TSESTree.Node | null, name: string): TSESTree.Prop
   return null;
 }
 
-/** The options object passed to `@property({…})`, if it is a literal. */
+/** The options object passed to `@property({...})`, if it is a literal. */
 function decoratorOptions(decorator: TSESTree.Decorator): TSESTree.ObjectExpression | null {
   const expression = decorator.expression;
   if (expression.type !== "CallExpression") {
@@ -65,7 +65,7 @@ function violation(options: TSESTree.Node | null): TSESTree.Property | null {
 }
 
 /**
- * `require-scalar-reflect` — rejects `reflect: true` unless the property's
+ * `require-scalar-reflect` - rejects `reflect: true` unless the property's
  * `type` is `String`, `Number`, or `Boolean`, or it has its own converter,
  * whether declared with `@property` or in `static properties`.
  *

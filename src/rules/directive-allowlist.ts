@@ -12,7 +12,7 @@ const ALLOWED_DIRECTIVES: ReadonlySet<string> = new Set([
 const DIRECTIVE_SOURCE = /^(?:lit|lit-html|lit-element)\/directives\//u;
 
 /**
- * `directive-allowlist` — only `ref` and `repeat` may be imported from
+ * `directive-allowlist` - only `ref` and `repeat` may be imported from
  * `lit/directives/*`. Every other directive hides control flow or state inside
  * the template.
  *

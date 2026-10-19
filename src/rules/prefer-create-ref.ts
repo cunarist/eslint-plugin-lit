@@ -19,9 +19,9 @@ type Callback =
 
 /**
  * Whether an expression's value is the callback parameter itself, reached
- * through any identity-preserving wrapper: a cast, `!`, the left of `?? …`, or
- * either branch of a `?:`. A projection of the element — `el.offsetWidth`,
- * `wrap(el)` — is deliberately not, because that value is no longer the
+ * through any identity-preserving wrapper: a cast, `!`, the left of `?? ...`, or
+ * either branch of a `?:`. A projection of the element - `el.offsetWidth`,
+ * `wrap(el)` - is deliberately not, because that value is no longer the
  * element and `createRef` could not hold it.
  */
 function isParamValue(expression: TSESTree.Expression, param: string): boolean {
@@ -45,7 +45,7 @@ function isParamValue(expression: TSESTree.Expression, param: string): boolean {
 /** The single `=` assignment a callback's body reduces to, or null. */
 function bodyAssignment(callback: Callback): TSESTree.AssignmentExpression | null {
   const body = callback.body;
-  let expression: TSESTree.Expression;
+  let expression: TSESTree.Expression | null = null;
   if (body.type === "BlockStatement") {
     const [statement] = body.body;
     if (body.body.length !== 1 || statement?.type !== "ExpressionStatement") {
@@ -194,12 +194,12 @@ function resolveCallback(
 }
 
 /**
- * `prefer-create-ref` — rejects a `ref` callback that only stashes the
+ * `prefer-create-ref` - rejects a `ref` callback that only stashes the
  * element, in favour of `createRef`.
  *
  * Only fires when the callback is provably a bare stash: its body is one
  * assignment whose stored value is the element itself, reached through any
- * cast, `!`, `?? …`, or `?:` branch. The callback is resolved within the same
+ * cast, `!`, `?? ...`, or `?:` branch. The callback is resolved within the same
  * file only: an inline function, a `this` member of the enclosing class, or a
  * free identifier traced to its one declaration. Anything ambiguous is passed
  * over rather than guessed.

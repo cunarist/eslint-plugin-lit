@@ -19,7 +19,7 @@ function targetsThis(node: TSESTree.Node): boolean {
 }
 
 /**
- * `no-this-assign-in-render` — rejects assigning to anything reached through
+ * `no-this-assign-in-render` - rejects assigning to anything reached through
  * `this` inside `render()`.
  *
  * `render()` must be a pure function of the component's state. The check is

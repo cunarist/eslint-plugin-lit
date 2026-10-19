@@ -139,11 +139,11 @@ function checkElement(
 }
 
 /**
- * `attribute-value-entities` — rejects an unescaped `&`, `<`, `>`, or `"`
+ * `attribute-value-entities` - rejects an unescaped `&`, `<`, `>`, or `"`
  * inside a static attribute value in an `html` template.
  *
  * Characters that are significant to the HTML parser must be written as
- * entities inside attribute values. Bindings are excluded: a `${…}` is
+ * entities inside attribute values. Bindings are excluded: a `${...}` is
  * substituted for a placeholder before parsing, so expression text is never
  * scanned.
  */

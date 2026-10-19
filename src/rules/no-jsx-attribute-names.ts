@@ -17,7 +17,7 @@ const JSX_NAMES: ReadonlyMap<string, string> = new Map([
 ]);
 
 /**
- * `no-jsx-attribute-names` — rejects the JSX attribute names `className` and
+ * `no-jsx-attribute-names` - rejects the JSX attribute names `className` and
  * `htmlFor` in a template.
  *
  * Template markup is real HTML, so these set attributes of those literal names
@@ -57,7 +57,7 @@ export const noJsxAttributeNamesRule: LitRule = {
             }
             const raw = source.text.slice(location.startOffset, location.endOffset);
             const equals = raw.indexOf("=");
-            const name = equals < 0 ? raw : raw.slice(0, equals);
+            const name = equals === -1 ? raw : raw.slice(0, equals);
             const range = source.toSourceRange(
               location.startOffset,
               location.startOffset + name.length,

@@ -12,10 +12,10 @@ import {
 const LEGACY: RegExp = /\[\[[^\][]+\]\]|\{\{[^{}]+\}\}/gu;
 
 /**
- * `no-legacy-template-syntax` — rejects Polymer-style `[[oneWay]]` and
+ * `no-legacy-template-syntax` - rejects Polymer-style `[[oneWay]]` and
  * `{{twoWay}}` bindings inside an `html` template.
  *
- * Lit only interpolates `${…}`; these render as literal text. The raw quasis
+ * Lit only interpolates `${...}`; these render as literal text. The raw quasis
  * are scanned rather than the substituted text, since the binding placeholder
  * itself is spelled with double braces.
  */
@@ -23,7 +23,7 @@ export const noLegacyTemplateSyntaxRule: LitRule = {
   meta: {
     type: "problem",
     docs: {
-      description: "Disallow Polymer-style `[[…]]` and `{{…}}` bindings in templates",
+      description: "Disallow Polymer-style `[[...]]` and `{{...}}` bindings in templates",
       url: docsUrl("no-legacy-template-syntax"),
     },
     schema: [],
@@ -49,7 +49,7 @@ export const noLegacyTemplateSyntaxRule: LitRule = {
                 source.toSourceRange(start, start + match[0].length),
               ),
               messageId: "legacy",
-              data: { kind: match[0].startsWith("[[") ? "[[…]]" : "{{…}}" },
+              data: { kind: match[0].startsWith("[[") ? "[[...]]" : "{{...}}" },
             });
           }
         }

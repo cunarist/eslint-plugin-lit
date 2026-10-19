@@ -54,7 +54,7 @@ function checkMember(
 }
 
 /**
- * `no-query-decorators` — rejects `@query`, `@queryAll`, `@queryAsync`,
+ * `no-query-decorators` - rejects `@query`, `@queryAll`, `@queryAsync`,
  * `@queryAssignedElements`, and `@queryAssignedNodes`, and their imports from
  * the Lit decorator modules.
  *

@@ -71,7 +71,7 @@ function check(context: LitRuleContext, node: ClassNode): void {
 }
 
 /**
- * `tag-matches-class-name` — rejects a `@customElement` tag whose segments,
+ * `tag-matches-class-name` - rejects a `@customElement` tag whose segments,
  * after any leading prefix, do not PascalCase to the class name, so
  * `cl-path-bar` belongs to `PathBar`.
  *

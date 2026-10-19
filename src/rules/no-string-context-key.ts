@@ -4,7 +4,7 @@ import type { TSESTree } from "@typescript-eslint/types";
 import { docsUrl, importedLocalName, isContextModule, type LitRule, memberPath } from "#helpers";
 
 /**
- * `no-string-context-key` — `createContext("theme")` keys the context by that
+ * `no-string-context-key` - `createContext("theme")` keys the context by that
  * string. Context lookup compares keys with `===`, and strings compare by
  * value, so any other package that picks `"theme"` silently answers your
  * consumer's request. A `Symbol` is unique by construction.

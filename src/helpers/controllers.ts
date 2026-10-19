@@ -56,7 +56,7 @@ export function controllerHostParam(node: ClassNode): TSESTree.Identifier | null
 
 /**
  * The field a controller stores its host in, by name (`#host`, `host`, `_host`,
- * …), or null.
+ * ...), or null.
  *
  * The host parameter is found by type, then followed to a top-level
  * `this.<field> = host` assignment in the constructor. Anything more elaborate,

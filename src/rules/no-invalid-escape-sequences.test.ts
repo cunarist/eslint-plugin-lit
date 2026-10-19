@@ -29,7 +29,7 @@ testRule("no-invalid-escape-sequences", noInvalidEscapeSequencesRule, {
       errors: [
         {
           messageId: "hex",
-          ...spanOf(highlightCode, "\\xZZ"),
+          ...spanOf(highlightCode, String.raw`\xZZ`),
           suggestions: [
             {
               messageId: "escapeBackslash",

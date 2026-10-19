@@ -58,7 +58,7 @@ function check(context: LitRuleContext, node: ClassNode): void {
 }
 
 /**
- * `require-tag-prefix` — requires a custom element name to carry a namespace
+ * `require-tag-prefix` - requires a custom element name to carry a namespace
  * prefix.
  *
  * A custom element name is global to the page. Without a namespace segment two

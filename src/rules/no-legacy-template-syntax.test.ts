@@ -23,13 +23,13 @@ testRule("no-legacy-template-syntax", noLegacyTemplateSyntaxRule, {
     // rejects Polymer one-way binding
     {
       code: `const t = html\`<div>[[this.name]]</div>\`;${IMPORTS}`,
-      errors: [{ messageId: "legacy", data: { kind: "[[…]]" } }],
+      errors: [{ messageId: "legacy", data: { kind: "[[...]]" } }],
     },
 
     // rejects Polymer two-way binding
     {
       code: `const t = html\`<div title={{name}}></div>\`;${IMPORTS}`,
-      errors: [{ messageId: "legacy", data: { kind: "{{…}}" } }],
+      errors: [{ messageId: "legacy", data: { kind: "{{...}}" } }],
     },
 
     // highlights the legacy binding after a Lit one

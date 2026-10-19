@@ -35,7 +35,7 @@ function decoratedNames(node: ClassNode): Set<string> {
   return names;
 }
 
-/** The entries of every `static properties = { … }` field on a class. */
+/** The entries of every `static properties = { ... }` field on a class. */
 function staticPropertyEntries(node: ClassNode): TSESTree.Property[] {
   const entries: TSESTree.Property[] = [];
   for (const member of classMembers(node)) {
@@ -56,7 +56,7 @@ function staticPropertyEntries(node: ClassNode): TSESTree.Property[] {
 }
 
 /**
- * `no-duplicate-property-declaration` — rejects a property declared by both a
+ * `no-duplicate-property-declaration` - rejects a property declared by both a
  * decorator and a `static properties` entry.
  *
  * `@property()` and `static properties` both end up in

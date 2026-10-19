@@ -29,7 +29,7 @@ const CONSTRAINTS: readonly string[] = [
 const VALUE_NAMES: readonly string[] = ["value", ".value"];
 
 /**
- * `value-after-constraints` — rejects a `value` binding that comes before a
+ * `value-after-constraints` - rejects a `value` binding that comes before a
  * validity constraint attribute on the same form control.
  *
  * Lit applies bindings in source order, so a value set before its constraints

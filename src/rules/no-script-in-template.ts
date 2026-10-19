@@ -11,7 +11,7 @@ import {
 } from "#helpers";
 
 /**
- * `no-script-in-template` — rejects a `<script>` element inside a Lit
+ * `no-script-in-template` - rejects a `<script>` element inside a Lit
  * template.
  *
  * Templates are parsed as fragments and cloned into place, and the HTML spec

@@ -18,7 +18,7 @@ const UNSAFE_SOURCES: ReadonlySet<string> = new Set([
 ]);
 
 /**
- * `no-unsafe-html` — bans the `unsafeHTML` and `unsafeSVG` directives, both
+ * `no-unsafe-html` - bans the `unsafeHTML` and `unsafeSVG` directives, both
  * the import specifier and every call site.
  *
  * Both parse a string as markup and insert it into the DOM, which is exactly
@@ -35,7 +35,7 @@ export const noUnsafeHtmlRule: LitRule = {
     messages: {
       imported:
         "Unexpected import of `{{name}}`, which inserts unescaped markup; bind the value normally or build a nested `html` template.",
-      call: "Unexpected `{{name}}(…)` call, which inserts unescaped markup; bind the value normally or build a nested `html` template.",
+      call: "Unexpected `{{name}}(...)` call, which inserts unescaped markup; bind the value normally or build a nested `html` template.",
     },
   },
   create(context) {

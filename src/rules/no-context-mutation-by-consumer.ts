@@ -16,7 +16,7 @@ function isConsume(name: string): boolean {
   return name === "consume" || name.endsWith(".consume");
 }
 
-/** `this.…` paths of every `@consume` field on a class. */
+/** `this.<field>` paths of every `@consume` field on a class. */
 function consumedPaths(node: ClassNode): ReadonlySet<string> {
   const paths = new Set<string>();
   for (const member of classMembers(node)) {
@@ -35,7 +35,7 @@ function consumedPaths(node: ClassNode): ReadonlySet<string> {
 }
 
 /**
- * `no-context-mutation-by-consumer` — rejects assignment to a field declared
+ * `no-context-mutation-by-consumer` - rejects assignment to a field declared
  * with `@consume`.
  *
  * A consumed field is a view of a value the provider owns. Writing to it

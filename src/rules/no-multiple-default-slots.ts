@@ -23,7 +23,7 @@ function isDefaultSlot(element: ParsedElement): boolean {
 }
 
 /**
- * `no-multiple-default-slots` — rejects two or more unnamed `<slot>` elements
+ * `no-multiple-default-slots` - rejects two or more unnamed `<slot>` elements
  * in one template.
  *
  * Unassigned light DOM children all go to the first default slot; the rest

@@ -21,7 +21,7 @@ function sinkName(target: TSESTree.MemberExpression): string | null {
 }
 
 /**
- * `no-inner-html-assignment` — rejects assignment to `innerHTML` or
+ * `no-inner-html-assignment` - rejects assignment to `innerHTML` or
  * `outerHTML` on any receiver.
  *
  * Both parse the assigned string as markup, the classic XSS sink. Inside a Lit

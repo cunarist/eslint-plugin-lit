@@ -1,10 +1,10 @@
 /**
- * `eslint-plugin-lit-robust` — lint rules for Lit web components.
+ * `eslint-plugin-lit-robust` - lint rules for Lit web components.
  *
  * One plugin, namespace `lit-robust`, so a rule id reads
  * `lit-robust/no-unsafe-html`. The rules come in five presets, one per
- * plugin of the Deno package this ports — `core`, `strict`, `dom-ref`,
- * `reactive-controller`, and `naming` — plus `all`, which turns on every rule.
+ * plugin of the Deno package this ports - `core`, `strict`, `dom-ref`,
+ * `reactive-controller`, and `naming` - plus `all`, which turns on every rule.
  * The plugin is the only export; its configs are at `plugin.configs`.
  *
  * @module
@@ -18,7 +18,7 @@ import { rules } from "#rules";
 const NAMESPACE = "lit-robust";
 
 /**
- * The `core` preset — Lit code that does not do what it looks like it does.
+ * The `core` preset - Lit code that does not do what it looks like it does.
  */
 const CORE: string[] = [
   "attribute-value-entities",
@@ -76,7 +76,7 @@ const CORE: string[] = [
 ];
 
 /**
- * The `strict` preset — demanding but correct. Strongly recommended, not
+ * The `strict` preset - demanding but correct. Strongly recommended, not
  * required.
  */
 const STRICT: string[] = [
@@ -96,12 +96,12 @@ const STRICT: string[] = [
 ];
 
 /**
- * The `dom-ref` preset — reach the DOM through a `createRef` ref, nothing else.
+ * The `dom-ref` preset - reach the DOM through a `createRef` ref, nothing else.
  */
 const DOM_REF: string[] = ["no-dom-query", "no-query-decorators", "prefer-create-ref"];
 
 /**
- * The `reactive-controller` preset — the ReactiveController contract, and the
+ * The `reactive-controller` preset - the ReactiveController contract, and the
  * component lifecycle work that belongs in one.
  */
 const REACTIVE_CONTROLLER: string[] = [
@@ -115,7 +115,7 @@ const REACTIVE_CONTROLLER: string[] = [
 ];
 
 /**
- * The `naming` preset — what elements, controllers, attributes, and events are
+ * The `naming` preset - what elements, controllers, attributes, and events are
  * called.
  */
 const NAMING: string[] = [
@@ -152,7 +152,7 @@ const basePlugin: Plugin = {
     // only `.ts` imports. A release bumps both; `tests/package-meta.test.ts`
     // fails if they drift apart.
     name: "eslint-plugin-lit-robust",
-    version: "0.10.0",
+    version: "0.10.1",
     namespace: NAMESPACE,
   },
   rules: Object.fromEntries(rules),

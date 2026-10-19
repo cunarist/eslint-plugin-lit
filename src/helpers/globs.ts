@@ -31,7 +31,7 @@ export function matchesDotSegments(pattern: string): boolean {
  * literal folder followed by `/**` or `/**\/*`.
  */
 export function excludedFolder(pattern: string): string | null {
-  const match = /^(.+?)\/\*\*(?:\/\*)?$/u.exec(pattern);
+  const match = /^(?<base>.+?)\/\*\*(?:\/\*)?$/u.exec(pattern);
   const folder = match?.[1];
   return folder === undefined || folder.split("/").some((segment) => isMagic(segment))
     ? null

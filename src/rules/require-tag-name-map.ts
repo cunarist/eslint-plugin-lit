@@ -137,7 +137,7 @@ function collectEntries(node: TSESTree.TSInterfaceDeclaration, entries: Map<stri
 }
 
 /**
- * `require-tag-name-map` — a class registered with `@customElement("x-y")`
+ * `require-tag-name-map` - a class registered with `@customElement("x-y")`
  * must also augment `HTMLElementTagNameMap` in the same file, so
  * `document.querySelector("x-y")` and template type checking know the element
  * type.

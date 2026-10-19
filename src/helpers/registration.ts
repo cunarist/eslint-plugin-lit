@@ -11,7 +11,7 @@
  * import from packages.
  *
  * A tag is registered by any of three means: a `customElements.define("tag",
- * …)` call, a `@customElement("tag")` decorator, or an `HTMLElementTagNameMap`
+ * ...)` call, a `@customElement("tag")` decorator, or an `HTMLElementTagNameMap`
  * augmentation mapping `"tag"` to its class. The first two name the
  * registering module directly; the augmentation is followed to the mapped
  * class's declaration. Compiled dependencies keep only the augmentation in
@@ -61,7 +61,7 @@ interface RegistrationIndex {
 }
 
 /** The index of each project root, kept for the worker's lifetime. */
-const indexes: Map<string, RegistrationIndex> = new Map();
+const indexes = new Map<string, RegistrationIndex>();
 
 /** Whether an index still describes the files it was built from. */
 function isCurrent(index: RegistrationIndex, files: readonly string[]): boolean {
@@ -100,10 +100,11 @@ function buildIndex(files: readonly string[]): RegistrationIndex {
   const versions = new Map<string, number>();
   const pending = [...files];
   const queued = new Set(pending);
-  for (let at = 0; at < pending.length; at += 1) {
-    const path = pending[at];
-    const module = path === undefined ? null : loadModule(path);
-    if (path === undefined || module === null) {
+  // The array iterator reads `pending.length` on every step, so files pushed
+  // while walking are visited too.
+  for (const path of pending) {
+    const module = loadModule(path);
+    if (module === null) {
       continue;
     }
     versions.set(path, modified(path));

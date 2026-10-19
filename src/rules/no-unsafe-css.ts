@@ -6,7 +6,7 @@ import { docsUrl, keyName, LIT_CORE_SOURCES, type LitRule } from "#helpers";
 const BANNED = "unsafeCSS";
 
 /**
- * `no-unsafe-css` — bans `unsafeCSS` imported from Lit, both the import
+ * `no-unsafe-css` - bans `unsafeCSS` imported from Lit, both the import
  * specifier and every call site.
  *
  * `unsafeCSS` bypasses Lit's CSS sanitisation and lets arbitrary strings reach
@@ -23,7 +23,7 @@ export const noUnsafeCssRule: LitRule = {
     messages: {
       imported:
         "Unexpected import of `unsafeCSS`, which defeats CSS sanitisation; write the rules in a `css` template.",
-      call: "Unexpected `unsafeCSS(…)` call, which defeats CSS sanitisation; write the rules in a `css` template.",
+      call: "Unexpected `unsafeCSS(...)` call, which defeats CSS sanitisation; write the rules in a `css` template.",
     },
   },
   create(context) {

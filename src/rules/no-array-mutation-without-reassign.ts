@@ -40,7 +40,7 @@ function objectKeyName(key: TSESTree.Node): string | null {
   return key.type === "Literal" && typeof key.value === "string" ? key.value : null;
 }
 
-/** Names declared by a `static properties = { … }` field or accessor. */
+/** Names declared by a `static properties = { ... }` field or accessor. */
 function staticPropertyNames(
   member: TSESTree.PropertyDefinition | TSESTree.AccessorProperty,
 ): string[] {
@@ -140,7 +140,7 @@ function mutationOf(context: LitRuleContext, node: TSESTree.CallExpression): Mut
 }
 
 /**
- * `no-array-mutation-without-reassign` — rejects calling a mutating array
+ * `no-array-mutation-without-reassign` - rejects calling a mutating array
  * method on a reactive property.
  *
  * Lit's default `hasChanged` compares with `!==`. A mutating array method

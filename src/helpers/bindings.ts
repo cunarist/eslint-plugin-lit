@@ -165,7 +165,7 @@ interface ExportLookup {
  */
 type ExportAnswer = Binding | null | undefined;
 
-/** What an `export const …` or `export { … }` statement says about the name. */
+/** What an `export const ...` or `export { ... }` statement says about the name. */
 function namedExportAnswer(lookup: ExportLookup, statement: ExportNamedDeclaration): ExportAnswer {
   const { module, name, visited } = lookup;
   if (statement.declaration !== null) {
@@ -184,7 +184,7 @@ function namedExportAnswer(lookup: ExportLookup, statement: ExportNamedDeclarati
   return undefined;
 }
 
-/** What an `export default …` statement says about the name. */
+/** What an `export default ...` statement says about the name. */
 function defaultExportAnswer(
   lookup: ExportLookup,
   statement: ExportDefaultDeclaration,

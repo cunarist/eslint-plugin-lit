@@ -6,7 +6,7 @@ import { docsUrl, enclosingClass, isLitComponent, type LitRule } from "#helpers"
 const QUERY_METHODS: ReadonlySet<string> = new Set(["querySelector", "querySelectorAll"]);
 
 /**
- * `no-dom-query` — rejects `querySelector` and `querySelectorAll` inside a Lit
+ * `no-dom-query` - rejects `querySelector` and `querySelectorAll` inside a Lit
  * component.
  *
  * A component must not reach into its own rendered DOM by selector. Selectors

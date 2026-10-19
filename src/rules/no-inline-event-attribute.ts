@@ -108,14 +108,14 @@ const HANDLER_ATTRIBUTES: ReadonlySet<string> = new Set([
 const SINGLE_BINDING: RegExp = /^\{\{__lit_\d+__\}\}$/u;
 
 /**
- * `no-inline-event-attribute` — rejects HTML inline event handler attributes
+ * `no-inline-event-attribute` - rejects HTML inline event handler attributes
  * such as `onclick` inside an `html` template.
  *
- * An `onclick="…"` attribute is evaluated as global-scope JavaScript, so the
+ * An `onclick="..."` attribute is evaluated as global-scope JavaScript, so the
  * handler cannot see the component instance, and every strict
  * Content-Security-Policy blocks it. Written as `onclick=${this.go}` it is
  * worse: Lit sets the attribute to the stringified function. Lit's
- * `@click=${…}` binding attaches a real listener with the right `this`.
+ * `@click=${...}` binding attaches a real listener with the right `this`.
  */
 export const noInlineEventAttributeRule: LitRule = {
   meta: {
@@ -127,7 +127,8 @@ export const noInlineEventAttributeRule: LitRule = {
     hasSuggestions: true,
     schema: [],
     messages: {
-      inline: "Unexpected inline `{{name}}` attribute; use Lit's `@{{event}}=${…}` event binding.",
+      inline:
+        "Unexpected inline `{{name}}` attribute; use Lit's `@{{event}}=${...}` event binding.",
       useBinding: "Bind it as `@{{event}}`.",
     },
   },
