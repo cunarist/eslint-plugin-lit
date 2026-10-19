@@ -152,7 +152,7 @@ const basePlugin: Plugin = {
     // only `.ts` imports. A release bumps both; `tests/package-meta.test.ts`
     // fails if they drift apart.
     name: "eslint-plugin-lit-robust",
-    version: "0.10.0",
+    version: "0.10.1",
     namespace: NAMESPACE,
   },
   rules: Object.fromEntries(rules),
