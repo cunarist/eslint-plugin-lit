@@ -53,4 +53,4 @@ export default plugin;
 
 `scripts/` is tooling, not production code: never packed or published, and
 no tests. Narrow `overrides` for `scripts/**` are allowed when a script truly
-needs one (e.g. `no-console`); see [[lint-overrides-policy]].
+needs one (e.g. `no-console`); see [[lint-config]].

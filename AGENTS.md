@@ -88,13 +88,13 @@ and follow it before reasoning or responding.
 - `vite.config.ts` lists no rule by name: its `rules` spreads
   `configs.all.rules` from `src/plugin/index.ts` and `configs.project.rules` from
   `scripts/project-lint.ts`, which holds the repo's own rule list (parity rules,
-  extras, opt-outs, built-in ids included). `vite.config.ts` `overrides` holds
-  the Node code entry, then spreads `projectOverrides` from
-  `scripts/project-lint.ts`, the single list of per-file exemptions (no rule
-  takes an `allowFiles` option). Its one entry (`import/max-dependencies` off
-  for the `src/rules/index.ts` registry) is the only source override allowed;
-  `scripts/**` gets one only when a script truly needs it, each with a
-  one-line reason.
+  extras, opt-outs, built-in ids included). `vite.config.ts` sets exactly
+  `overrides: projectOverrides`, the whole list exported by
+  `scripts/project-lint.ts`: the Node code entry first, then per-file
+  exceptions, each with a why-comment (no rule takes an `allowFiles`
+  option). Its one exception (`import/max-dependencies` off for the
+  `src/rules/index.ts` registry) is the only source exception allowed;
+  `ignorePatterns` is only for generated output. See `lint-config`.
 - Every file stays under Oxlint's default `max-lines` of 300, `scripts/`
   included; there is no `max-lines` override. Split a growing file into flat
   themed files (`src/helpers/bindings.ts` beside `modules.ts`; in `scripts/`,
