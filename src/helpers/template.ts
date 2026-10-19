@@ -155,7 +155,7 @@ function mapRange(map: SegmentMap, start: number, end: number): SourceRange {
   const from = mapOffset(map, start);
   const last = Math.max(start, end - 1);
   const lastSegment = segmentAt(map.segments, last);
-  let to: number;
+  let to: number | null = null;
   if (lastSegment === null) {
     to = from + 1;
   } else if (lastSegment.isPlaceholder) {

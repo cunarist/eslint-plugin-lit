@@ -209,9 +209,6 @@ const rules: DummyRuleMap = {
   "no-template-curly-in-string": "off",
   // Collides with the bivariant method signatures the ESLint and Oxlint types need.
   "typescript/method-signature-style": "off",
-  // Collides with no-undef-init: a `let` assigned in try or if/else has no
-  // value to start from but `undefined`.
-  "init-declarations": "off",
   // Collides with the `path` locals the code names: a default `path` import
   // of `node:path` would shadow them.
   "unicorn/import-style": "off",

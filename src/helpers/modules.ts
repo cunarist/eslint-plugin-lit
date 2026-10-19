@@ -22,7 +22,7 @@
  * `null`, and every caller treats that as "not Lit": accurate or silent.
  */
 
-import { readFileSync, realpathSync, statSync } from "node:fs";
+import { readFileSync, realpathSync, type Stats, statSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { parseSync, type Program } from "oxc-parser";
 import { ResolverFactory } from "oxc-resolver";
@@ -74,7 +74,7 @@ function parseModule(path: string, text: string): ModuleFile | null {
 /** The parsed file at a path, reparsed when it changed since the last call. */
 export function loadModule(path: string): ModuleFile | null {
   const real = realPath(path);
-  let stat;
+  let stat: Stats | null = null;
   try {
     stat = statSync(real);
   } catch {
@@ -84,7 +84,7 @@ export function loadModule(path: string): ModuleFile | null {
   if (cached?.mtimeMs === stat.mtimeMs && cached.size === stat.size) {
     return cached.module;
   }
-  let text: string;
+  let text: string | null = null;
   try {
     text = readFileSync(real, "utf8");
   } catch {

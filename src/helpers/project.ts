@@ -14,7 +14,7 @@
  * never read.
  */
 
-import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
+import { type Dirent, existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { dirname, join, matchesGlob, posix } from "node:path";
 
 import { excludedFolder, matchesDotSegments, patternBase } from "./globs.ts";
@@ -159,7 +159,7 @@ function walkFolder(walk: Walk, relative: string): void {
   }
   walk.walked.add(relative);
   walk.versions.set(absolute, modified(absolute));
-  let entries;
+  let entries: Dirent[] | null = null;
   try {
     entries = readdirSync(absolute, { withFileTypes: true });
   } catch {

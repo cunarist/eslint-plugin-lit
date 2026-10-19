@@ -45,7 +45,7 @@ function isParamValue(expression: TSESTree.Expression, param: string): boolean {
 /** The single `=` assignment a callback's body reduces to, or null. */
 function bodyAssignment(callback: Callback): TSESTree.AssignmentExpression | null {
   const body = callback.body;
-  let expression: TSESTree.Expression;
+  let expression: TSESTree.Expression | null = null;
   if (body.type === "BlockStatement") {
     const [statement] = body.body;
     if (body.body.length !== 1 || statement?.type !== "ExpressionStatement") {
