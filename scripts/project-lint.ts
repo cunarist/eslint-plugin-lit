@@ -184,6 +184,7 @@ const rules: DummyRuleMap = {
   "max-statements": ["error", { max: 25 }],
   "max-params": ["error", { max: 4 }],
   "unicorn/max-nested-calls": ["error", { max: 4 }],
+  "import/max-dependencies": ["error", { max: 83 }],
   "one-var": ["error", "never"],
   "no-use-before-define": ["error", { functions: false }],
   "func-style": ["error", "declaration", { allowArrowFunctions: true }],
