@@ -1,8 +1,6 @@
 /**
- * `project` — lint rules this repository holds its own source to that are not
- * part of the published plugin. A rule kept only for this repo's own lint
- * lives in this file. Its rules of its own are `no-disable-comments` and
- * `no-asset-imports`.
+ * `project` — lint rules this repository holds its own source to, not part of
+ * the published plugin: `no-disable-comments` and `no-asset-imports`.
  *
  * Loaded by `vite.config.ts` as an Oxlint `jsPlugins` entry, never packed:
  * `vp pack` builds `src/plugin/index.ts` alone and the tarball holds only `dist/`.
@@ -12,7 +10,7 @@
 
 import type { RuleDefinition } from "@eslint/core";
 import type { TSESTree } from "@typescript-eslint/types";
-import type { DummyRuleMap } from "vite-plus/lint";
+import type { DummyRuleMap, OxlintOverride } from "vite-plus/lint";
 
 import type { LitRuleTypes, LitSourceCode } from "#helpers";
 
@@ -69,17 +67,13 @@ const noDisableCommentsRule: ProjectRule = {
 /** A module specifier read as a path: relative, absolute, or a `#` alias. */
 const PATH_SPECIFIER_PATTERN: RegExp = /^[./#]/u;
 
-/**
- * The extensions a module may be imported by: our own `.ts` files and package
- * `.js`, `.mts`, and `.mjs` subpaths.
- */
+/** The extensions a module may be imported by: `.ts` and package subpaths. */
 const MODULE_EXTENSIONS: ReadonlySet<string> = new Set([".ts", ".js", ".mts", ".mjs"]);
 
 /**
  * Whether `source` names an asset rather than a module: a query string such
- * as `?raw`, or a final path segment whose whole extension is not `.ts`,
- * `.js`, `.mts`, or `.mjs`. Bare package names are left alone, dots and all, as are
- * extensionless paths.
+ * as `?raw`, or a last path segment whose extension is not in
+ * `MODULE_EXTENSIONS`. Bare package names and extensionless paths pass.
  */
 function isAssetSource(source: string): boolean {
   if (source.includes("?")) {
@@ -100,14 +94,10 @@ function isAssetSource(source: string): boolean {
 }
 
 /**
- * `no-asset-imports` — rejects importing anything but a `.ts`, `.js`, `.mts`,
- * or `.mjs` module: a source path, static or a dynamic `import()` with a
- * string literal, ending in another extension (`.css`, `.json`, `.svg`,
- * `.jsx`, `.tsx`, `.cjs`) or carrying a query string (`?raw`, `?url`), and
- * any import or export with import attributes. `.js`, `.mts`, and `.mjs`
- * cover package subpaths such as `lit/decorators.js`; this repo's own files
- * are all `.ts`. Bare package names, `#` aliases, and `node:`
- * builtins without an extension pass; package subpaths are checked like paths.
+ * `no-asset-imports` — rejects a static or literal dynamic import of anything
+ * but a `.ts`, `.js`, `.mts`, or `.mjs` module (`.css`, `.json`, `.svg`,
+ * `.tsx`, `?raw`, ...) and any import attributes. The non-`.ts` extensions
+ * cover package subpaths such as `lit/decorators.js`.
  */
 const noAssetImportsRule: ProjectRule = {
   meta: {
@@ -184,7 +174,6 @@ const rules: DummyRuleMap = {
   "max-statements": ["error", { max: 25 }],
   "max-params": ["error", { max: 4 }],
   "unicorn/max-nested-calls": ["error", { max: 4 }],
-  "import/max-dependencies": ["error", { max: 83 }],
   "one-var": ["error", "never"],
   "no-use-before-define": ["error", { functions: false }],
   "func-style": ["error", "declaration", { allowArrowFunctions: true }],
@@ -282,6 +271,12 @@ const nodeRules: DummyRuleMap = {
   // Node code: a CLI exits with a status.
   "unicorn/no-process-exit": "off",
 };
+
+/** Per-file rule exemptions, each with its reason, spread after the Node override. */
+export const projectOverrides: OxlintOverride[] = [
+  // The rule registry imports every rule module by design.
+  { files: ["src/rules/index.ts"], rules: { "import/max-dependencies": "off" } },
+];
 
 /**
  * The repo-local plugin, namespace `project`: its own rules, enabled as
