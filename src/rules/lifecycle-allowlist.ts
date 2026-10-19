@@ -17,7 +17,7 @@ const BANNED_LIFECYCLE: ReadonlySet<string> = new Set([
 ]);
 
 /**
- * `lifecycle-allowlist` — on a Lit component only `styles` and `render` may be
+ * `lifecycle-allowlist` - on a Lit component only `styles` and `render` may be
  * overridden.
  *
  * Every other reactive-update lifecycle hook belongs in a `ReactiveController`,

@@ -77,7 +77,7 @@ function kindOf(name: string): string {
 }
 
 /**
- * `no-duplicate-template-bindings` — rejects the same attribute, property,
+ * `no-duplicate-template-bindings` - rejects the same attribute, property,
  * boolean, or event binding appearing twice on one element.
  *
  * The four sigils are separate namespaces (`foo`, `.foo`, `?foo`, and `@foo`

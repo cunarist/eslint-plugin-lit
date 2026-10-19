@@ -1,6 +1,6 @@
 # lit-robust/no-legacy-template-syntax
 
-📝 Disallow Polymer-style `[[…]]` and `{{…}}` bindings in templates.
+📝 Disallow Polymer-style `[[...]]` and `{{...}}` bindings in templates.
 
 💼 This rule is enabled in the 🧩 `core` [config](https://github.com/cunarist/eslint-plugin-lit-robust#configs-and-rules).
 

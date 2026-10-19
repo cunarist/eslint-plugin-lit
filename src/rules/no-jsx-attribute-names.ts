@@ -17,7 +17,7 @@ const JSX_NAMES: ReadonlyMap<string, string> = new Map([
 ]);
 
 /**
- * `no-jsx-attribute-names` — rejects the JSX attribute names `className` and
+ * `no-jsx-attribute-names` - rejects the JSX attribute names `className` and
  * `htmlFor` in a template.
  *
  * Template markup is real HTML, so these set attributes of those literal names

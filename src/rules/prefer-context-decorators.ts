@@ -14,7 +14,7 @@ function lastSegment(path: string): string {
 }
 
 /**
- * `prefer-context-decorators` — use the `@provide` and `@consume` decorators
+ * `prefer-context-decorators` - use the `@provide` and `@consume` decorators
  * rather than constructing a `ContextProvider` or `ContextConsumer` by hand
  * inside a Lit component.
  */

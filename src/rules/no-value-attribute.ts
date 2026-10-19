@@ -34,11 +34,11 @@ const FORM_CONTROLS: ReadonlySet<string> = new Set([
 const WHOLE_BINDING: RegExp = /^value=(?<quote>["']?)\{\{__lit_\d+__\}\}\1$/u;
 
 /**
- * `no-value-attribute` — rejects a bound `value=${…}` attribute on a form
+ * `no-value-attribute` - rejects a bound `value=${...}` attribute on a form
  * control.
  *
  * The attribute is only the control's default value: once the user has typed,
- * it no longer drives what is displayed. The property binding `.value=${…}`
+ * it no longer drives what is displayed. The property binding `.value=${...}`
  * does. A static `value="5"` is a legitimate default and is not reported.
  */
 export const noValueAttributeRule: LitRule = {

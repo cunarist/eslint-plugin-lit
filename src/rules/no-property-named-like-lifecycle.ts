@@ -18,7 +18,7 @@ function isLifecycleName(name: string): boolean {
 }
 
 /**
- * `no-property-named-like-lifecycle` — rejects a class field or reactive
+ * `no-property-named-like-lifecycle` - rejects a class field or reactive
  * property named after a Lit lifecycle member.
  *
  * A field is an own property installed at construction, so it hides the

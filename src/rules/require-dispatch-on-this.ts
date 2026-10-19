@@ -6,7 +6,7 @@ import { docsUrl, enclosingClass, isLitComponent, type LitRule, memberPath } fro
 const SELF_RECEIVERS: ReadonlySet<string> = new Set(["this", "this.renderRoot"]);
 
 /**
- * `require-dispatch-on-this` — requires a component's events to be dispatched
+ * `require-dispatch-on-this` - requires a component's events to be dispatched
  * on the component itself.
  *
  * A listener bound with `@event=` sits on the element, so an event sent

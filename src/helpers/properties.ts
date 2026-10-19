@@ -21,7 +21,7 @@ export function objectKeyName(key: TSESTree.Node): string | null {
 }
 
 /**
- * The entries of a `static properties = { … }` member, or none when the member
+ * The entries of a `static properties = { ... }` member, or none when the member
  * is anything else or its value is not an object literal.
  */
 export function staticPropertiesEntries(member: TSESTree.ClassElement): TSESTree.Property[] {

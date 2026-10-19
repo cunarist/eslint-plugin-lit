@@ -17,7 +17,7 @@ function kebabName(name: string): string {
 }
 
 /**
- * `event-name-case` — requires the name given to `new CustomEvent(...)` or
+ * `event-name-case` - requires the name given to `new CustomEvent(...)` or
  * `new Event(...)` to be kebab-case: no uppercase letters and no underscores.
  *
  * Event names are matched as plain strings, so `addEventListener("itemselected")`

@@ -45,7 +45,7 @@ function memberDecorators(member: ClassMember): TSESTree.Decorator[] {
 }
 
 /**
- * `no-duplicate-context-provider` — rejects two `@provide` declarations for the
+ * `no-duplicate-context-provider` - rejects two `@provide` declarations for the
  * same context object on one class.
  *
  * Both register a provider for the same context on the same element. Only one

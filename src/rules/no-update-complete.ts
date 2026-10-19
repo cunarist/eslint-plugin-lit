@@ -3,7 +3,7 @@ import type { TSESTree } from "@typescript-eslint/types";
 import { docsUrl, type LitRule } from "#helpers";
 
 /**
- * `no-update-complete` — `updateComplete` is hidden scheduling: awaiting it
+ * `no-update-complete` - `updateComplete` is hidden scheduling: awaiting it
  * makes DOM state settle instead of deriving it. The access itself is banned,
  * not the `await` or `.then` around it, so no spelling slips through.
  */

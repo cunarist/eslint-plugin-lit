@@ -78,7 +78,7 @@ function dispatchOf(context: LitRuleContext, node: TSESTree.NewExpression): Disp
 }
 
 /**
- * `require-event-in-event-map` — an event a component constructs must have a
+ * `require-event-in-event-map` - an event a component constructs must have a
  * matching `HTMLElementEventMap` entry in the same file, so a listener for
  * that name is typed. Decided at the end of the file, because the
  * augmentation may sit either side of the class.

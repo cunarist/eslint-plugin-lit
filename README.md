@@ -80,7 +80,7 @@ from look-alikes, so `lit` must be installed where the linted code is.
 | [no-invalid-html](docs/rules/no-invalid-html.md)                                               | Disallow template markup that is not valid HTML                                                            | 🧩 |
 | [no-jsx-attribute-names](docs/rules/no-jsx-attribute-names.md)                                 | Disallow the JSX attribute names `className` and `htmlFor` in templates                                    | 🧩 |
 | [no-legacy-imports](docs/rules/no-legacy-imports.md)                                           | Disallow Lit 1 module paths and the names Lit 2 removed                                                    | 🧩 |
-| [no-legacy-template-syntax](docs/rules/no-legacy-template-syntax.md)                           | Disallow Polymer-style `[[…]]` and `{{…}}` bindings in templates                                           | 🧩 |
+| [no-legacy-template-syntax](docs/rules/no-legacy-template-syntax.md)                           | Disallow Polymer-style `[[...]]` and `{{...}}` bindings in templates                                       | 🧩 |
 | [no-light-dom](docs/rules/no-light-dom.md)                                                     | Disallow `createRenderRoot()` returning `this` in a Lit component                                          | 🔒 |
 | [no-manual-update](docs/rules/no-manual-update.md)                                             | Disallow a Lit component scheduling its own updates                                                        | 🔒 |
 | [no-multiple-default-slots](docs/rules/no-multiple-default-slots.md)                           | Disallow more than one default `<slot>` in a template                                                      | 🧩 |

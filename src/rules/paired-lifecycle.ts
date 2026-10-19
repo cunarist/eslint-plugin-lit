@@ -30,7 +30,7 @@ function findMember(
 }
 
 /**
- * `paired-lifecycle` — `hostConnected` and `hostDisconnected` come as a pair.
+ * `paired-lifecycle` - `hostConnected` and `hostDisconnected` come as a pair.
  *
  * Whatever the first one starts, listeners, subscriptions, timers, the second
  * one has to stop, or the controller leaks every time its host is detached.

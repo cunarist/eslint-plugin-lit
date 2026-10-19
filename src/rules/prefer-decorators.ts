@@ -3,7 +3,7 @@ import type { TSESTree } from "@typescript-eslint/types";
 import { type ClassNode, docsUrl, isLitComponent, keyName, type LitRule } from "#helpers";
 
 /**
- * `prefer-decorators` — declare reactive properties with `@property` and
+ * `prefer-decorators` - declare reactive properties with `@property` and
  * `@state`, not a `static properties` object. The decorator keeps the
  * declaration next to the field it configures and its TypeScript type.
  */

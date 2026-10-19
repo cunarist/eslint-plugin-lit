@@ -11,7 +11,7 @@
  * import from packages.
  *
  * A tag is registered by any of three means: a `customElements.define("tag",
- * …)` call, a `@customElement("tag")` decorator, or an `HTMLElementTagNameMap`
+ * ...)` call, a `@customElement("tag")` decorator, or an `HTMLElementTagNameMap`
  * augmentation mapping `"tag"` to its class. The first two name the
  * registering module directly; the augmentation is followed to the mapped
  * class's declaration. Compiled dependencies keep only the augmentation in

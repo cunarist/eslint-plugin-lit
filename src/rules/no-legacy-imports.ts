@@ -76,7 +76,7 @@ function checkSpecifier(context: LitRuleContext, specifier: TSESTree.ImportClaus
 }
 
 /**
- * `no-legacy-imports` — rejects imports from the Lit 1 module paths `lit-html`
+ * `no-legacy-imports` - rejects imports from the Lit 1 module paths `lit-html`
  * and `lit-element`, and imports of names Lit 2 removed.
  *
  * The old paths still resolve in mixed installs, so the mistake is silent.

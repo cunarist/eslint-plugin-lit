@@ -27,7 +27,7 @@ const SIGILS = ".@?";
 /** Owned by `no-jsx-attribute-names`, which gives a better message. */
 const JSX_NAMES: ReadonlySet<string> = new Set(["classname", "htmlfor"]);
 
-/** Whether an attribute's `=…` part is exactly one binding, quoted or not. */
+/** Whether an attribute's `=...` part is exactly one binding, quoted or not. */
 function isSingleBinding(value: string): boolean {
   const unquoted = value.trim().replaceAll(/^(?<quote>["'])(?<inner>.*)\1$/gu, "$2");
   const indices = placeholderIndices(unquoted);
@@ -149,7 +149,7 @@ function checkElement(
 }
 
 /**
- * `no-camelcase-attribute` — rejects an attribute name in an `html` template
+ * `no-camelcase-attribute` - rejects an attribute name in an `html` template
  * that is not kebab-case: one with uppercase letters or an underscore.
  *
  * The HTML parser lowercases every attribute name, so `<x-y myProp=${v}>` sets

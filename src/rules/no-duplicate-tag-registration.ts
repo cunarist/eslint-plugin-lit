@@ -23,7 +23,7 @@ function customElementTagNode(node: ClassNode): TSESTree.StringLiteral | null {
   return null;
 }
 
-/** Whether a call is `customElements.define(…)`, however it is qualified. */
+/** Whether a call is `customElements.define(...)`, however it is qualified. */
 function isDefineCall(node: TSESTree.CallExpression): boolean {
   const path = memberPath(node.callee);
   return (
@@ -32,7 +32,7 @@ function isDefineCall(node: TSESTree.CallExpression): boolean {
 }
 
 /**
- * `no-duplicate-tag-registration` — rejects registering the same custom
+ * `no-duplicate-tag-registration` - rejects registering the same custom
  * element tag twice in one file.
  *
  * `customElements.define` throws `NotSupportedError` when a tag is already

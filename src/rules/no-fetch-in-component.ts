@@ -11,7 +11,7 @@ const FETCH_PATHS: ReadonlySet<string> = new Set([
 ]);
 
 /**
- * `no-fetch-in-component` — a component renders; it does not own a request.
+ * `no-fetch-in-component` - a component renders; it does not own a request.
  *
  * Nothing in a component's lifecycle cancels an in-flight `fetch`, so the
  * response arrives on a disconnected element. The request belongs to a

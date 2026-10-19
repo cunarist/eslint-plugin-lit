@@ -140,7 +140,7 @@ function checkClosed(
 }
 
 /**
- * `no-invalid-html` — rejects markup inside an `html` template that does not
+ * `no-invalid-html` - rejects markup inside an `html` template that does not
  * parse as valid HTML.
  *
  * parse5 surfaces tokenizer problems through `onParseError`. It does not treat

@@ -23,7 +23,7 @@ function isDispatchCallee(callee: TSESTree.Expression): boolean {
 }
 
 /**
- * `no-dispatch-in-render` — rejects calling `dispatchEvent(...)` from
+ * `no-dispatch-in-render` - rejects calling `dispatchEvent(...)` from
  * `render()`.
  *
  * `render()` must be free of side effects. Dispatching an event from it fires

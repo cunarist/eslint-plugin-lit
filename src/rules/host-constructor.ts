@@ -68,7 +68,7 @@ function check(context: LitRuleContext, node: ClassNode): void {
 }
 
 /**
- * `host-constructor` — a reactive controller receives its host and nothing
+ * `host-constructor` - a reactive controller receives its host and nothing
  * else.
  *
  * Its constructor takes exactly one parameter, named `host`, typed

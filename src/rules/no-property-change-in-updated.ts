@@ -19,7 +19,7 @@ function enclosingPostUpdateHook(node: TSESTree.Node): string | null {
 }
 
 /**
- * `no-property-change-in-updated` — rejects assigning to a reactive property
+ * `no-property-change-in-updated` - rejects assigning to a reactive property
  * inside `updated()` or `firstUpdated()`.
  *
  * The assignment marks the component dirty again, so Lit schedules another

@@ -45,7 +45,7 @@ function lastSegment(path: string | null): string | null {
 }
 
 /**
- * `no-component-disposables` — a component renders; it does not own
+ * `no-component-disposables` - a component renders; it does not own
  * resources.
  *
  * Anything with a lifetime, an observer, a socket, a worker, a listener, must

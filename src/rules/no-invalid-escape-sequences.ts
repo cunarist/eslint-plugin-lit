@@ -67,7 +67,7 @@ function invalidEscapes(raw: string): InvalidEscape[] {
 }
 
 /**
- * `no-invalid-escape-sequences` — rejects a malformed `\x` or `\u` escape
+ * `no-invalid-escape-sequences` - rejects a malformed `\x` or `\u` escape
  * inside an `html` template.
  *
  * A tagged template makes a malformed escape legal to write while its cooked
@@ -85,7 +85,7 @@ export const noInvalidEscapeSequencesRule: LitRule = {
     schema: [],
     messages: {
       hex: "Invalid `\\x` escape sequence; `\\x` takes exactly two hex digits.",
-      unicode: "Invalid `\\u` escape sequence; `\\u` takes four hex digits or `{…}`.",
+      unicode: "Invalid `\\u` escape sequence; `\\u` takes four hex digits or `{...}`.",
       escapeBackslash: "Escape the backslash to keep it as literal text.",
     },
   },

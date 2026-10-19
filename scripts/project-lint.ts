@@ -1,6 +1,10 @@
 /**
- * `project` — lint rules this repository holds its own source to, not part of
- * the published plugin: `no-disable-comments` and `no-asset-imports`.
+ * `project` - lint rules this repository holds its own source to, not part of
+ * the published plugin: the rule list in `configs.project`, and its own rules,
+ * each in a flat `scripts/project-lint-*.ts` file: `prefer-ascii` and
+ * `no-disable-comments` (`project-lint-source.ts`), `no-asset-imports`
+ * (`project-lint-modules.ts`), and ports of the hugoalh `recommended` rules
+ * Oxlint lacks (`project-lint-hugoalh.ts`, `project-lint-hugoalh-types.ts`).
  *
  * Loaded by `vite.config.ts` as an Oxlint `jsPlugins` entry, never packed:
  * `vp pack` builds `src/plugin/index.ts` alone and the tarball holds only `dist/`.
@@ -8,142 +12,23 @@
  * @module
  */
 
-import type { RuleDefinition } from "@eslint/core";
-import type { TSESTree } from "@typescript-eslint/types";
 import type { DummyRuleMap, OxlintOverride } from "vite-plus/lint";
 
-import type { LitRuleTypes, LitSourceCode } from "#helpers";
-
-/** The published rules' source code, plus the comment list both hosts provide. */
-interface ProjectSourceCode extends LitSourceCode {
-  getAllComments(): TSESTree.Comment[];
-}
-
-/** The published rules' type parameters, with comments readable. */
-interface ProjectRuleTypes extends LitRuleTypes {
-  Code: ProjectSourceCode;
-}
-
-/** A repo-local rule, in ESLint's standard `create` form. */
-type ProjectRule = RuleDefinition<ProjectRuleTypes>;
-
-/** A comment that turns lint rules off or back on, in ESLint or Oxlint form. */
-const DIRECTIVE_PATTERN: RegExp = /^\s*(?:eslint|oxlint)-(?:disable|enable)/u;
-
-/** This rule's own name, which a directive may not use to silence it. */
-const RULE_NAME: string = "no-disable-comments";
-
-/**
- * `no-disable-comments` — rejects every `eslint-disable*`, `eslint-enable*`,
- * `oxlint-disable*`, and `oxlint-enable*` comment, line or block. Oxlint has
- * no `noInlineConfig` and no `eslint-comments` rules, so this repo bans them
- * itself: when a rule fires, fix the source.
- *
- * A directive can silence the report on itself, so two built-in checks close
- * the gaps: `unicorn/no-abusive-eslint-disable` fails one that names no rule,
- * and this rule skips one that names it, which then silences nothing and fails
- * `reportUnusedDisableDirectives` in `vite.config.ts`.
- */
-const noDisableCommentsRule: ProjectRule = {
-  meta: {
-    type: "problem",
-    docs: { description: "Disallow lint disable and enable comments" },
-    schema: [],
-    messages: { directive: "Lint disable comments are not allowed; fix the source." },
-  },
-  create(context) {
-    return {
-      Program(_node: TSESTree.Program): void {
-        for (const comment of context.sourceCode.getAllComments()) {
-          if (DIRECTIVE_PATTERN.test(comment.value) && !comment.value.includes(RULE_NAME)) {
-            context.report({ loc: comment.loc, messageId: "directive" });
-          }
-        }
-      },
-    };
-  },
-};
-
-/** A module specifier read as a path: relative, absolute, or a `#` alias. */
-const PATH_SPECIFIER_PATTERN: RegExp = /^[./#]/u;
-
-/** The extensions a module may be imported by: `.ts` and package subpaths. */
-const MODULE_EXTENSIONS: ReadonlySet<string> = new Set([".ts", ".js", ".mts", ".mjs"]);
-
-/**
- * Whether `source` names an asset rather than a module: a query string such
- * as `?raw`, or a last path segment whose extension is not in
- * `MODULE_EXTENSIONS`. Bare package names and extensionless paths pass.
- */
-function isAssetSource(source: string): boolean {
-  if (source.includes("?")) {
-    return true;
-  }
-  const segments: string[] = source.split("/");
-  if (!PATH_SPECIFIER_PATTERN.test(source)) {
-    const nameLength: number = source.startsWith("@") ? 2 : 1;
-    if (segments.length <= nameLength) {
-      return false;
-    }
-  }
-  const lastSegment: string = segments.at(-1) ?? "";
-  if (lastSegment === "." || lastSegment === ".." || !lastSegment.includes(".")) {
-    return false;
-  }
-  return !MODULE_EXTENSIONS.has(lastSegment.slice(lastSegment.lastIndexOf(".")));
-}
-
-/**
- * `no-asset-imports` — rejects a static or literal dynamic import of anything
- * but a `.ts`, `.js`, `.mts`, or `.mjs` module (`.css`, `.json`, `.svg`,
- * `.tsx`, `?raw`, ...) and any import attributes. The non-`.ts` extensions
- * cover package subpaths such as `lit/decorators.js`.
- */
-const noAssetImportsRule: ProjectRule = {
-  meta: {
-    type: "problem",
-    docs: { description: "Disallow importing CSS, JSON, SVG, and other non-module assets" },
-    schema: [],
-    messages: {
-      extension: "Only .ts, .js, .mts and .mjs modules may be imported.",
-      attributes: "Import attributes are not allowed.",
-    },
-  },
-  create(context) {
-    function checkSource(source: TSESTree.StringLiteral): void {
-      if (isAssetSource(source.value)) {
-        context.report({ node: source, messageId: "extension" });
-      }
-    }
-    function checkDeclaration(
-      node:
-        | TSESTree.ImportDeclaration
-        | TSESTree.ExportNamedDeclaration
-        | TSESTree.ExportAllDeclaration,
-    ): void {
-      if (node.source === null) {
-        return;
-      }
-      checkSource(node.source);
-      if (node.attributes.length > 0) {
-        context.report({ node, messageId: "attributes" });
-      }
-    }
-    return {
-      ImportDeclaration: checkDeclaration,
-      ExportNamedDeclaration: checkDeclaration,
-      ExportAllDeclaration: checkDeclaration,
-      ImportExpression(node: TSESTree.ImportExpression): void {
-        if (node.source.type === "Literal" && typeof node.source.value === "string") {
-          checkSource(node.source);
-        }
-        if (node.options !== null) {
-          context.report({ node, messageId: "attributes" });
-        }
-      },
-    };
-  },
-};
+import {
+  noDuplicateInterfacesRule,
+  noDuplicateTypesRule,
+  noModifierPrivateRule,
+  noUselessTypeRule,
+} from "./project-lint-hugoalh-types.ts";
+import {
+  noDuplicateTypeofsRule,
+  noEmptyYieldRule,
+  noNanRule,
+  noUnsafeNumberRule,
+  noUselessContinueRule,
+} from "./project-lint-hugoalh.ts";
+import { noAssetImportsRule } from "./project-lint-modules.ts";
+import { noDisableCommentsRule, preferAsciiRule } from "./project-lint-source.ts";
 
 /**
  * This repository's own rule list, spread by `vite.config.ts` after the
@@ -179,6 +64,20 @@ const rules: DummyRuleMap = {
   // The repo's own rules: no lint suppression and only `.ts` imports.
   "project/no-disable-comments": "error",
   "project/no-asset-imports": "error",
+  // Deno's `prefer-ascii`, which also covers hugoalh's
+  // `prefer-ascii-identifier`.
+  "project/prefer-ascii": "error",
+  // Ports of the hugoalh `recommended` rules with no Oxlint built-in, under
+  // their hugoalh names.
+  "project/no-duplicate-interfaces": "error",
+  "project/no-duplicate-typeofs": "error",
+  "project/no-duplicate-types": "error",
+  "project/no-empty-yield": "error",
+  "project/no-modifier-private": "error",
+  "project/no-nan": "error",
+  "project/no-unsafe-number": "error",
+  "project/no-useless-continue": "error",
+  "project/no-useless-type": "error",
   // Off, collides with a repo or plugin rule, Oxfmt, or another category rule:
   // Collides with the mutable AST nodes the rules read.
   "typescript/prefer-readonly-parameter-types": "off",
@@ -295,6 +194,16 @@ const plugin = {
   rules: {
     "no-disable-comments": noDisableCommentsRule,
     "no-asset-imports": noAssetImportsRule,
+    "prefer-ascii": preferAsciiRule,
+    "no-duplicate-interfaces": noDuplicateInterfacesRule,
+    "no-duplicate-typeofs": noDuplicateTypeofsRule,
+    "no-duplicate-types": noDuplicateTypesRule,
+    "no-empty-yield": noEmptyYieldRule,
+    "no-modifier-private": noModifierPrivateRule,
+    "no-nan": noNanRule,
+    "no-unsafe-number": noUnsafeNumberRule,
+    "no-useless-continue": noUselessContinueRule,
+    "no-useless-type": noUselessTypeRule,
   },
   configs: { project: { rules } },
 };

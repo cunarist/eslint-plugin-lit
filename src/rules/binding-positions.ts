@@ -23,7 +23,7 @@ const POSITIONS: readonly Position[] = [
 ];
 
 /**
- * `binding-positions` — rejects a `${…}` binding used as a tag name, in a
+ * `binding-positions` - rejects a `${...}` binding used as a tag name, in a
  * closing tag, or as an attribute name.
  *
  * Lit can only bind attribute values, properties, events, and child content.

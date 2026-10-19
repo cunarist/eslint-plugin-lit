@@ -3,7 +3,7 @@ import type { TSESTree } from "@typescript-eslint/types";
 import { docsUrl, isHtmlTemplate, isSimpleReference, type LitRule } from "#helpers";
 
 /**
- * `no-useless-template-literals` — rejects an `html` template whose entire
+ * `no-useless-template-literals` - rejects an `html` template whose entire
  * content is one binding and no markup (`` html`${x}` ``), which produces no
  * markup of its own.
  */

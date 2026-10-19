@@ -10,7 +10,7 @@ import {
 } from "#helpers";
 
 /**
- * `require-accessor-with-decorators` — reports a `@property` or `@state`
+ * `require-accessor-with-decorators` - reports a `@property` or `@state`
  * decorator on a plain class field instead of an `accessor` field.
  *
  * Under standard (TC39) decorators these decorators can only install a

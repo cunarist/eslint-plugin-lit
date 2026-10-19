@@ -166,7 +166,7 @@ function check(context: LitRuleContext, node: ClassNode): void {
 }
 
 /**
- * `no-boolean-property-default-true` — Lit's `Boolean` converter follows the
+ * `no-boolean-property-default-true` - Lit's `Boolean` converter follows the
  * HTML rule: the attribute's presence is `true` and its absence is `false`.
  * No markup says "false", so a boolean reactive property that defaults to
  * `true` can never be turned off from a template. Name the property for the

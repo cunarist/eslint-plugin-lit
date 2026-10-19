@@ -23,7 +23,7 @@ function check(context: LitRuleContext, node: ClassNode): void {
 }
 
 /**
- * `require-element-suffix` — requires a registered component class name to
+ * `require-element-suffix` - requires a registered component class name to
  * end in `Element`.
  *
  * A component class is named for what it is, the same way a controller is. The
@@ -38,7 +38,7 @@ export const requireElementSuffixRule: LitRule = {
     },
     schema: [],
     messages: {
-      suffix: 'Component "{{name}}" is not named `…Element`.',
+      suffix: 'Component "{{name}}" is not named `...Element`.',
     },
   },
   create(context) {

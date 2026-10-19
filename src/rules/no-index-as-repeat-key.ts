@@ -25,7 +25,7 @@ function returnedExpression(fn: KeyFunction): TSESTree.Expression | null {
 }
 
 /**
- * `no-index-as-repeat-key` — rejects a `repeat` key function that returns its
+ * `no-index-as-repeat-key` - rejects a `repeat` key function that returns its
  * own index parameter, e.g. `repeat(items, (item, i) => i, template)`.
  *
  * Keying by index makes item 0 always key 0, so `repeat` reuses the DOM in

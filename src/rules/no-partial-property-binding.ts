@@ -73,7 +73,7 @@ function isSinglePlaceholder(text: string): boolean {
 }
 
 /**
- * `no-partial-property-binding` — rejects a property, event or boolean binding
+ * `no-partial-property-binding` - rejects a property, event or boolean binding
  * that is not the entire attribute value.
  *
  * Lit cannot compose a value out of parts for these, so it throws at render

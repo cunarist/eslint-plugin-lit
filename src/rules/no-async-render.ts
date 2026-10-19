@@ -3,7 +3,7 @@ import type { TSESTree } from "@typescript-eslint/types";
 import { docsUrl, enclosingClass, isLitComponent, keyName, type LitRule } from "#helpers";
 
 /**
- * `no-async-render` — rejects an `async render()` on a Lit component.
+ * `no-async-render` - rejects an `async render()` on a Lit component.
  *
  * `render()` must return something Lit can commit synchronously. An `async`
  * render returns a Promise, which Lit renders as nothing.

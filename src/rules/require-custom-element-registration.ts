@@ -21,7 +21,7 @@ function lastSegment(path: string): string {
   return path.split(".").pop() ?? path;
 }
 
-/** Whether a class carries `@customElement(…)`. */
+/** Whether a class carries `@customElement(...)`. */
 function hasCustomElementDecorator(node: ClassNode): boolean {
   return classDecorators(node).some((decorator) => {
     const expression = decorator.expression;
@@ -31,7 +31,7 @@ function hasCustomElementDecorator(node: ClassNode): boolean {
   });
 }
 
-/** Whether a call is `customElements.define(…)`, however it is qualified. */
+/** Whether a call is `customElements.define(...)`, however it is qualified. */
 function isDefineCall(node: TSESTree.CallExpression): boolean {
   const path = memberPath(node.callee);
   return (
@@ -52,7 +52,7 @@ function candidateOf(context: LitRuleContext, node: TSESTree.ClassDeclaration): 
   return { name: node.id.name, node: node.id };
 }
 
-/** The class name a `customElements.define(…)` call registers, or `null`. */
+/** The class name a `customElements.define(...)` call registers, or `null`. */
 function definedName(node: TSESTree.CallExpression): string | null {
   if (!isDefineCall(node)) {
     return null;
@@ -63,7 +63,7 @@ function definedName(node: TSESTree.CallExpression): string | null {
 }
 
 /**
- * `require-custom-element-registration` — a `LitElement` subclass that is
+ * `require-custom-element-registration` - a `LitElement` subclass that is
  * never registered has no tag, so it can never appear in a template, and the
  * failure shows up as an empty area on screen with nothing in the console.
  *

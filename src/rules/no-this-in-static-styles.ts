@@ -31,7 +31,7 @@ function inStaticStylesInitializer(node: TSESTree.Node): boolean {
 }
 
 /**
- * `no-this-in-static-styles` — rejects `this` inside a `static styles`
+ * `no-this-in-static-styles` - rejects `this` inside a `static styles`
  * initializer.
  *
  * `static styles` is evaluated once on the class, so `this` there is the

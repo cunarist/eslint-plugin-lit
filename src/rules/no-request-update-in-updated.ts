@@ -26,7 +26,7 @@ function enclosingPostUpdateHook(node: TSESTree.Node): string | null {
 }
 
 /**
- * `no-request-update-in-updated` — rejects calling `this.requestUpdate()`
+ * `no-request-update-in-updated` - rejects calling `this.requestUpdate()`
  * inside `updated()` or `firstUpdated()`.
  *
  * Those hooks run at the end of an update; the requested update runs the hook

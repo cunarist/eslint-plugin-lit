@@ -11,7 +11,7 @@ import {
 } from "#helpers";
 
 /**
- * `no-property-change-update` — rejects assigning to a reactive property
+ * `no-property-change-update` - rejects assigning to a reactive property
  * inside `update()`.
  *
  * The assignment schedules another update, which assigns again: an infinite

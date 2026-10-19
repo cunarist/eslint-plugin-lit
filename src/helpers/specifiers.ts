@@ -40,7 +40,7 @@ export function importedLocalName(
     return null;
   }
   for (const specifier of node.specifiers) {
-    // `import * as ns from "…"` binds every export under `ns.`.
+    // `import * as ns from "..."` binds every export under `ns.`.
     if (specifier.type === "ImportNamespaceSpecifier") {
       return `${specifier.local.name}.${imported}`;
     }

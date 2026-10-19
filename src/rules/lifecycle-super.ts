@@ -51,7 +51,7 @@ function forwardedArgument(param: TSESTree.Parameter): string | null {
   }
 }
 
-/** The `super.name(…)` call forwarding every parameter, or null. */
+/** The `super.name(...)` call forwarding every parameter, or null. */
 function superCall(name: string, params: TSESTree.Parameter[]): string | null {
   const args: string[] = [];
   for (const param of params) {
@@ -90,7 +90,7 @@ function unchainedName(
   return name;
 }
 
-/** The suggestion to call `super.name(…)` first, when the method can take it. */
+/** The suggestion to call `super.name(...)` first, when the method can take it. */
 function callSuperSuggestions(node: TSESTree.MethodDefinition, name: string): SuggestedEdit[] {
   const body = node.value.body;
   const call = superCall(name, node.value.params);
@@ -114,7 +114,7 @@ function callSuperSuggestions(node: TSESTree.MethodDefinition, name: string): Su
 }
 
 /**
- * `lifecycle-super` — rejects an override of a Lit lifecycle callback that
+ * `lifecycle-super` - rejects an override of a Lit lifecycle callback that
  * never calls its own `super` implementation.
  *
  * `ReactiveElement` does real work in each of these callbacks: registering the

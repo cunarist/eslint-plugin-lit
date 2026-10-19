@@ -22,7 +22,7 @@ function shortPath(cwd: string, file: string): string {
 }
 
 /**
- * `require-direct-registration-import` — rejects a custom element used in a
+ * `require-direct-registration-import` - rejects a custom element used in a
  * template whose registering module this file does not import, directly or
  * through that module's own `index.ts` barrel.
  *

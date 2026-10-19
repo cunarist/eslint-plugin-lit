@@ -162,13 +162,13 @@ function check(context: LitRuleContext, node: ClassNode): void {
 }
 
 /**
- * `attribute-names` — rejects a camelCase reactive property that does not
+ * `attribute-names` - rejects a camelCase reactive property that does not
  * declare an explicit `attribute` option.
  *
  * HTML attribute names are ASCII case-insensitive, so Lit lowercases them. A
  * property named `myProp` is observed as the attribute `myprop`, not `my-prop`,
  * a mismatch that silently does nothing when someone writes
- * `<my-el my-prop="…">`.
+ * `<my-el my-prop="...">`.
  */
 export const attributeNamesRule: LitRule = {
   meta: {

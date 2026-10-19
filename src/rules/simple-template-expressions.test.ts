@@ -69,7 +69,7 @@ testRule("simple-template-expressions", simpleTemplateExpressionsRule, {
       code: `${LIT}const t = html\`<div @click=\${this.go.bind(this)}></div>\`;`,
       errors: [{ messageId: "bind" }],
     },
-    // rejects .map(…)
+    // rejects .map(...)
     {
       code: `${LIT}const t = html\`<ul>\${this.items.map((i) => i.name)}</ul>\`;`,
       errors: [{ messageId: "map" }],

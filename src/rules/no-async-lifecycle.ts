@@ -19,7 +19,7 @@ const SYNC_LIFECYCLE: ReadonlySet<string> = new Set([
 ]);
 
 /**
- * `no-async-lifecycle` — rejects `async` on a Lit lifecycle hook.
+ * `no-async-lifecycle` - rejects `async` on a Lit lifecycle hook.
  *
  * Lit calls its lifecycle hooks synchronously and never awaits the returned
  * Promise. An `async` hook therefore resumes after the render it was meant to

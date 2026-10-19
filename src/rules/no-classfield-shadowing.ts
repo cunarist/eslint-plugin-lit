@@ -145,7 +145,7 @@ function canDeclare(member: TSESTree.PropertyDefinition): boolean {
 }
 
 /**
- * `no-classfield-shadowing` — rejects a plain class field whose name matches a
+ * `no-classfield-shadowing` - rejects a plain class field whose name matches a
  * reactive property.
  *
  * With `useDefineForClassFields` a class field is emitted as
