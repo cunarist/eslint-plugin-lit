@@ -43,21 +43,20 @@ const eslintTester = new EslintRuleTester({
 });
 
 /**
- * Oxlint's tester, seen through the one method this harness calls.
- *
- * Oxlint types `run` against its own `Rule`, which ESLint's `RuleDefinition`
- * does not satisfy on paper - `meta.docs` lacks an index signature and the
- * two `sourceCode` shapes differ - although Oxlint runs ESLint rules as they
- * are. Widening the parameter here is the one place the two type systems are
- * bridged; the Oxlint half of every test is what proves the runtime agrees.
+ * Oxlint's tester. Its `run` is typed against Oxlint's own `Rule`, which
+ * ESLint's `RuleDefinition` does not satisfy on paper - `meta.docs` lacks an
+ * index signature and the two `sourceCode` shapes differ - although Oxlint runs
+ * ESLint rules as they are. `runOxlint` is the one place the two type systems
+ * are bridged; the Oxlint half of every test is what proves the runtime agrees.
  */
-interface OxlintRunner {
-  run(name: string, rule: unknown, cases: OxlintRuleTester.TestCases): void;
-}
-
-const oxlintTester: OxlintRunner = new OxlintRuleTester({
+const oxlintTester = new OxlintRuleTester({
   languageOptions: { parserOptions: { lang: "ts" } },
 });
+
+/** Runs Oxlint's tester on an ESLint rule, through `Reflect.apply`'s untyped arguments. */
+function runOxlint(name: string, rule: RuleDefinition, cases: OxlintRuleTester.TestCases): void {
+  Reflect.apply(oxlintTester.run.bind(oxlintTester), undefined, [name, rule, cases]);
+}
 
 /**
  * Writes a throwaway project, `files` keyed by path relative to its root, for
@@ -166,7 +165,7 @@ export function testRule(name: string, rule: RuleDefinition, cases: RuleCases): 
       });
     });
     describe("oxlint", () => {
-      oxlintTester.run(name, rule, {
+      runOxlint(name, rule, {
         valid,
         invalid: cases.invalid.map((test) => ({
           code: test.code,

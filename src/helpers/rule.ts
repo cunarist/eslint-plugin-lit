@@ -55,9 +55,9 @@ export interface ScopeManager {
  */
 export interface LitSourceCode extends TextSourceCode {
   scopeManager: ScopeManager | null;
-  getDeclaredVariables(node: TSESTree.Node): ScopeVariable[];
-  getScope(node: TSESTree.Node): Scope;
-  getLocFromIndex(index: number): Position;
+  getDeclaredVariables: (node: TSESTree.Node) => ScopeVariable[];
+  getScope: (node: TSESTree.Node) => Scope;
+  getLocFromIndex: (index: number) => Position;
 }
 
 /**

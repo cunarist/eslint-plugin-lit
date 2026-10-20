@@ -92,6 +92,7 @@ from look-alikes, so `lit` must be installed where the linted code is.
 | [no-property-change-update](docs/rules/no-property-change-update.md)                           | Disallow changing a reactive property in `update()`                                                        | 🧩 |
 | [no-property-named-like-lifecycle](docs/rules/no-property-named-like-lifecycle.md)             | Disallow fields and reactive properties named after Lit lifecycle members                                  | 🧩 |
 | [no-query-decorators](docs/rules/no-query-decorators.md)                                       | Disallow the Lit `@query` decorators and their imports                                                     | 🔗 |
+| [no-render-root-escape](docs/rules/no-render-root-escape.md)                                   | Disallow a Lit component's render root escaping the component                                              | 🔗 |
 | [no-request-update-in-updated](docs/rules/no-request-update-in-updated.md)                     | Disallow calling `requestUpdate()` in `updated()` or `firstUpdated()`                                      | 🧩 |
 | [no-script-in-template](docs/rules/no-script-in-template.md)                                   | Disallow `<script>` elements in templates                                                                  | 🧩 |
 | [no-self-closing-non-void](docs/rules/no-self-closing-non-void.md)                             | Disallow self-closing syntax on non-void HTML elements in templates                                        | 🧩 |

@@ -92,6 +92,8 @@ const rules: DummyRuleMap = {
   "typescript/consistent-indexed-object-style": "off",
   // Collides with written-out type annotations.
   "typescript/no-inferrable-types": "off",
+  // Collides with Oxfmt's number literal casing.
+  "unicorn/number-literal-case": "off",
   // Collides with Oxfmt's import sorting.
   "sort-imports": "off",
   // Collides with the `index.ts` barrels the `#` aliases point at.
@@ -109,8 +111,6 @@ const rules: DummyRuleMap = {
   "import/no-default-export": "off",
   // Collides with RuleTester cases, whose code strings hold template literals.
   "no-template-curly-in-string": "off",
-  // Collides with the bivariant method signatures the ESLint and Oxlint types need.
-  "typescript/method-signature-style": "off",
   // Collides with the `path` locals the code names: a default `path` import
   // of `node:path` would shadow them.
   "unicorn/import-style": "off",
@@ -139,6 +139,8 @@ const rules: DummyRuleMap = {
   "default-case": "off",
   // Off: not type-aware; `noImplicitReturns` covers missing returns.
   "consistent-return": "off",
+  // Off: misfires on complete switches, like `consistent-return`.
+  "typescript/consistent-return": "off",
   // Off: sequential awaits in loops are intentional; workarounds cost more.
   "no-await-in-loop": "off",
   // Off, too much churn:

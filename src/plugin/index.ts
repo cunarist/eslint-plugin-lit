@@ -98,7 +98,12 @@ const STRICT: string[] = [
 /**
  * The `dom-ref` preset - reach the DOM through a `createRef` ref, nothing else.
  */
-const DOM_REF: string[] = ["no-dom-query", "no-query-decorators", "prefer-create-ref"];
+const DOM_REF: string[] = [
+  "no-dom-query",
+  "no-query-decorators",
+  "no-render-root-escape",
+  "prefer-create-ref",
+];
 
 /**
  * The `reactive-controller` preset - the ReactiveController contract, and the
@@ -152,7 +157,7 @@ const basePlugin: Plugin = {
     // only `.ts` imports. A release bumps both; `tests/package-meta.test.ts`
     // fails if they drift apart.
     name: "eslint-plugin-lit-robust",
-    version: "0.10.1",
+    version: "0.11.0",
     namespace: NAMESPACE,
   },
   rules: Object.fromEntries(rules),
