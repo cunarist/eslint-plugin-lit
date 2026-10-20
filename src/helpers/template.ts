@@ -48,9 +48,9 @@ export interface TemplateSource {
   /** The template text with bindings replaced by placeholders. */
   text: string;
   /** Maps an offset within `text` back to an absolute offset in the source file. */
-  toSourceOffset(offset: number): number;
+  toSourceOffset: (offset: number) => number;
   /** Builds an absolute source range from a parse5 offset pair. */
-  toSourceRange(start: number, end: number): SourceRange;
+  toSourceRange: (start: number, end: number) => SourceRange;
 }
 
 /** One stretch of the substituted text and the source it came from. */
