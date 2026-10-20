@@ -52,6 +52,7 @@ import { noPropertyChangeInUpdatedRule } from "./no-property-change-in-updated.t
 import { noPropertyChangeUpdateRule } from "./no-property-change-update.ts";
 import { noPropertyNamedLikeLifecycleRule } from "./no-property-named-like-lifecycle.ts";
 import { noQueryDecoratorsRule } from "./no-query-decorators.ts";
+import { noRenderRootEscapeRule } from "./no-render-root-escape.ts";
 import { noRequestUpdateInUpdatedRule } from "./no-request-update-in-updated.ts";
 import { noScriptInTemplateRule } from "./no-script-in-template.ts";
 import { noSelfClosingNonVoidRule } from "./no-self-closing-non-void.ts";
@@ -142,6 +143,7 @@ export const rules = new Map<string, LitRule>([
   ["no-property-change-update", noPropertyChangeUpdateRule],
   ["no-property-named-like-lifecycle", noPropertyNamedLikeLifecycleRule],
   ["no-query-decorators", noQueryDecoratorsRule],
+  ["no-render-root-escape", noRenderRootEscapeRule],
   ["no-request-update-in-updated", noRequestUpdateInUpdatedRule],
   ["no-script-in-template", noScriptInTemplateRule],
   ["no-self-closing-non-void", noSelfClosingNonVoidRule],

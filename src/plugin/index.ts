@@ -98,7 +98,12 @@ const STRICT: string[] = [
 /**
  * The `dom-ref` preset - reach the DOM through a `createRef` ref, nothing else.
  */
-const DOM_REF: string[] = ["no-dom-query", "no-query-decorators", "prefer-create-ref"];
+const DOM_REF: string[] = [
+  "no-dom-query",
+  "no-query-decorators",
+  "no-render-root-escape",
+  "prefer-create-ref",
+];
 
 /**
  * The `reactive-controller` preset - the ReactiveController contract, and the

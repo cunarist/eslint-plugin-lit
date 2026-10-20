@@ -116,6 +116,17 @@ const DENO_GROUPS = new Map<string, string[]>([
 /** Every rule of the Deno package. */
 const DENO_RULES: string[] = [...DENO_GROUPS.values()].flat();
 
+/** The rules added since the port, by the config each belongs to. */
+const ADDED_GROUPS = new Map<string, string[]>([["dom-ref", ["no-render-root-escape"]]]);
+
+/** Every rule of the plugin, by config: the Deno ones plus the added ones. */
+const GROUPS = new Map<string, string[]>(
+  [...DENO_GROUPS].map(([group, ids]) => [group, [...ids, ...(ADDED_GROUPS.get(group) ?? [])]]),
+);
+
+/** Every rule of the plugin. */
+const RULES: string[] = [...GROUPS.values()].flat();
+
 /** The preset configs, by the name of the Deno plugin each stands for. */
 const PRESETS = new Map<string, ConfigObject>([
   ["core", plugin.configs.core],
@@ -132,9 +143,10 @@ function configRuleIds(name: string): string[] {
 }
 
 describe("plugin.rules", () => {
-  it("holds exactly the 82 rules of the Deno package", () => {
+  it("holds exactly the 82 rules of the Deno package, plus the added ones", () => {
     expect(DENO_RULES).toHaveLength(82);
-    expect(Object.keys(plugin.rules ?? {}).toSorted()).toEqual(DENO_RULES.toSorted());
+    expect(RULES).toHaveLength(83);
+    expect(Object.keys(plugin.rules ?? {}).toSorted()).toEqual(RULES.toSorted());
   });
 });
 
@@ -146,7 +158,7 @@ describe("plugin.configs", () => {
   });
 
   it("turns on exactly the rules of each Deno plugin", () => {
-    for (const [group, ids] of DENO_GROUPS) {
+    for (const [group, ids] of GROUPS) {
       expect(configRuleIds(group).toSorted()).toEqual(ids.toSorted());
     }
   });
@@ -154,7 +166,7 @@ describe("plugin.configs", () => {
 
 describe("plugin.configs.all", () => {
   it("turns on every rule in the plugin", () => {
-    expect(Object.keys(plugin.configs.all.rules ?? {})).toHaveLength(82);
+    expect(Object.keys(plugin.configs.all.rules ?? {})).toHaveLength(83);
     const ruleIds = Object.keys(plugin.rules ?? {}).map((id) => `${NAMESPACE}/${id}`);
     expect(Object.keys(plugin.configs.all.rules ?? {}).toSorted()).toEqual(ruleIds.toSorted());
   });
